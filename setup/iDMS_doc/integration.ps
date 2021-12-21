@@ -1,0 +1,4253 @@
+%!
+%%BeginFeature: *Duplex True
+true statusdict /setduplexmode get exec false statusdict /settumble get exec
+%%EndFeature
+%%BoundingBox: (atend)
+%%Pages: (atend)
+%%DocumentFonts: (atend)
+%%EndComments
+%
+% FrameMaker PostScript Prolog 3.0, for use with FrameMaker 3.0
+% Copyright (c) 1986,87,89,90,91 by Frame Technology Corporation.
+% All rights reserved.
+%
+% Known Problems:
+%	Due to bugs in Transcript, the 'PS-Adobe-' is omitted from line 1
+/FMversion (3.0) def 
+% Set up Color vs. Black-and-White
+	/FMPrintInColor systemdict /colorimage known
+		systemdict /currentcolortransfer known or def
+% Uncomment this line to force b&w on color printer
+%   /FMPrintInColor false def
+/FrameDict 195 dict def 
+systemdict /errordict known not {/errordict 10 dict def
+		errordict /rangecheck {stop} put} if
+% The readline in 23.0 doesn't recognize cr's as nl's on AppleTalk
+FrameDict /tmprangecheck errordict /rangecheck get put 
+errordict /rangecheck {FrameDict /bug true put} put 
+FrameDict /bug false put 
+mark 
+% Some PS machines read past the CR, so keep the following 3 lines together!
+currentfile 5 string readline
+00
+0000000000
+cleartomark 
+errordict /rangecheck FrameDict /tmprangecheck get put 
+FrameDict /bug get { 
+	/readline {
+		/gstring exch def
+		/gfile exch def
+		/gindex 0 def
+		{
+			gfile read pop 
+			dup 10 eq {exit} if 
+			dup 13 eq {exit} if 
+			gstring exch gindex exch put 
+			/gindex gindex 1 add def 
+		} loop
+		pop 
+		gstring 0 gindex getinterval true 
+		} def
+	} if
+/FMVERSION {
+	FMversion ne {
+		/Times-Roman findfont 18 scalefont setfont
+		100 100 moveto
+		(FrameMaker version does not match postscript_prolog!)
+		dup =
+		show showpage
+		} if
+	} def 
+/FMLOCAL {
+	FrameDict begin
+	0 def 
+	end 
+	} def 
+	/gstring FMLOCAL
+	/gfile FMLOCAL
+	/gindex FMLOCAL
+	/orgxfer FMLOCAL
+	/orgproc FMLOCAL
+	/organgle FMLOCAL
+	/orgfreq FMLOCAL
+	/yscale FMLOCAL
+	/xscale FMLOCAL
+	/manualfeed FMLOCAL
+	/paperheight FMLOCAL
+	/paperwidth FMLOCAL
+/FMDOCUMENT { 
+	array /FMfonts exch def 
+	/#copies exch def
+	FrameDict begin
+	0 ne dup {setmanualfeed} if
+	/manualfeed exch def
+	/paperheight exch def
+	/paperwidth exch def
+	/yscale exch def
+	/xscale exch def
+	currenttransfer cvlit /orgxfer exch def
+	currentscreen cvlit /orgproc exch def
+	/organgle exch def /orgfreq exch def
+	setpapername 
+	manualfeed {true} {papersize} ifelse 
+	{manualpapersize} {false} ifelse 
+	{desperatepapersize} if
+	end 
+	} def 
+	/pagesave FMLOCAL
+	/orgmatrix FMLOCAL
+	/landscape FMLOCAL
+/FMBEGINPAGE { 
+	FrameDict begin 
+	/pagesave save def
+	3.86 setmiterlimit
+	/landscape exch 0 ne def
+	landscape { 
+		90 rotate 0 exch neg translate pop 
+		}
+		{pop pop}
+		ifelse
+	xscale yscale scale
+	/orgmatrix matrix def
+	gsave 
+	} def 
+/FMENDPAGE {
+	grestore 
+	pagesave restore
+	end 
+	showpage
+	} def 
+/FMFONTDEFINE { 
+	FrameDict begin
+	findfont 
+	ReEncode 
+	1 index exch 
+	definefont 
+	FMfonts 3 1 roll 
+	put
+	end 
+	} def 
+/FMFILLS {
+	FrameDict begin
+	array /fillvals exch def
+	end 
+	} def 
+/FMFILL {
+	FrameDict begin
+	 fillvals 3 1 roll put
+	end 
+	} def 
+/FMNORMALIZEGRAPHICS { 
+	newpath
+	0.0 0.0 moveto
+	1 setlinewidth
+	0 setlinecap
+	0 0 0 sethsbcolor
+	0 setgray 
+	} bind def
+	/fx FMLOCAL
+	/fy FMLOCAL
+	/fh FMLOCAL
+	/fw FMLOCAL
+	/llx FMLOCAL
+	/lly FMLOCAL
+	/urx FMLOCAL
+	/ury FMLOCAL
+/FMBEGINEPSF { 
+	end 
+	/FMEPSF save def 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	[/fy /fx /fh /fw /ury /urx /lly /llx] {exch def} forall 
+	fx fy translate 
+	rotate
+	fw urx llx sub div fh ury lly sub div scale 
+	llx neg lly neg translate 
+	} bind def
+/FMENDEPSF {
+	FMEPSF restore
+	FrameDict begin 
+	} bind def
+FrameDict begin 
+/setmanualfeed {
+%%BeginFeature *ManualFeed True
+	 statusdict /manualfeed true put
+%%EndFeature
+	} def
+/max {2 copy lt {exch} if pop} bind def
+/min {2 copy gt {exch} if pop} bind def
+/inch {72 mul} def
+/pagedimen { 
+	paperheight sub abs 16 lt exch 
+	paperwidth sub abs 16 lt and
+	{/papername exch def} {pop} ifelse
+	} def
+	/papersizedict FMLOCAL
+/setpapername { 
+	/papersizedict 14 dict def 
+	papersizedict begin
+	/papername /unknown def 
+		/Letter 8.5 inch 11.0 inch pagedimen
+		/LetterSmall 7.68 inch 10.16 inch pagedimen
+		/Tabloid 11.0 inch 17.0 inch pagedimen
+		/Ledger 17.0 inch 11.0 inch pagedimen
+		/Legal 8.5 inch 14.0 inch pagedimen
+		/Statement 5.5 inch 8.5 inch pagedimen
+		/Executive 7.5 inch 10.0 inch pagedimen
+		/A3 11.69 inch 16.5 inch pagedimen
+		/A4 8.26 inch 11.69 inch pagedimen
+		/A4Small 7.47 inch 10.85 inch pagedimen
+		/B4 10.125 inch 14.33 inch pagedimen
+		/B5 7.16 inch 10.125 inch pagedimen
+	end
+	} def
+/papersize {
+	papersizedict begin
+		/Letter {lettertray letter} def
+		/LetterSmall {lettertray lettersmall} def
+		/Tabloid {11x17tray 11x17} def
+		/Ledger {ledgertray ledger} def
+		/Legal {legaltray legal} def
+		/Statement {statementtray statement} def
+		/Executive {executivetray executive} def
+		/A3 {a3tray a3} def
+		/A4 {a4tray a4} def
+		/A4Small {a4tray a4small} def
+		/B4 {b4tray b4} def
+		/B5 {b5tray b5} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	/FMdicttop countdictstack 1 add def 
+	statusdict begin stopped end 
+	countdictstack -1 FMdicttop {pop end} for 
+	} def
+/manualpapersize {
+	papersizedict begin
+		/Letter {letter} def
+		/LetterSmall {lettersmall} def
+		/Tabloid {11x17} def
+		/Ledger {ledger} def
+		/Legal {legal} def
+		/Statement {statement} def
+		/Executive {executive} def
+		/A3 {a3} def
+		/A4 {a4} def
+		/A4Small {a4small} def
+		/B4 {b4} def
+		/B5 {b5} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	stopped 
+	} def
+/desperatepapersize {
+	statusdict /setpageparams known
+		{
+		paperwidth paperheight 0 1 
+		statusdict begin
+		{setpageparams} stopped pop 
+		end
+		} if
+	} def
+/savematrix {
+	orgmatrix currentmatrix pop
+	} bind def
+/restorematrix {
+	orgmatrix setmatrix
+	} bind def
+/dmatrix matrix def
+/dpi    72 0 dmatrix defaultmatrix dtransform
+    dup mul exch   dup mul add   sqrt def
+/freq dpi 18.75 div 8 div round dup 0 eq {pop 1} if 8 mul dpi exch div def
+/sangle 1 0 dmatrix defaultmatrix dtransform exch atan def
+/DiacriticEncoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /space /exclam /quotedbl
+/numbersign /dollar /percent /ampersand /quotesingle /parenleft
+/parenright /asterisk /plus /comma /hyphen /period /slash /zero /one
+/two /three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E /F /G /H /I /J /K
+/L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft /backslash
+/bracketright /asciicircum /underscore /grave /a /b /c /d /e /f /g /h
+/i /j /k /l /m /n /o /p /q /r /s /t /u /v /w /x /y /z /braceleft /bar
+/braceright /asciitilde /.notdef /Adieresis /Aring /Ccedilla /Eacute
+/Ntilde /Odieresis /Udieresis /aacute /agrave /acircumflex /adieresis
+/atilde /aring /ccedilla /eacute /egrave /ecircumflex /edieresis
+/iacute /igrave /icircumflex /idieresis /ntilde /oacute /ograve
+/ocircumflex /odieresis /otilde /uacute /ugrave /ucircumflex
+/udieresis /dagger /.notdef /cent /sterling /section /bullet
+/paragraph /germandbls /registered /copyright /trademark /acute
+/dieresis /.notdef /AE /Oslash /.notdef /.notdef /.notdef /.notdef
+/yen /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/ordfeminine /ordmasculine /.notdef /ae /oslash /questiondown
+/exclamdown /logicalnot /.notdef /florin /.notdef /.notdef
+/guillemotleft /guillemotright /ellipsis /.notdef /Agrave /Atilde
+/Otilde /OE /oe /endash /emdash /quotedblleft /quotedblright
+/quoteleft /quoteright /.notdef /.notdef /ydieresis /Ydieresis
+/fraction /currency /guilsinglleft /guilsinglright /fi /fl /daggerdbl
+/periodcentered /quotesinglbase /quotedblbase /perthousand
+/Acircumflex /Ecircumflex /Aacute /Edieresis /Egrave /Iacute
+/Icircumflex /Idieresis /Igrave /Oacute /Ocircumflex /.notdef /Ograve
+/Uacute /Ucircumflex /Ugrave /dotlessi /circumflex /tilde /macron
+/breve /dotaccent /ring /cedilla /hungarumlaut /ogonek /caron
+] def
+/ReEncode { 
+	dup 
+	length 
+	dict begin 
+	{
+	1 index /FID ne 
+		{def} 
+		{pop pop} ifelse 
+	} forall 
+	0 eq {/Encoding DiacriticEncoding def} if 
+	currentdict 
+	end 
+	} bind def
+/graymode true def
+	/bwidth FMLOCAL
+	/bpside FMLOCAL
+	/bstring FMLOCAL
+	/onbits FMLOCAL
+	/offbits FMLOCAL
+	/xindex FMLOCAL
+	/yindex FMLOCAL
+	/x FMLOCAL
+	/y FMLOCAL
+/setpattern {
+	 /bwidth  exch def
+	 /bpside  exch def
+	 /bstring exch def
+	 /onbits 0 def  /offbits 0 def
+	 freq sangle landscape {90 add} if 
+		{/y exch def
+		 /x exch def
+		 /xindex x 1 add 2 div bpside mul cvi def
+		 /yindex y 1 add 2 div bpside mul cvi def
+		 bstring yindex bwidth mul xindex 8 idiv add get
+		 1 7 xindex 8 mod sub bitshift and 0 ne
+		 {/onbits  onbits  1 add def 1}
+		 {/offbits offbits 1 add def 0}
+		 ifelse
+		}
+		setscreen
+	 {} settransfer
+	 offbits offbits onbits add div FMsetgray
+	/graymode false def
+	} bind def
+/grayness {
+	FMsetgray
+	graymode not {
+		/graymode true def
+		orgxfer cvx settransfer
+		orgfreq organgle orgproc cvx setscreen
+		} if
+	} bind def
+	/HUE FMLOCAL
+	/SAT FMLOCAL
+	/BRIGHT FMLOCAL
+	/Colors FMLOCAL
+FMPrintInColor 
+	
+	{
+	/HUE 0 def
+	/SAT 0 def
+	/BRIGHT 0 def
+	% array of arrays Hue and Sat values for the separations [HUE BRIGHT]
+	/Colors   
+	[[0    0  ]    % black
+	 [0    0  ]    % white
+	 [0.00 1.0]    % red
+	 [0.37 1.0]    % green
+	 [0.60 1.0]    % blue
+	 [0.50 1.0]    % cyan
+	 [0.83 1.0]    % magenta
+	 [0.16 1.0]    % comment / yellow
+	 ] def
+      
+	/BEGINBITMAPCOLOR { 
+		BITMAPCOLOR} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPCOLORc} def
+	/BEGINBITMAPTRUECOLOR { 
+		BITMAPTRUECOLOR } def
+	/BEGINBITMAPTRUECOLORc { 
+		BITMAPTRUECOLORc } def
+	/K { 
+		Colors exch get dup
+		0 get /HUE exch store 
+		1 get /BRIGHT exch store
+		  HUE 0 eq BRIGHT 0 eq and
+			{1.0 SAT sub setgray}
+			{HUE SAT BRIGHT sethsbcolor} 
+		  ifelse
+		} def
+	/FMsetgray { 
+		/SAT exch 1.0 exch sub store 
+		  HUE 0 eq BRIGHT 0 eq and
+			{1.0 SAT sub setgray}
+			{HUE SAT BRIGHT sethsbcolor} 
+		  ifelse
+		} bind def
+	}
+	
+	{
+	/BEGINBITMAPCOLOR { 
+		BITMAPGRAY} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPGRAYc} def
+	/BEGINBITMAPTRUECOLOR { 
+		BITMAPTRUEGRAY } def
+	/BEGINBITMAPTRUECOLORc { 
+		BITMAPTRUEGRAYc } def
+	/FMsetgray {setgray} bind def
+	/K { 
+		pop
+		} def
+	}
+ifelse
+/normalize {
+	transform round exch round exch itransform
+	} bind def
+/dnormalize {
+	dtransform round exch round exch idtransform
+	} bind def
+/lnormalize { 
+	0 dtransform exch cvi 2 idiv 2 mul 1 add exch idtransform pop
+	} bind def
+/H { 
+	lnormalize setlinewidth
+	} bind def
+/Z {
+	setlinecap
+	} bind def
+	/fillvals FMLOCAL
+/X { 
+	fillvals exch get
+	dup type /stringtype eq
+	{8 1 setpattern} 
+	{grayness}
+	ifelse
+	} bind def
+/V { 
+	gsave eofill grestore
+	} bind def
+/N { 
+	stroke
+	} bind def
+/M {newpath moveto} bind def
+/E {lineto} bind def
+/D {curveto} bind def
+/O {closepath} bind def
+	/n FMLOCAL
+/L { 
+ 	/n exch def
+	newpath
+	normalize
+	moveto 
+	2 1 n {pop normalize lineto} for
+	} bind def
+/Y { 
+	L 
+	closepath
+	} bind def
+	/x1 FMLOCAL
+	/x2 FMLOCAL
+	/y1 FMLOCAL
+	/y2 FMLOCAL
+	/rad FMLOCAL
+/R { 
+	/y2 exch def
+	/x2 exch def
+	/y1 exch def
+	/x1 exch def
+	x1 y1
+	x2 y1
+	x2 y2
+	x1 y2
+	4 Y 
+	} bind def
+/RR { 
+	/rad exch def
+	normalize
+	/y2 exch def
+	/x2 exch def
+	normalize
+	/y1 exch def
+	/x1 exch def
+	newpath
+	x1 y1 rad add moveto
+	x1 y2 x2 y2 rad arcto
+	x2 y2 x2 y1 rad arcto
+	x2 y1 x1 y1 rad arcto
+	x1 y1 x1 y2 rad arcto
+	closepath
+	16 {pop} repeat
+	} bind def
+/C { 
+	grestore
+	gsave
+	R 
+	clip
+	} bind def
+	/FMpointsize FMLOCAL
+/F { 
+	FMfonts exch get
+	FMpointsize scalefont
+	setfont
+	} bind def
+/Q { 
+	/FMpointsize exch def
+	F 
+	} bind def
+/T { 
+	moveto show
+	} bind def
+/RF { 
+	rotate
+	0 ne {-1 1 scale} if
+	} bind def
+/TF { 
+	gsave
+	moveto 
+	RF
+	show
+	grestore
+	} bind def
+/P { 
+	moveto
+	0 32 3 2 roll widthshow
+	} bind def
+/PF { 
+	gsave
+	moveto 
+	RF
+	0 32 3 2 roll widthshow
+	grestore
+	} bind def
+/S { 
+	moveto
+	0 exch ashow
+	} bind def
+/SF { 
+	gsave
+	moveto
+	RF
+	0 exch ashow
+	grestore
+	} bind def
+/B { 
+	moveto
+	0 32 4 2 roll 0 exch awidthshow
+	} bind def
+/BF { 
+	gsave
+	moveto
+	RF
+	0 32 4 2 roll 0 exch awidthshow
+	grestore
+	} bind def
+/G { 
+	gsave
+	newpath
+	normalize translate 0.0 0.0 moveto 
+	dnormalize scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	closepath fill
+	grestore
+	} bind def
+/A { 
+	gsave
+	savematrix
+	newpath
+	2 index 2 div add exch 3 index 2 div sub exch 
+	normalize 2 index 2 div sub exch 3 index 2 div add exch 
+	translate 
+	scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	restorematrix
+	stroke
+	grestore
+	} bind def
+	/x FMLOCAL
+	/y FMLOCAL
+	/w FMLOCAL
+	/h FMLOCAL
+	/xx FMLOCAL
+	/yy FMLOCAL
+	/ww FMLOCAL
+	/hh FMLOCAL
+	/FMsaveobject FMLOCAL
+	/FMoptop FMLOCAL
+	/FMdicttop FMLOCAL
+/BEGINPRINTCODE { 
+	/FMdicttop countdictstack 1 add def 
+	/FMoptop count 4 sub def 
+	/FMsaveobject save def
+	userdict begin 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	3 index neg 3 index neg translate
+	} bind def
+/ENDPRINTCODE {
+	count -1 FMoptop {pop pop} for 
+	countdictstack -1 FMdicttop {pop end} for 
+	FMsaveobject restore 
+	} bind def
+/gn { 
+	0 
+	{	46 mul 
+		cf read pop 
+		32 sub 
+		dup 46 lt {exit} if 
+		46 sub add 
+		} loop
+	add 
+	} bind def
+	/str FMLOCAL
+/cfs { 
+	/str sl string def 
+	0 1 sl 1 sub {str exch val put} for 
+	str def 
+	} bind def
+/ic [ 
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0
+	{0 hx} {1 hx} {2 hx} {3 hx} {4 hx} {5 hx} {6 hx} {7 hx} {8 hx} {9 hx}
+	{10 hx} {11 hx} {12 hx} {13 hx} {14 hx} {15 hx} {16 hx} {17 hx} {18 hx}
+	{19 hx} {gn hx} {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}
+	{13} {14} {15} {16} {17} {18} {19} {gn} {0 wh} {1 wh} {2 wh} {3 wh}
+	{4 wh} {5 wh} {6 wh} {7 wh} {8 wh} {9 wh} {10 wh} {11 wh} {12 wh}
+	{13 wh} {14 wh} {gn wh} {0 bl} {1 bl} {2 bl} {3 bl} {4 bl} {5 bl} {6 bl}
+	{7 bl} {8 bl} {9 bl} {10 bl} {11 bl} {12 bl} {13 bl} {14 bl} {gn bl}
+	{0 fl} {1 fl} {2 fl} {3 fl} {4 fl} {5 fl} {6 fl} {7 fl} {8 fl} {9 fl}
+	{10 fl} {11 fl} {12 fl} {13 fl} {14 fl} {gn fl}
+	] def
+	/sl FMLOCAL
+	/val FMLOCAL
+	/ws FMLOCAL
+	/im FMLOCAL
+	/bs FMLOCAL
+	/cs FMLOCAL
+	/len FMLOCAL
+	/pos FMLOCAL
+/ms { 
+	/sl exch def 
+	/val 255 def 
+	/ws cfs 
+	/im cfs 
+	/val 0 def 
+	/bs cfs 
+	/cs cfs 
+	} bind def
+400 ms 
+/ip { 
+	is 
+	0 
+	cf cs readline pop 
+	{	ic exch get exec 
+		add 
+		} forall 
+	pop 
+	
+	} bind def
+/wh { 
+	/len exch def 
+	/pos exch def 
+	ws 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/bl { 
+	/len exch def 
+	/pos exch def 
+	bs 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/s1 1 string def
+/fl { 
+	/len exch def 
+	/pos exch def 
+	/val cf s1 readhexstring pop 0 get def
+	pos 1 pos len add 1 sub {im exch val put} for
+	pos len 
+	} bind def
+/hx { 
+	3 copy getinterval 
+	cf exch readhexstring pop pop 
+	} bind def
+	/h FMLOCAL
+	/w FMLOCAL
+	/d FMLOCAL
+	/lb FMLOCAL
+	/bitmapsave FMLOCAL
+	/is FMLOCAL
+	/cf FMLOCAL
+/wbytes { 
+	dup 
+	8 eq {pop} {1 eq {7 add 8 idiv} {3 add 4 idiv} ifelse} ifelse
+	} bind def
+/BEGINBITMAPBWc { 
+	1 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAPGRAYc { 
+	8 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAP2BITc { 
+	2 {} COMMONBITMAPc
+	} bind def
+/COMMONBITMAPc { 
+	/r exch def
+	/d exch def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	r                    
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} image 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BEGINBITMAPBW { 
+	1 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAPGRAY { 
+	8 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAP2BIT { 
+	2 {} COMMONBITMAP
+	} bind def
+/COMMONBITMAP { 
+	/r exch def
+	/d exch def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/bitmapsave save def 
+	r                    
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} image
+	bitmapsave restore 
+	grestore
+	} bind def
+	/proc1 FMLOCAL
+	/proc2 FMLOCAL
+	/newproc FMLOCAL
+/Fmcc {
+    /proc2 exch cvlit def
+    /proc1 exch cvlit def
+    /newproc proc1 length proc2 length add array def
+    newproc 0 proc1 putinterval
+    newproc proc1 length proc2 putinterval
+    newproc cvx
+} bind def
+/ngrayt 256 array def
+/nredt 256 array def
+/nbluet 256 array def
+/ngreent 256 array def
+	/gryt FMLOCAL
+	/blut FMLOCAL
+	/grnt FMLOCAL
+	/redt FMLOCAL
+	/indx FMLOCAL
+	/cynu FMLOCAL
+	/magu FMLOCAL
+	/yelu FMLOCAL
+	/k FMLOCAL
+	/u FMLOCAL
+/colorsetup {
+	currentcolortransfer
+	/gryt exch def
+	/blut exch def
+	/grnt exch def
+	/redt exch def
+	0 1 255 {
+		/indx exch def
+		/cynu 1 red indx get 255 div sub def
+		/magu 1 green indx get 255 div sub def
+		/yelu 1 blue indx get 255 div sub def
+		/k cynu magu min yelu min def
+		/u k currentundercolorremoval exec def
+		nredt indx 1 0 cynu u sub max sub redt exec put
+		ngreent indx 1 0 magu u sub max sub grnt exec put
+		nbluet indx 1 0 yelu u sub max sub blut exec put
+		ngrayt indx 1 k currentblackgeneration exec sub gryt exec put
+	} for
+	{255 mul cvi nredt exch get}
+	{255 mul cvi ngreent exch get}
+	{255 mul cvi nbluet exch get}
+	{255 mul cvi ngrayt exch get}
+	setcolortransfer
+	{pop 0} setundercolorremoval
+	{} setblackgeneration
+	} bind def
+	/tran FMLOCAL
+/fakecolorsetup {
+	/tran 256 string def
+	0 1 255 {/indx exch def 
+		tran indx
+		red indx get 77 mul
+		green indx get 151 mul
+		blue indx get 28 mul
+		add add 256 idiv put} for
+	currenttransfer
+	{255 mul cvi tran exch get 255.0 div}
+	exch Fmcc settransfer
+} bind def
+/BITMAPCOLOR { 
+	/d 8 def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/bitmapsave save def 
+	colorsetup
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} {is} {is} true 3 colorimage 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPCOLORc { 
+	/d 8 def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	colorsetup
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} {is} {is} true 3 colorimage
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPTRUECOLORc { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        
+        /is w string def
+        
+        ws 0 w getinterval is copy pop 
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        {ip} {gip} {bip} true 3 colorimage
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPTRUECOLOR { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        /is w string def
+        /gis w string def
+        /bis w string def
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        { cf is readhexstring pop } 
+        { cf gis readhexstring pop } 
+        { cf bis readhexstring pop } 
+        true 3 colorimage 
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPTRUEGRAYc { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        
+        /is w string def
+        
+        ws 0 w getinterval is copy pop 
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        {ip gip bip w gray} image
+        bitmapsave restore 
+        grestore
+        } bind def
+/ww FMLOCAL
+/r FMLOCAL
+/g FMLOCAL
+/b FMLOCAL
+/i FMLOCAL
+/gray { 
+        /ww exch def
+        /b exch def
+        /g exch def
+        /r exch def
+        0 1 ww 1 sub { /i exch def r i get .299 mul g i get .587 mul
+			b i get .114 mul add add r i 3 -1 roll floor cvi put } for
+        r
+        } bind def
+/BITMAPTRUEGRAY { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        /is w string def
+        /gis w string def
+        /bis w string def
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        { cf is readhexstring pop 
+          cf gis readhexstring pop 
+          cf bis readhexstring pop w gray}  image
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPGRAY { 
+	8 {fakecolorsetup} COMMONBITMAP
+	} bind def
+/BITMAPGRAYc { 
+	8 {fakecolorsetup} COMMONBITMAPc
+	} bind def
+/ENDBITMAP {
+	} bind def
+end 
+	/ALDsave FMLOCAL
+	/ALDmatrix matrix def ALDmatrix currentmatrix pop
+/StartALD {
+	/ALDsave save def
+	 savematrix
+	 ALDmatrix setmatrix
+	} bind def
+/InALD {
+	 restorematrix
+	} bind def
+/DoneALD {
+	 ALDsave restore
+	} bind def
+%%EndProlog
+%%BeginSetup
+(3.0) FMVERSION
+1 1 612 792 0 1 9 FMDOCUMENT
+0 0 /Helvetica-Oblique FMFONTDEFINE
+1 0 /Helvetica-Bold FMFONTDEFINE
+2 0 /Times-Roman FMFONTDEFINE
+3 0 /Courier FMFONTDEFINE
+4 0 /Times-Italic FMFONTDEFINE
+5 0 /Times-Bold FMFONTDEFINE
+32 FMFILLS
+0 0 FMFILL
+1 0.1 FMFILL
+2 0.3 FMFILL
+3 0.5 FMFILL
+4 0.7 FMFILL
+5 0.9 FMFILL
+6 0.97 FMFILL
+7 1 FMFILL
+8 <0f1e3c78f0e1c387> FMFILL
+9 <0f87c3e1f0783c1e> FMFILL
+10 <cccccccccccccccc> FMFILL
+11 <ffff0000ffff0000> FMFILL
+12 <8142241818244281> FMFILL
+13 <03060c183060c081> FMFILL
+14 <8040201008040201> FMFILL
+16 1 FMFILL
+17 0.9 FMFILL
+18 0.7 FMFILL
+19 0.5 FMFILL
+20 0.3 FMFILL
+21 0.1 FMFILL
+22 0.03 FMFILL
+23 0 FMFILL
+24 <f0e1c3870f1e3c78> FMFILL
+25 <f0783c1e0f87c3e1> FMFILL
+26 <3333333333333333> FMFILL
+27 <0000ffff0000ffff> FMFILL
+28 <7ebddbe7e7dbbd7e> FMFILL
+29 <fcf9f3e7cf9f3f7e> FMFILL
+30 <7fbfdfeff7fbfdfe> FMFILL
+%%EndSetup
+%%Page: "7" 1
+%%BeginPaperSize: Letter
+%%EndPaperSize
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-7) 525.56 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+72 693 540 702 C
+72 693 540 702 R
+7 X
+0 K
+V
+72 697.97 578.95 703.94 R
+0 X
+V
+0.5 H
+0 Z
+N
+0 0 612 792 C
+1 18 Q
+0 X
+0 K
+(Using the Basic Procedural Interface) 206.06 708 T
+1 36 Q
+(2) 519.99 708 T
+2 12 Q
+-0.58 0.12 (iDMS \050Intel Data Management System\051 is a layer built on top of Cadence framework) 126 635 B
+0.12 (DMS to provide additional functionality needed by Intel. The iDMS is con\336gurable) 126 621 S
+0.12 (by a setup \336le called DMS.P) 126 607 S
+0.12 (A) 265.39 607 S
+0.12 (TH which de\336nes the scope of data, the sequence of) 272.83 607 S
+-0.05 0.12 (data searching, the data working area and the location of data creation. The detailed) 126 593 B
+-0.51 0.12 (syntax of DMS.P) 126 579 B
+-0.51 0.12 (A) 208.63 579 B
+-0.51 0.12 (TH \336le will be described in the user) 216.08 579 B
+-0.51 0.12 (\325) 389.48 579 B
+-0.51 0.12 (s guide. The understanding of) 392.93 579 B
+0.12 (DMS.P) 126 565 S
+0.12 (A) 161.15 565 S
+0.12 (TH is the prerequisite to continue with the following material.) 168.6 565 S
+-0.02 0.12 (In this chapter) 126 539 B
+-0.02 0.12 (, guidelines for integrating applications with iDMS will be described.) 195.89 539 B
+0.12 (All applications should follow the guidelines wherever applicable to maintain) 126 525 S
+0.12 (consistency) 126 511 S
+0.12 (. The guidelines includes requirement, implementation and handling of) 182.5 511 S
+0.12 (error conditions of I/O commands. All kinds of \336le operations should go through) 126 497 S
+-0.52 0.12 (iDMS to obtain the full path name of a \336le by specifying the cellname and viewname.) 126 483 B
+0.12 (The actual code to implement the iDMS PI functionality is written in C. The same) 126 457 S
+0.12 (interface is also available in Mainsail and Skill.) 126 443 S
+1 14 Q
+(2.1 De\336nition of keywords) 72 413.67 T
+2 12 Q
+0.12 (1.) 144 385 S
+0.12 (Editable: A cellview is said to be editable when the cellview is checked out) 162 385 S
+0.12 (and read into applications\325 memory) 162 371 S
+0.12 (.) 335.84 371 S
+0.12 (2.) 144 345 S
+-0.4 0.12 (Readonly: A cellview is said to be readonly when the cellview is not checked) 162 345 B
+0.12 (out and read into applications\325 memory) 162 331 S
+0.12 (.) 354.65 331 S
+0.12 (3.) 144 305 S
+0.12 (Checkout copy: A checkout copy is the duplicated copy of the checkout) 162 305 S
+0.12 (version created in the working directory while checking out.) 162 291 S
+0.12 (4.) 144 265 S
+0.12 (Memory copy: A memory copy is the design data in applications\325 memory) 162 265 S
+0.12 (read from the rwpaths or the working directory) 162 251 S
+0.12 (.) 392.23 251 S
+0.12 (5.) 144 225 S
+0.12 (Dirty: A memory copy is said to be dirty when it is editable and has been) 162 225 S
+0.12 (changed that no longer the same as the checkout copy) 162 211 S
+0.12 (.) 425.59 211 S
+0.12 (6.) 144 185 S
+0.12 (Edit bit: A indicator of the memory copy to indicate the editability) 162 185 S
+0.12 (.) 488.18 185 S
+0.12 (7.) 144 159 S
+0.12 (Dirty bit: A indicator of the memory copy to indicate the dirtiness.) 162 159 S
+0.12 (8.) 144 133 S
+0.12 (Link lock: A protection mechanism by registering cellview versions read by) 162 133 S
+0.12 (applications to the cdsd to prevent from being deleted in libraries.) 162 119 S
+FMENDPAGE
+%%EndPage: "7" 2
+%%Page: "8" 2
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-8) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (9.) 144 712 S
+0.12 (First hit: The mechanism of iDMS to search a cellview will only report the) 162 712 S
+0.12 (\336rst found cellview instance on the rwpaths. While duplicated cellview) 162 698 S
+0.12 (instances may exist in some other locations \050unix directories or libraries\051.) 162 684 S
+0.12 (10.) 144 658 S
+0.12 (Library only search: Cellview searching for checkout, checkin, update, and) 162 658 S
+0.12 (cancel checkout will skip all unix directories on the rwpaths to speed up the) 162 644 S
+0.12 (search in libraries. Duplicated cellview instances in unix directories will not) 162 630 S
+0.12 (be identi\336ed.) 162 616 S
+1 14 Q
+(2.2  Standard I/O Commands) 72 586.67 T
+2 12 Q
+0.12 (The goal of the integration is to standardize a set of I/O commands across) 126 558 S
+0.12 (applications. These commands will allow users to access data in the same fashion) 126 544 S
+-0.32 0.12 (from all applications. They can be grouped into four categories: create, input, output) 126 530 B
+0.12 (and miscellaneous commands. Create commands are createCellV) 126 516 S
+0.12 (iew and) 445.78 516 S
+0.12 (createUnixFile. Input commands are: readonly) 126 502 S
+0.12 (, checkout, load and edit. Output) 353.99 502 S
+0.12 (commands are save, checkin, saveAndCheckin, install and update. Miscellaneous) 126 488 S
+0.12 (commands are pur) 126 474 S
+0.12 (ge, cancel checkout, load and show DMS.P) 216.3 474 S
+0.12 (A) 428.17 474 S
+0.12 (TH. Following is a) 435.62 474 S
+0.12 (graph illustrates the functions of each I/O commands:) 126 460 S
+0.12 (The details of each commands will be described as follows:) 126 200 S
+0.12 (Create commands:) 126 174 S
+0.12 (1.) 144 148 S
+-0.13 0.12 (CreateCellV) 162 148 B
+-0.13 0.12 (iew: allows users to create new cellviews in the working library) 222.55 148 B
+-0.13 0.12 (.) 533.9 148 B
+-0.62 0.12 (The newly created cellview will not be checked out by the creator) 162 134 B
+-0.62 0.12 (. Users need) 478.36 134 B
+0.12 (to use the checkout or edit command to ensure the concurrency) 162 120 S
+0.12 (.) 471.63 120 S
+0.12 (2.) 144 94 S
+0.12 (CreateUnixFile: allows users to create a empty \336le in the working directory) 162 94 S
+0.12 (.) 532.3 94 S
+279 369 387 414 R
+1 H
+N
+153 261 261 306 R
+N
+405 261 513 306 R
+N
+(MEMOR) 306 387 T
+(Y) 350.65 387 T
+(WORKDIR) 180 279 T
+(LIBRAR) 432 279 T
+(Y) 475.32 279 T
+388.23 348.08 386.99 360.01 394.36 350.55 391.3 349.31 4 Y
+V
+405 315 391.31 349.3 2 L
+N
+299.54 293.69 288 297 299.54 300.31 299.54 297 4 Y
+V
+378 297 299.54 297 2 L
+N
+366.46 273.31 378 270 366.46 266.69 366.46 270 4 Y
+V
+288 270 366.46 270 2 L
+N
+271.61 350.55 278.99 360.01 277.75 348.08 274.68 349.31 4 Y
+V
+261 315 274.69 349.3 2 L
+N
+250.37 324.48 242.99 315.01 244.23 326.95 247.3 325.71 4 Y
+V
+261 360 247.31 325.7 2 L
+N
+(readonly) 405 342 T
+(checkout) 315 306 T
+(load) 279 333 T
+(checkin/update/install) 279 252 T
+(save) 225 342 T
+(createCellV) 423 252 T
+(iew) 479.56 252 T
+(createUnixFile) 171 252 T
+(pur) 297 423 T
+(ge/discard) 312.77 423 T
+(+) 306 324 T
+(cancelCheckout) 171 243 T
+(cancelCheckout) 423 243 T
+(= edit) 315 324 T
+FMENDPAGE
+%%EndPage: "8" 3
+%%Page: "9" 3
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-9) 525.56 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (Users can later create and install the unix \336le as a cellview in the working) 162 712 S
+0.12 (library) 162 698 S
+0.12 (.) 194.03 698 S
+0.12 (Input commands:) 126 672 S
+0.12 (3.) 144 646 S
+0.12 (Readonly: allows users to get readonly cellviews from rwpaths into) 162 646 S
+-0.86 0.12 (applications\325 memory) 162 632 B
+-0.86 0.12 (. Applications will read cellviews directly from libraries) 267.69 632 B
+0.12 (or unix directories if cellviews are not checked out by the user) 162 618 S
+0.12 (. Applications) 467.78 618 S
+-0.69 0.12 (will read cellviews from the user) 162 604 B
+-0.69 0.12 (\325) 320.49 604 B
+-0.69 0.12 (s working directory if cellviews are checked) 323.95 604 B
+-0.26 0.12 (out by the user) 162 590 B
+-0.26 0.12 (. Cellviews read by this command are readonly which can\325) 233.31 590 B
+-0.26 0.12 (t be) 519.27 590 B
+0.12 (edited, saved or checked in. Readonly cellview versions will be protected) 162 576 S
+0.12 (from being deleted in the library) 162 562 S
+0.12 (.) 320.73 562 S
+0.12 (4.) 144 536 S
+-0.54 0.12 (Checkout: allows users to checkout a cellview from a editable library) 162 536 B
+-0.54 0.12 (. A copy) 496.56 536 B
+0.12 (of the checkout version will be duplicated in the working directory) 162 522 S
+0.12 (. This) 489.7 522 S
+-0.37 0.12 (command will not read the data into applications\325 memory) 162 508 B
+-0.37 0.12 (. Users need to use) 446.17 508 B
+-0.72 0.12 (the load or edit command to read the data into memory for editing, and use the) 162 494 B
+0.12 (save command for saving changes and later checkin.) 162 480 S
+0.12 (5.) 144 454 S
+0.12 (Load: allows users to read the checkout copy from working directory into) 162 454 S
+0.12 (applications\325 memory for editing. Save is the opposite command that writes) 162 440 S
+0.12 (out the memory content to the checkout copy in working directory) 162 426 S
+0.12 (.) 487.35 426 S
+0.12 (6.) 144 400 S
+0.12 (Edit: allows users to execute the checkout and load in one command. The) 162 400 S
+0.12 (cellview will be checked out if not checked out. The checkout version in the) 162 386 S
+0.12 (working directory will be loaded into applications\325 memory) 162 372 S
+0.12 (. Users then can) 454.99 372 S
+0.12 (use data editing commands to change the design data. A save is needed to) 162 358 S
+0.12 (\337ush out all the changes to the checkout copy) 162 344 S
+0.12 (.) 385.14 344 S
+0.12 (Output commands:) 126 318 S
+0.12 (7.) 144 292 S
+0.12 (Save: allows users to \337ush changes of the design data in memory to the) 162 292 S
+0.12 (checkout copy in working directory for later checkin. Readonly copies in) 162 278 S
+0.12 (memory can not be saved.) 162 264 S
+0.12 (8.) 144 238 S
+-0.62 0.12 (Checkin: allows users to check the edited copy in working directory back into) 162 238 B
+-0.78 0.12 (the library and create a new version of the cellview) 162 224 B
+-0.78 0.12 (. A save must be performed) 405.89 224 B
+-0.23 0.12 (before a checkin to ensure all changes in memory are \337ushed. For discarding) 162 210 B
+-0.5 0.12 (changes after last save, users need to explicitly pur) 162 196 B
+-0.5 0.12 (ge the memory copy) 407.61 196 B
+-0.5 0.12 (. After) 505.74 196 B
+0.12 (checkin, the checkout copy will be deleted from working directory and the) 162 182 S
+0.12 (memory copy will become readonly) 162 168 S
+0.12 (. Users need to use the edit command to) 338.27 168 S
+0.12 (start another editing section.) 162 154 S
+0.12 (9.) 144 128 S
+0.12 (SaveAndChcekin: allows users to do the save and checkin in one command.) 162 128 S
+0.12 (The new version created in library can be guaranteed to be the same as the) 162 114 S
+-0.51 0.12 (memory copy) 162 100 B
+-0.51 0.12 (. The checkout copy will be deleted from working directory and) 228.32 100 B
+FMENDPAGE
+%%EndPage: "9" 4
+%%Page: "10" 4
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-10) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (the memory copy will become readonly) 162 712 S
+0.12 (.) 356.4 712 S
+0.12 (10.) 144 686 S
+0.12 (Install: allows users to install the very \336rst version of a cellview) 162 686 S
+0.12 (. The install) 476.18 686 S
+0.12 (copy will be deleted from working directory and the memory copy will) 162 672 S
+0.12 (become readonly) 162 658 S
+0.12 (.) 245.28 658 S
+0.12 (1) 144 632 S
+0.12 (1.) 149.67 632 S
+0.12 (Update: allows users to checkin a new version without having a previous) 162 632 S
+0.12 (checkout. The data copy will be deleted from working directory and the) 162 618 S
+0.12 (memory copy will become readonly) 162 604 S
+0.12 (.) 338.27 604 S
+0.12 (Miscellaneous commands:) 126 578 S
+0.12 (12.) 144 552 S
+0.12 (Pur) 162 552 S
+0.12 (ge: allows users to pur) 178.8 552 S
+0.12 (ge the memory copy of a cellview) 289.27 552 S
+0.12 (. The protection) 455.54 552 S
+0.12 (from being deleted will then be released. Users will be warned that changes) 162 538 S
+0.12 (since last save will be lost. The checkout status will not be af) 162 524 S
+0.12 (fected.) 462.27 524 S
+0.12 (13.) 144 498 S
+0.12 (CancelCheckout: allows users to cancel previous checkouts. The checkout) 162 498 S
+0.12 (copy will be deleted from working directory) 162 484 S
+0.12 (. Users will be warned that all) 378.89 484 S
+0.12 (changes since checkout will be lost. Users need to pur) 162 470 S
+0.12 (ge the memory copy) 427.4 470 S
+0.12 (before the cancel checkout if changes have been made since last save.) 162 456 S
+0.12 (14.) 144 430 S
+0.12 (Load DMS.P) 162 430 S
+0.12 (A) 225.4 430 S
+0.12 (TH: allows users to reload the current DMS.P) 232.85 430 S
+0.12 (A) 456.87 430 S
+0.12 (TH into the) 464.32 430 S
+0.12 (memory) 162 416 S
+0.12 (. Users can change the iDMS setup without exiting the applications.) 201.91 416 S
+0.12 (15.) 144 390 S
+0.12 (Show DMS.P) 162 390 S
+0.12 (A) 228.07 390 S
+0.12 (TH: allows users to display the current iDMS setup of a) 235.52 390 S
+0.12 (application. Users can specify the views they are interested in. Information) 162 376 S
+0.12 (about libpath, rwpaths, worklib and workdir will be shown.) 162 362 S
+1 14 Q
+(2.3  iDMS C/Mainsail Interface) 72 332.67 T
+2 12 Q
+0.12 (iDMS provides C and Mainsail procedural interfaces for integration. Identical) 126 304 S
+-0.57 0.12 (function calls are available in both C and Mainsail. In order for a C application to use) 126 290 B
+0.12 (the iDMS PI, it must include \322fwidms.h\323 in the appropriate source \336les. Mainsail) 126 276 S
+0.12 (applications must source \322fwidms.hdr\323 in the appropriate source \336les.) 126 262 S
+-0.89 0.12 (There are also header \336les for error codes returned by C and Mainsail procedures. The) 126 236 B
+0.12 (header \336le is \322fwierr) 126 222 S
+0.12 (.h\323 for C and \322fwierr) 226.77 222 S
+0.12 (.hdr\323 for Mainsail. Applications need to) 328.87 222 S
+-0.37 0.12 (source the header \336les in appropriate source \336les to get error macros de\336ned. Option) 126 208 B
+0.12 (numbers passed to the procedure interface are also de\336ned in these headers. For) 126 194 S
+0.12 (example, idmsSuccess \050zero\051 is returned by all procedures to indicate successful) 126 180 S
+0.12 (completion of execution, idmsNullgtMode is a option number for initialization.) 126 166 S
+-0.66 0.12 (Note: The return code convention of all iDMS 2.1 procedures has been reversed from) 126 140 B
+-0.01 0.12 (2.0. Procedures will return zero for successful execution and non-zero as error code.) 126 126 B
+0.12 (Following is the description of all iDMS procedures available:) 126 100 S
+FMENDPAGE
+%%EndPage: "10" 5
+%%Page: "11" 5
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-11) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (1.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o initialize iDMS PI) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCPIInitDMS\050toolName,bootName,nullgt\051) 144 627.74 S
+0.1 (char *toolName,) 144 609.74 S
+0.1 (char *bootName;) 144 591.74 S
+0.1 (int nullgtMode;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslPIInitDMS\050) 144 505.74 S
+0.1 (STRING toolName;) 144 487.74 S
+0.1 (STRING bootName;) 144 469.74 S
+0.1 (LONG INTEGER nullgtMode;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+-0.22 0.12 (This procedure initializes iDMS procedural interface and parses the DMS.P) 126 408.41 B
+-0.22 0.12 (A) 494.72 408.41 B
+-0.22 0.12 (TH \336le) 502.17 408.41 B
+-0.69 0.12 (de\336ned by the environment variable \322DMSP) 126 394.41 B
+-0.69 0.12 (A) 340.41 394.41 B
+-0.69 0.12 (TH\323 to install user) 347.86 394.41 B
+-0.69 0.12 (\325) 437.44 394.41 B
+-0.69 0.12 (s iDMS setup. If the) 440.89 394.41 B
+0.12 (variable is not de\336ned or the \336le is invalid, policies will be set to be default values) 126 380.41 S
+0.12 (which are applications\325 current running directories for \322libpath\323, \322rwpaths\323 and) 126 366.41 S
+-0.91 0.12 (\322workdir\323, and the default name of \322worklib\323 is \322defaultLib\323. This call must be called) 126 352.41 B
+-0.81 0.12 (before any DMS procedures are called. No DMS services will be available before this) 126 338.41 B
+0.12 (call is made. Following are the ar) 126 324.41 S
+0.12 (guments:) 290.08 324.41 S
+4 F
+0.12 (toolName:) 126 298.41 S
+2 F
+0.12 ( This is the application name for iDMS to \336nd the policy entries in) 177.72 298.41 S
+0.12 (DMS.P) 126 284.41 S
+0.12 (A) 161.15 284.41 S
+0.12 (TH \336le. For example, \322chpr\323, \322dapr\323, \322dls\323, \322icvs\323, \322plus\323, \322opus\323.) 168.6 284.41 S
+4 F
+-0.19 0.12 (bootName:) 126 264.41 B
+2 F
+-0.19 0.12 ( This is the full path name to the application\325) 180.38 264.41 B
+-0.19 0.12 (s execution \336le. Y) 399.17 264.41 B
+-0.19 0.12 (ou can get) 486.84 264.41 B
+0.12 (the bootName from the ar) 126 250.41 S
+0.12 (gv[0] in C and the $programName in Mainsail.) 252.57 250.41 S
+4 F
+0.12 (nullgtMode:) 126 230.41 S
+2 F
+0.12 ( If the ar) 186.62 230.41 S
+0.12 (gument is idmsGraphicMode, iDMS will try to use opus to be) 228.56 230.41 S
+-0.13 0.12 (the skill server to execute user de\336ned triggers for forms and boxes. If the ar) 126 216.41 B
+-0.13 0.12 (gument) 500.19 216.41 B
+0.12 (is idmsNullgtMode, iDMS will use the skill interpreter to execute user de\336ned) 126 202.41 S
+0.12 (triggers that does not support forms and boxes.) 126 188.41 S
+0.12 (The procedure will return errors when the initialization operation can not be) 126 162.41 S
+0.12 (completed. Following are the error macros:) 126 148.41 S
+4 F
+0.12 (. idmsEnvir) 126 122.41 S
+0.12 (onmentV) 182.18 122.41 S
+0.12 (aribaleDmspathNotSet) 224.32 122.41 S
+0.12 (. idmsDmspathSyntaxErr) 126 102.41 S
+0.12 (or) 248.79 102.41 S
+FMENDPAGE
+%%EndPage: "11" 6
+%%Page: "12" 6
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-12) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (2.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o exit iDMS PI) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCPIExitDMS\050\051) 144 627.74 S
+2 12 Q
+0.12 (Mainsail:) 144 602.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 577.74 S
+0.1 (PROCEDURE dmsMslPIExitDMS\050) 144 559.74 S
+0.1 (\051;) 144 541.74 S
+2 12 Q
+-0.73 0.12 (This procedure closes all opened libraries and cellviews. Link locks on cellviews will) 126 516.41 B
+0.12 (also be released.This call must be the last DMS procedure call.) 126 502.41 S
+0.12 (Usually) 126 476.41 S
+0.12 (, this will be the last statement of your codes. No DMS services will be) 163.37 476.41 S
+0.12 (available after this call is made.) 126 462.41 S
+0.12 (The procedure always returns) 126 436.41 S
+4 F
+0.12 (idmsSuccess) 274.68 436.41 S
+2 F
+0.12 (\050zero\051.) 339.08 436.41 S
+FMENDPAGE
+%%EndPage: "12" 7
+%%Page: "13" 7
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-13) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (3.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o create a cellview) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCCreateCellView\050cellName,viewName,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char **fullPathName;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslCreateCellView\050) 144 505.74 S
+0.1 (STRING cellName;) 144 487.74 S
+0.1 (STRING viewName;) 144 469.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+-0.5 0.12 (This procedure creates a cellview in the worklib. The uniqueness of the cellview will) 126 408.41 B
+0.12 (be guaranteed in the worklib but not on the whole rwpaths. The newly created) 126 394.41 S
+0.12 (cellview will not be checked out by the creator) 126 380.41 S
+0.12 (. The full path name returned is the) 355.47 380.41 S
+0.12 (path to the worklib with the library name.) 126 366.41 S
+0.12 (When users issue the \322createCellV) 126 340.41 S
+0.12 (iew\323 command, applications make this call to) 295.77 340.41 S
+-0.51 0.12 (create the cellview in the worklib when the cellview is not in the memory) 126 326.41 B
+-0.51 0.12 (. A info call) 480.08 326.41 B
+0.12 (is recommended before this call to ensure the cellview does not exist previously) 126 312.41 S
+0.12 (. A) 518.54 312.41 S
+0.12 (checkout call is recommended after this call to ensure no one else checks out the) 126 298.41 S
+0.12 (cellview) 126 284.41 S
+0.12 (. Following are the ar) 166.81 284.41 S
+0.12 (guments:) 272.16 284.41 S
+4 F
+0.12 (cellName, viewName:) 126 258.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 258.41 S
+0.12 (.) 491.14 258.41 S
+4 F
+0.12 (fullPathName:) 126 238.41 S
+2 F
+0.12 ( This is returned by the procedure. It is the full path name to the) 198.19 238.41 S
+0.12 (worklib with the library name.) 126 224.41 S
+-0.54 0.12 (The procedure will return errors when the create operation can not be completed. For) 126 198.41 B
+-0.46 0.12 (example, the cellview already exists or no write permission to create cellviews in the) 126 184.41 B
+0.12 (worklib. Following are the error macros:) 126 170.41 S
+4 F
+0.12 (. idmsCvCanNotBeCr) 126 144.41 S
+0.12 (eatedInW) 232.33 144.41 S
+0.12 (orklib) 278.15 144.41 S
+0.12 (. idmsCvAlr) 126 124.41 S
+0.12 (eadyExistsInW) 184.18 124.41 S
+0.12 (orklib) 255.91 124.41 S
+0.12 (. idmsPr) 126 104.41 S
+0.12 (eT) 167.16 104.41 S
+0.12 (riggerFailed) 178.74 104.41 S
+FMENDPAGE
+%%EndPage: "13" 8
+%%Page: "14" 8
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-14) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (4.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o create a unix \336le) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCCreateUnixFile\050cellName,viewName,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char **fullPathName;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslCreateUnixFile\050) 144 505.74 S
+0.1 (STRING cellName;) 144 487.74 S
+0.1 (STRING viewName;) 144 469.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+-0.4 0.12 (This procedure creates a empty \336le in the workdir) 126 408.41 B
+-0.4 0.12 (. The full path name returned is the) 367.13 408.41 B
+0.12 (path to the newly created \336le.) 126 394.41 S
+0.12 (When users issue the \322createUnixFile\323 command, applications make this call to) 126 368.41 S
+0.12 (create the \336le in the workdir when the \336le is not in the memory) 126 354.41 S
+0.12 (. Following are the) 435.57 354.41 S
+0.12 (ar) 126 340.41 S
+0.12 (guments:) 135.34 340.41 S
+4 F
+0.12 (cellName, viewName:) 126 314.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 314.41 S
+0.12 (.) 491.14 314.41 S
+4 F
+0.12 (fullPathName:) 126 294.41 S
+2 F
+0.12 ( This is returned by the procedure. It is the full path name to the) 198.19 294.41 S
+0.12 (worklib with the library name.) 126 280.41 S
+-0.54 0.12 (The procedure will return errors when the create operation can not be completed. For) 126 254.41 B
+0.12 (example, the unix \336le already exists in the workdir or no permission to write.) 126 240.41 S
+0.12 (Following are the error macros:) 126 226.41 S
+4 F
+0.12 (. idmsFileCanNotBeCr) 126 200.41 S
+0.12 (eatedInW) 238.57 200.41 S
+0.12 (orkdir) 284.39 200.41 S
+0.12 (. idmsFileAlr) 126 180.41 S
+0.12 (eadyExistsInW) 190.42 180.41 S
+0.12 (orkdir) 262.15 180.41 S
+0.12 (. idmsPr) 126 160.41 S
+0.12 (eT) 167.16 160.41 S
+0.12 (riggerFailed) 178.74 160.41 S
+FMENDPAGE
+%%EndPage: "14" 9
+%%Page: "15" 9
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-15) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (5.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o readonly a cellview by viewtype) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCReadonlyCellViewType\050cellName,viewType,viewName,fullPathName) 144 627.74 S
+0.1 (\051) 144 615.74 S
+0.1 (char *cellName;) 144 597.74 S
+0.1 (char *viewType;) 144 579.74 S
+0.1 (char **viewName;) 144 561.74 S
+0.1 (char **fullPathName;) 144 543.74 S
+2 12 Q
+0.12 (Mainsail:) 144 518.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 493.74 S
+0.1 (PROCEDURE dmsMslReadonlyCellViewType\050) 144 475.74 S
+0.1 (STRING cellName;) 144 457.74 S
+0.1 (STRING viewType;) 144 439.74 S
+0.1 (PRODUCES STRING viewName;) 144 421.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 403.74 S
+0.1 (\051;) 144 385.74 S
+2 12 Q
+-0.27 0.12 (This procedure and the next procedure for readonly are the only two procedures will) 126 360.41 B
+-0.42 0.12 (search a cellview through the whole rwpaths including libraries and unix directories.) 126 346.41 B
+-0.28 0.12 (The dif) 126 332.41 B
+-0.28 0.12 (ference between the readOnlyCellV) 161.32 332.41 B
+-0.28 0.12 (iewT) 335.9 332.41 B
+-0.28 0.12 (ype an the readOnlyCellV) 360.19 332.41 B
+-0.28 0.12 (iew is that) 487.09 332.41 B
+0.12 (readOnlyCellV) 126 318.41 S
+0.12 (iewT) 200.12 318.41 S
+0.12 (ype will use the switch list de\336ned in the global \336le to perform) 224.41 318.41 S
+0.12 (exhausted search for each view name on the list until the \336rst hit of the cellview) 126 304.41 S
+0.12 (.) 518.45 304.41 S
+-0.57 0.12 (\050Duplicate cellview instances will not be reported.\051The full path name returned is the) 126 290.41 B
+0.12 (path to the most current version of the cellview) 126 276.41 S
+0.12 (. A link lock on the cellview version) 357.48 276.41 S
+0.12 (will be registered on the cdsd to prevent the read version from being deleted in the) 126 262.41 S
+0.12 (library) 126 248.41 S
+0.12 (. dmsPur) 158.03 248.41 S
+0.12 (geCellV) 201.43 248.41 S
+0.12 (iew will be the procedure to release the link lock.) 241.52 248.41 S
+-0.49 0.12 (When users issue the \322readonly\323 command, applications make this call to get the full) 126 222.41 B
+0.12 (path name to the cellview) 126 208.41 S
+0.12 (. After this call, applications initialize memory and read) 251.46 208.41 S
+0.12 (design data from the path. The edit bit and the dirty bit of the design data should be) 126 194.41 S
+0.12 (set to be OFF) 126 180.41 S
+0.12 (. Following are the ar) 191.57 180.41 S
+0.12 (guments:) 296.92 180.41 S
+4 F
+0.12 (cellName:) 126 154.41 S
+2 F
+0.12 ( This is the cell name of the cellview) 176.37 154.41 S
+0.12 (.) 356.69 154.41 S
+4 F
+0.12 (viewT) 126 134.41 S
+0.12 (ype:) 154.36 134.41 S
+2 F
+0.12 ( This is the view type name of the cellview) 175.49 134.41 S
+0.12 (. The view type name will be) 386.05 134.41 S
+0.12 (translated into a list of view names based on the view map de\336nition \336le.) 126 120.41 S
+4 F
+-0.65 0.12 (viewName:) 126 100.41 B
+2 F
+-0.65 0.12 ( This is returned by the procedure. It is the actually view name of the view) 181.04 100.41 B
+FMENDPAGE
+%%EndPage: "15" 10
+%%Page: "16" 10
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-16) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (type being read by the procedure.) 126 712 S
+4 F
+0.12 (fullPathName:) 126 692 S
+2 F
+0.12 ( This is returned by the procedure. It is the full path name to the) 198.19 692 S
+0.12 (cellview version for applications to read data from.) 126 678 S
+-0.07 0.12 (The procedure will return errors when the readonly operation can not be completed.) 126 652 B
+0.12 (For example, the cellview can not be found on the rwpaths. Following are the error) 126 638 S
+0.12 (macros:) 126 624 S
+4 F
+0.12 (. idmsCvNotFoundOnRwpaths) 126 598 S
+0.12 (. idmsCvNotInstalledT) 126 578 S
+0.12 (oRead) 235.37 578 S
+0.12 (. idmsMultipleV) 126 558 S
+0.12 (iewMapErr) 203.54 558 S
+0.12 (or) 259.48 558 S
+FMENDPAGE
+%%EndPage: "16" 11
+%%Page: "17" 11
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-17) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (6.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o readonly a cellview by view) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCReadonlyCellView\050cellName,viewName,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char **fullPathName;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslReadonlyCellView\050) 144 505.74 S
+0.1 (STRING cellName;) 144 487.74 S
+0.1 (STRING viewName;) 144 469.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+-0.2 0.12 (This procedure and the previous procedure for readonly are the only two procedures) 126 408.41 B
+0.12 (that will search a cellview through the whole rwpaths including libraries and unix) 126 394.41 S
+-0.14 0.12 (directories. This procedure will only search the view name entry in the DMS.P) 126 380.41 B
+-0.14 0.12 (A) 510.23 380.41 B
+-0.14 0.12 (TH.) 517.67 380.41 B
+-0.26 0.12 (A link lock on the cellview version will be registered on the cdsd to prevent the read) 126 366.41 B
+-0.63 0.12 (version from being deleted in the library) 126 352.41 B
+-0.63 0.12 (. dmsPur) 320.22 352.41 B
+-0.63 0.12 (geCellV) 362.98 352.41 B
+-0.63 0.12 (iew will be the procedure to) 403.07 352.41 B
+0.12 (release the link lock.) 126 338.41 S
+-0.49 0.12 (When users issue the \322readonly\323 command, applications make this call to get the full) 126 312.41 B
+0.12 (path name to the cellview) 126 298.41 S
+0.12 (. After this call, applications initialize memory and read) 251.46 298.41 S
+0.12 (design data from the path. The edit bit and the dirty bit of the design data should be) 126 284.41 S
+0.12 (set to be OFF) 126 270.41 S
+0.12 (. Following are the ar) 191.57 270.41 S
+0.12 (guments:) 296.92 270.41 S
+4 F
+0.12 (cellName:) 126 244.41 S
+2 F
+0.12 ( This is the cell name of the cellview) 176.37 244.41 S
+0.12 (.) 356.69 244.41 S
+4 F
+0.12 (viewName:) 126 224.41 S
+2 F
+0.12 ( This is the view name of the cellview) 181.04 224.41 S
+0.12 (.) 367.36 224.41 S
+4 F
+0.12 (fullPathName:) 126 204.41 S
+2 F
+0.12 ( This is returned by the procedure. It is the full path name to the) 198.19 204.41 S
+0.12 (cellview version for applications to read data from.) 126 190.41 S
+-0.07 0.12 (The procedure will return errors when the readonly operation can not be completed.) 126 164.41 B
+0.12 (For example, cellviews not found on the rwpaths. Following are the error macros:) 126 150.41 S
+4 F
+0.12 (. idmsCvNotFoundOnRwpaths) 126 124.41 S
+0.12 (. idmsCvNotInstalledT) 126 104.41 S
+0.12 (oRead) 235.37 104.41 S
+FMENDPAGE
+%%EndPage: "17" 12
+%%Page: "18" 12
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-18) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (7.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o checkout a cellview) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCCheckoutCellView\050cellName,viewName,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char **fullPathName;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslCheckoutCellView\050) 144 505.74 S
+0.1 (STRING cellName;) 144 487.74 S
+0.1 (STRING viewName;) 144 469.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+-0.85 0.12 (This procedure searches through libraries on the rwpaths to checkout the most current) 126 408.41 B
+-0.72 0.12 (version of the cellview) 126 394.41 B
+-0.72 0.12 (. A checkout copy of the version will be created in the workdir) 235.41 394.41 B
+-0.72 0.12 (.) 534.48 394.41 B
+0.12 (Checkout versions will become not deletable in libraries. If the cellview is not) 126 380.41 S
+-0.16 0.12 (checkout by the current user and the user somehow has a copy of the cellview in the) 126 366.41 B
+0.12 (workdir) 126 352.41 S
+0.12 (, this procedure will return warning and abort. Recheckout, a user try to) 164.33 352.41 S
+-0.09 0.12 (checkout what was checked out by him, is allowed and will regenerate the checkout) 126 338.41 B
+-0.67 0.12 (copy if missing. But recheckout will never overwrite checkout copies already exist in) 126 324.41 B
+0.12 (workdir) 126 310.41 S
+0.12 (. The full path name returned is the path to the checkout copy) 164.15 310.41 S
+0.12 (.) 465.59 310.41 S
+0.12 (When users issue the \322checkout\323 command, applications make the call to checkout) 126 284.41 S
+0.12 (the cellview in the library) 126 270.41 S
+0.12 (, but design data will not be loaded into memory until the) 251.7 270.41 S
+0.12 (load. The checkout/checkin are operations interacting between libraries and) 126 256.41 S
+0.12 (workdirs. The edit bit and dirty bit are void here. Following are the ar) 126 242.41 S
+0.12 (guments:) 468.52 242.41 S
+4 F
+0.12 (cellName, viewName:) 126 216.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 216.41 S
+0.12 (.) 491.14 216.41 S
+4 F
+0.12 (fullPathName:) 126 196.41 S
+2 F
+0.12 ( This is returned by the procedure. It is the full path name to the) 198.19 196.41 S
+0.12 (checkout copy in working directory) 126 182.41 S
+0.12 (.) 300.5 182.41 S
+-0.18 0.12 (The procedure will return errors when the checkout operation can not be completed.) 126 156.41 B
+0.12 (For example, the cellview can not be found on the rwpaths, the user does not have) 126 142.41 S
+0.12 (permission to checkout or the cellview is currently checked out by another user) 126 128.41 S
+0.12 (.) 515.2 128.41 S
+0.12 (Following are the error macros:) 126 114.41 S
+FMENDPAGE
+%%EndPage: "18" 13
+%%Page: "19" 13
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-19) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+4 12 Q
+0 X
+0.12 (. idmsCvNotFoundInAnyLibrary) 126 712 S
+0.12 (. idmsCvW) 126 692 S
+0.12 (asCheckedOutByAnotherUser) 177.94 692 S
+0.12 (. idmsCvCanNotBeCheckedOut) 126 672 S
+0.12 (. idmsCanNotCheckoutCvInRoLibrary) 126 652 S
+0.12 (. idmsIllegalCvCopyInW) 126 632 S
+0.12 (orkdir) 246.13 632 S
+0.12 (. idmsPr) 126 612 S
+0.12 (eT) 167.16 612 S
+0.12 (riggerFailed) 178.74 612 S
+FMENDPAGE
+%%EndPage: "19" 14
+%%Page: "20" 14
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-20) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (8.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o load a cellview) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCLoadCellView\050cellName,viewName,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char **fullPathName;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslLoadCellView\050) 144 505.74 S
+0.1 (STRING cellName;) 144 487.74 S
+0.1 (STRING viewName;) 144 469.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+-0.46 0.12 (This procedure returns the full path name to the readable cellview \336le in the workdir) 126 408.41 B
+-0.46 0.12 (.) 534.1 408.41 B
+-0.64 0.12 (The cellview \336le can be a unix \336le created by createUnixFile command or a checkout) 126 394.41 B
+0.12 (copy from previous checkout.) 126 380.41 S
+-0.12 0.12 (When users issue the \322load\323 command, applications make this call to get the path to) 126 354.41 B
+0.12 (the unix \336le or the checkout copy of the cellview) 126 340.41 S
+0.12 (. After this call, applications) 365.93 340.41 S
+0.12 (initialize memory and read design data from the path. The edit bit of design data) 126 326.41 S
+0.12 (should be set to be ON, and the dirty bit should be set to be OFF) 126 312.41 S
+0.12 (. Following are the) 441.99 312.41 S
+0.12 (ar) 126 298.41 S
+0.12 (guments:) 135.34 298.41 S
+4 F
+0.12 (cellName, viewName:) 126 272.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 272.41 S
+0.12 (.) 491.14 272.41 S
+4 F
+-0.02 0.12 (fullPathName:) 126 252.41 B
+2 F
+-0.02 0.12 ( This is returned by the procedure. It is the full path name to the unix) 198.19 252.41 B
+0.12 (\336le or checkout copy in working directory for applications to load data from.) 126 238.41 S
+0.12 (The procedure will return errors when the load operation can not be completed. For) 126 212.41 S
+0.12 (example, the cellview not in the workdir or no permission to read the cellview) 126 198.41 S
+0.12 (.) 509.64 198.41 S
+0.12 (Following are the error macros:) 126 184.41 S
+4 F
+0.12 (. idmsFileInW) 126 158.41 S
+0.12 (orkdirIsNotReadable) 194.41 158.41 S
+0.12 (. idmsFileNotExistInW) 126 138.41 S
+0.12 (orkdirT) 236.69 138.41 S
+0.12 (oLoad) 273.08 138.41 S
+FMENDPAGE
+%%EndPage: "20" 15
+%%Page: "21" 15
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-21) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (9.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o edit a cellview) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCEditCellView\050cellName,viewName,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char **fullPathName;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslEditCellView\050) 144 505.74 S
+0.1 (STRING cellName;) 144 487.74 S
+0.1 (STRING viewName;) 144 469.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+0.12 (This procedure is combinational procedure of checkout and load. It tries to load the) 126 408.41 S
+0.12 (cellview from the workdir \336rst. If the load fails, then it does a checkout and a load.) 126 394.41 S
+-0.28 0.12 (The cellview will be checked out if not yet checked out. The returned path is the full) 126 380.41 B
+0.12 (path name to the checkout copy) 126 366.41 S
+0.12 (.) 281.04 366.41 S
+0.12 (When users issue the \322edit\323 command, applications make the call to checkout the) 126 340.41 S
+0.12 (cellview and get the path to the checkout copy in the working directory) 126 326.41 S
+0.12 (. After this) 475.49 326.41 S
+0.12 (call, applications initialize memory and read design data from the path. The edit bit) 126 312.41 S
+0.12 (of design data should be set to be ON, and the dirty bit should be set to be OFF) 126 298.41 S
+0.12 (.) 514.07 298.41 S
+0.12 (Following are the ar) 126 284.41 S
+0.12 (guments:) 225.11 284.41 S
+4 F
+0.12 (cellName, viewName:) 126 258.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 258.41 S
+0.12 (.) 491.14 258.41 S
+4 F
+0.12 (fullPathName:) 126 238.41 S
+2 F
+0.12 ( This is returned by the procedure. It is the full path name to the) 198.19 238.41 S
+0.12 (checkout copy in working directory for applications to load data from.) 126 224.41 S
+-0.18 0.12 (The procedure will return errors when the checkout operation can not be completed.) 126 198.41 B
+0.12 (For example, the cellview can not be found on the rwpaths, the user does not have) 126 184.41 S
+0.12 (permission to checkout or the cellview is currently checked out by another user) 126 170.41 S
+0.12 (.) 515.2 170.41 S
+0.12 (Following are the error macros:) 126 156.41 S
+4 F
+0.12 (. idmsCvNotFoundInAnyLibrary) 126 130.41 S
+0.12 (. idmsCvW) 126 110.41 S
+0.12 (asCheckedOutByAnotherUser) 177.94 110.41 S
+FMENDPAGE
+%%EndPage: "21" 16
+%%Page: "22" 16
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-22) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+4 12 Q
+0 X
+0.12 (. idmsCvCanNotBeCheckedOut) 126 712 S
+0.12 (. idmsCanNotCheckoutCvInRoLibrary) 126 692 S
+0.12 (. idmsFileInW) 126 672 S
+0.12 (orkdirIsNotReadable) 194.41 672 S
+0.12 (. idmsFileNotExistInW) 126 652 S
+0.12 (orkdirT) 236.69 652 S
+0.12 (oLoad) 273.08 652 S
+0.12 (. idmsPr) 126 632 S
+0.12 (eT) 167.16 632 S
+0.12 (riggerFailed) 178.74 632 S
+FMENDPAGE
+%%EndPage: "22" 17
+%%Page: "23" 17
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-23) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (10.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o readonly or edit a cellview based on policy in DMS.P) 168.61 696.41 S
+0.12 (A) 440.14 696.41 S
+0.12 (TH) 447.59 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCReadOrEditByPolicy\050cellName,viewName,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char **fullPathName;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslReadOrEditByPolicy\050) 144 505.74 S
+0.1 (STRING cellName;) 144 487.74 S
+0.1 (STRING viewName;) 144 469.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+0.12 (This procedure behaves as dmsCEditCellV) 126 408.41 S
+0.12 (iew when the cellview is found in a R) 336.48 408.41 S
+0.12 (W) 521.47 408.41 S
+-0.01 0.12 (library and behaves as dmsCReadonlyCellV) 126 394.41 B
+-0.01 0.12 (iew when the cellview is found in a RO) 342.56 394.41 B
+0.12 (library or UNIX directory on the rwpaths.) 126 380.41 S
+0.12 (Applications will use this procedure to provide user controllable I/O behaviors by) 126 354.41 S
+0.12 (using DMS.PTH. This is useful for a experimenting environment. Users can set) 126 340.41 S
+-0.17 0.12 (libraries to be RO to readonly cellviews for test runs, and reset libraries to be R) 126 326.41 B
+-0.17 0.12 (W to) 513.1 326.41 B
+0.12 (checkout cellviews for real runs. Following are the ar) 126 312.41 S
+0.12 (guments:) 388.39 312.41 S
+4 F
+0.12 (cellName, viewName:) 126 286.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 286.41 S
+0.12 (.) 491.14 286.41 S
+4 F
+-0.63 0.12 (fullPathName:) 126 266.41 B
+2 F
+-0.63 0.12 ( See dmsCEditCellV) 198.19 266.41 B
+-0.63 0.12 (iew and dmsCReadonlyCellV) 298.33 266.41 B
+-0.63 0.12 (iew for explanation.) 442.6 266.41 B
+0.12 (See dmsCEditCellV) 126 240.41 S
+0.12 (iew and dmsCReadonlyCellV) 224.27 240.41 S
+0.12 (iew for error conditions.) 369.8 240.41 S
+FMENDPAGE
+%%EndPage: "23" 18
+%%Page: "24" 18
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-24) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (1) 144 696.41 S
+0.12 (1.) 149.67 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o save a cellview) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCSaveCellView\050cellName,viewName,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char **fullPathName;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslSaveCellView\050) 144 505.74 S
+0.1 (STRING cellName;) 144 487.74 S
+0.1 (STRING viewName;) 144 469.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+-0.37 0.12 (This procedure returns the full path name to the writable cellview \336le in the workdir) 126 408.41 B
+-0.37 0.12 (.) 534.02 408.41 B
+-0.64 0.12 (The cellview \336le can be a unix \336le created by createUnixFile command or a checkout) 126 394.41 B
+0.12 (copy from previous checkout.) 126 380.41 S
+0.12 (When users issue the \322save\323 command, applications should check the cellview is) 126 354.41 S
+0.12 (currently in memory) 126 340.41 S
+0.12 (, editable and dirty before making this call. AFter this call,) 226.1 340.41 S
+-0.15 0.12 (applications will use the path returned by this procedure to write out current content) 126 326.41 B
+0.12 (of the design data in memory) 126 312.41 S
+0.12 (. The edit bit stays ON after the write, but the dirty bit) 268.82 312.41 S
+0.12 (need to be cleared to be OFF) 126 298.41 S
+0.12 (. Following are the ar) 266.96 298.41 S
+0.12 (guments:) 372.31 298.41 S
+4 F
+0.12 (cellName, viewName:) 126 272.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 272.41 S
+0.12 (.) 491.14 272.41 S
+4 F
+-0.02 0.12 (fullPathName:) 126 252.41 B
+2 F
+-0.02 0.12 ( This is returned by the procedure. It is the full path name to the unix) 198.19 252.41 B
+0.12 (\336le or checkout copy in working directory for applications to write data to.) 126 238.41 S
+0.12 (The procedure will return errors when the save operation can not be completed. For) 126 212.41 S
+0.12 (example, the cellview is not checked out for edit or checked out by other users.) 126 198.41 S
+0.12 (Following are the error macros:) 126 184.41 S
+4 F
+0.12 (. idmsFileInW) 126 158.41 S
+0.12 (orkdirIsNotW) 194.41 158.41 S
+0.12 (riteable) 261.15 158.41 S
+0.12 (. idmsFileNotExistInW) 126 138.41 S
+0.12 (orkdirT) 236.69 138.41 S
+0.12 (oSave) 273.08 138.41 S
+0.12 (. idmsPr) 126 118.41 S
+0.12 (eT) 167.16 118.41 S
+0.12 (riggerFailed) 178.74 118.41 S
+FMENDPAGE
+%%EndPage: "24" 19
+%%Page: "25" 19
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-25) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (12.) 144 712 S
+0.12 (T) 162 712 S
+0.12 (o checkin a cellview) 168.61 712 S
+0.12 (C:) 144 686 S
+3 10 Q
+0.1 (int) 144 661.33 S
+0.1 (dmsCCheckinCellView\050cellName,viewName,children,advance,log,fullP) 144 643.33 S
+0.1 (athName\051) 144 631.33 S
+0.1 (char *cellName;) 144 613.33 S
+0.1 (char *viewName;) 144 595.33 S
+0.1 (char *children;) 144 577.33 S
+0.1 (int advance;) 144 559.33 S
+0.1 (char *log;) 144 541.33 S
+0.1 (char **fullPathName;) 144 523.33 S
+2 12 Q
+0.12 (Mainsail:) 144 498 S
+3 10 Q
+0.1 (LONG INTEGER) 144 473.33 S
+0.1 (PROCEDURE dmsMslCheckinCellView\050) 144 455.33 S
+0.1 (STRING cellName;) 144 437.33 S
+0.1 (STRING viewName;) 144 419.33 S
+0.1 (STRING children;) 144 401.33 S
+0.1 (LONG INTEGER advance;) 144 383.33 S
+0.1 (STRING log;) 144 365.33 S
+0.1 (PRODUCES STRING fullPathName;) 144 347.33 S
+0.1 (\051;) 144 329.33 S
+2 12 Q
+0.12 (This procedure searchs libraries on the rwpaths for the \336rst hit cellview and try to) 126 304 S
+-0.07 0.12 (checkin the checkout copy \050not memory copy\051 in working directory to the library to) 126 290 B
+0.12 (be a new version. The primary index of the version will be increased by one if the) 126 276 S
+0.12 (ar) 126 262 S
+0.12 (gument \322advance\323 is not zero. The ar) 135.34 262 S
+0.12 (gument \322log\323 will become a attribute of the) 318.29 262 S
+-0.28 0.12 (version and can be retrived by the idmb or library browser) 126 248 B
+-0.28 0.12 (. The ar) 409.31 248 B
+-0.28 0.12 (gument \322children\323) 446.46 248 B
+-0.04 0.12 (gives the design hierarchy information to iDMS.  This ar) 126 234 B
+-0.04 0.12 (gument is ignored until the) 404.6 234 B
+0.12 (relationship functionality is available. After the checkin, the checkout copy will be) 126 220 S
+-0.21 0.12 (deleted from the working directory) 126 206 B
+-0.21 0.12 (. The link lock will be on the new version instead) 296.33 206 B
+0.12 (of the old version.) 126 192 S
+-0.06 0.12 (When users issue the \322checkin\323 command, applications should warn users to have a) 126 166 B
+0.12 (\322save\323 if there is a dirty memory copy which has been modi\336ed since last save. If) 126 152 S
+0.12 (users want to discard changes since last save, users should explicitly pur) 126 138 S
+0.12 (ge the) 481.75 138 S
+-0.46 0.12 (memory copy before checkin. After making this call, applications should turn of) 126 124 B
+-0.46 0.12 (f the) 515.56 124 B
+-0.22 0.12 (edit-bit to make the memory copy readonly and prevent from further changes. Users) 126 110 B
+0.12 (can use the \322edit\323 command to start another editing section. Following are the) 126 96 S
+FMENDPAGE
+%%EndPage: "25" 20
+%%Page: "26" 20
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-26) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (ar) 126 712 S
+0.12 (guments:) 135.34 712 S
+4 F
+0.12 (cellName, viewName:) 126 686 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 686 S
+0.12 (.) 491.14 686 S
+4 F
+-0.35 0.12 (childr) 126 666 B
+-0.35 0.12 (en:) 154.93 666 B
+2 F
+-0.35 0.12 ( This is the children list of the cellview) 170.6 666 B
+-0.35 0.12 (. Applications need to supply the list) 359.24 666 B
+0.12 (for setting up parent-child relationship correctly) 126 652 S
+0.12 (. This list is a string contains cell) 361.38 652 S
+0.12 (names seperated by space.) 126 638 S
+4 F
+0.12 (advance:) 126 618 S
+2 F
+0.12 ( This is for the new checkin version to advance the primary index of the) 170.91 618 S
+-0.46 0.12 (version number) 126 604 B
+-0.46 0.12 (. If it is TRUE \050non-zero\051, the primary index will be increased by one) 201.51 604 B
+0.12 (and the secondary index will be cleared to be zero. If it is F) 126 590 S
+0.12 (ALSE \050zero\051, only the) 417 590 S
+0.12 (secondary index will be increased by one.) 126 576 S
+4 F
+0.12 (log:) 126 556 S
+2 F
+0.12 ( This is the log message to be recorded as an attribute of the new version.) 145.8 556 S
+4 F
+0.12 (fullPathName:) 126 536 S
+2 F
+0.12 ( This is returned by the procedure. It is the full path name to the) 198.19 536 S
+0.12 (checkout copy that moved back in the library) 126 522 S
+0.12 (.) 347.34 522 S
+0.12 (Applications can implement the \322saveAndCheckin\323 command by using the) 126 502 S
+0.12 (dmsMslSaveCellV) 126 488 S
+0.12 (iew and dmsMslCheckinCellV) 217.7 488 S
+0.12 (iew procedures.) 368.02 488 S
+-0.92 0.12 (The procedure wil return errors when the checkin operation can not be completed. For) 126 462 B
+0.12 (example, the cellview is not checked out for edit or checked out by other users.) 126 448 S
+0.12 (Following are the error macros:) 126 434 S
+4 F
+0.12 (. idmsCvNotFoundInAnyLibrary) 126 408 S
+0.12 (. idmsCvCanNotBeCheckedIn) 126 388 S
+0.12 (. idmsCvIsNotInstalledT) 126 368 S
+0.12 (oCheckin) 244.27 368 S
+0.12 (. idmsCanNotCheckinNotW) 126 348 S
+0.12 (riteableFile) 260.7 348 S
+0.12 (. idmsNoFileInW) 126 328 S
+0.12 (orkdirT) 208.65 328 S
+0.12 (oBeCheckedIn) 245.04 328 S
+0.12 (. idmsCanNotCheckinCvInRoLibrary) 126 308 S
+0.12 (. idmsCvW) 126 288 S
+0.12 (asNotCheckout) 177.94 288 S
+0.12 (. idmsPr) 126 268 S
+0.12 (eT) 167.16 268 S
+0.12 (riggerFailed) 178.74 268 S
+FMENDPAGE
+%%EndPage: "26" 21
+%%Page: "27" 21
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-27) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (13.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o update a cellview) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCUpdateCellView\050cellName,viewName,children,advance,log,fullPa) 144 627.74 S
+0.1 (thName\051) 144 615.74 S
+0.1 (char *cellName;) 144 597.74 S
+0.1 (char *viewName;) 144 579.74 S
+0.1 (char *children;) 144 561.74 S
+0.1 (int advance;) 144 543.74 S
+0.1 (char *log;) 144 525.74 S
+0.1 (char **fullPathName;) 144 507.74 S
+2 12 Q
+0.12 (Mainsail:) 144 482.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 457.74 S
+0.1 (PROCEDURE dmsMslUpdateCellView\050) 144 439.74 S
+0.1 (STRING cellName;) 144 421.74 S
+0.1 (STRING viewName;) 144 403.74 S
+0.1 (STRING children;) 144 385.74 S
+0.1 (LONG INTEGER advance;) 144 367.74 S
+0.1 (STRING log;) 144 349.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 331.74 S
+0.1 (\051;) 144 313.74 S
+2 12 Q
+-0.45 0.12 (This procedure checkin the data copy in working directory \050not memory copy\051 of the) 126 288.41 B
+0.12 (cellview back to the \336rst hit library without having a previous checkout. A dummy) 126 274.41 S
+-0.83 0.12 (checkout is done internally followed by the checkin. The primary index of the version) 126 260.41 B
+0.12 (will be increased by one if the ar) 126 246.41 S
+0.12 (gument \322advance\323 is not zero. The ar) 286.74 246.41 S
+0.12 (gument \322log\323) 469.68 246.41 S
+0.12 (will become a attribute of the version and can be retrived by the idmb or library) 126 232.41 S
+-0.11 0.12 (browser) 126 218.41 B
+-0.11 0.12 (. The ar) 164.81 218.41 B
+-0.11 0.12 (gument \322children\323 gives the design hierarchy information to iDMS.) 202.3 218.41 B
+0.12 (This ar) 126 204.41 S
+0.12 (gument is ignored until the relationship functionality is available. After the) 160.26 204.41 S
+0.12 (update, the data copy will be deleted from the working directory) 126 190.41 S
+0.12 (. The link lock will) 441.67 190.41 S
+0.12 (be on the new version instead of the old version.) 126 176.41 S
+0.12 (When users issue the \322update\323 command, applications should warn users to have a) 126 150.41 S
+0.12 (\322save\323 if there is a dirty memory copy which has been modi\336ed since last save. If) 126 136.41 S
+0.12 (users want to discard changes since last save, users should explicitly pur) 126 122.41 S
+0.12 (ge the) 481.75 122.41 S
+-0.04 0.12 (memory copy before update. After making this call, applications should turn of) 126 108.41 B
+-0.04 0.12 (f the) 514.72 108.41 B
+-0.22 0.12 (edit-bit to make the memory copy readonly and prevent from further changes. Users) 126 94.41 B
+FMENDPAGE
+%%EndPage: "27" 22
+%%Page: "28" 22
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-28) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (can use the \322edit\323 command to start another editing section. Following are the) 126 712 S
+0.12 (ar) 126 698 S
+0.12 (guments:) 135.34 698 S
+4 F
+0.12 (cellName, viewName:) 126 672 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 672 S
+0.12 (.) 491.14 672 S
+4 F
+-0.35 0.12 (childr) 126 652 B
+-0.35 0.12 (en:) 154.93 652 B
+2 F
+-0.35 0.12 ( This is the children list of the cellview) 170.6 652 B
+-0.35 0.12 (. Applications need to supply the list) 359.24 652 B
+0.12 (for setting up parent-child relationship correctly) 126 638 S
+0.12 (. This list is a string contains cell) 361.38 638 S
+0.12 (names separated by space.) 126 624 S
+4 F
+0.12 (advance:) 126 604 S
+2 F
+0.12 ( This is for the new checkin version to advance the primary index of the) 170.91 604 S
+-0.46 0.12 (version number) 126 590 B
+-0.46 0.12 (. If it is TRUE \050non-zero\051, the primary index will be increased by one) 201.51 590 B
+0.12 (and the secondary index will be cleared to be zero. If it is F) 126 576 S
+0.12 (ALSE \050zero\051, only the) 417 576 S
+0.12 (secondary index will be increased by one.) 126 562 S
+4 F
+0.12 (log:) 126 542 S
+2 F
+0.12 ( This is the log message to be recorded as an attribute of the new version.) 145.8 542 S
+4 F
+0.12 (fullPathName:) 126 516 S
+2 F
+0.12 ( This is returned by the procedure. It is the full path name to the) 198.19 516 S
+0.12 (checkout copy that moved back in the library) 126 502 S
+0.12 (.) 347.34 502 S
+-0.53 0.12 (The procedure wil return errors when the update operation can not be completed. For) 126 476 B
+-0.06 0.12 (example, the cellview is checked out by other users. Follwoing are the error macros:) 126 462 B
+4 F
+0.12 (. idmsCvNotFoundInAnyLibrary) 126 436 S
+0.12 (. idmsCvW) 126 416 S
+0.12 (asCheckedOutByAnotherUser) 177.94 416 S
+0.12 (. idmsCvCanNotBeCheckedOut) 126 396 S
+0.12 (. idmsCanNotCheckoutCvInRoLibrary) 126 376 S
+0.12 (. idmsCvCanNotBeCheckedIn) 126 356 S
+0.12 (. idmsCvIsNotInstalledT) 126 336 S
+0.12 (oCheckin) 244.27 336 S
+0.12 (. idmsCanNotCheckinNotW) 126 316 S
+0.12 (riteableFile) 260.7 316 S
+0.12 (. idmsNoFileInW) 126 296 S
+0.12 (orkdirT) 208.65 296 S
+0.12 (oBeCheckedIn) 245.04 296 S
+0.12 (. idmsCanNotUpdateCvInRoLibrary) 126 276 S
+0.12 (. idmsPr) 126 256 S
+0.12 (eT) 167.16 256 S
+0.12 (riggerFailed) 178.74 256 S
+FMENDPAGE
+%%EndPage: "28" 23
+%%Page: "29" 23
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-29) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (14.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o install a cellview) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCInstallCellView\050cellName,viewName,children,log,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char *children;) 144 573.74 S
+0.1 (char *log;) 144 555.74 S
+0.1 (char **fullPathName;) 144 537.74 S
+2 12 Q
+0.12 (Mainsail:) 144 512.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 487.74 S
+0.1 (PROCEDURE dmsMslInstallCellView\050) 144 469.74 S
+0.1 (STRING cellName;) 144 451.74 S
+0.1 (STRING viewName;) 144 433.74 S
+0.1 (STRING children;) 144 415.74 S
+0.1 (STRING log;) 144 397.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 379.74 S
+0.1 (\051;) 144 361.74 S
+2 12 Q
+0.12 (This procedure installs the very \336rst version to the cellview in worklib by using the) 126 336.41 S
+0.12 (data copy \050not memory copy\051 in workdir) 126 322.41 S
+0.12 (. If the cellview is new to the worklib, the) 325.09 322.41 S
+-0.69 0.12 (cellview will be created automatically) 126 308.41 B
+-0.69 0.12 (. The ar) 309.53 308.41 B
+-0.69 0.12 (gument \322log\323 will become a attribute of) 345.86 308.41 B
+0.12 (the version and can be retrieved by the idmb or library browser) 126 294.41 S
+0.12 (. The ar) 435.66 294.41 S
+0.12 (gument) 473.36 294.41 S
+-0.66 0.12 (\322children\323 gives the design hierarchy information to iDMS. This ar) 126 280.41 B
+-0.66 0.12 (gument is ignored) 450.2 280.41 B
+0.12 (until the relationship functionality is available, . After the install, the data copy will) 126 266.41 S
+0.12 (be deleted from the working directory) 126 252.41 S
+0.12 (. The link lock will be on the new 0.1 version.) 311.85 252.41 S
+0.12 (When users issue the \322install\323 command, applications should warn users to have a) 126 226.41 S
+0.12 (\322save\323 if there is a dirty memory copy which has been modi\336ed since last save. If) 126 212.41 S
+0.12 (users want to discard changes since last save, users should explicitly pur) 126 198.41 S
+0.12 (ge the) 481.75 198.41 S
+0.12 (memory copy before install. After making this call, applications should turn of) 126 184.41 S
+0.12 (f the) 512.68 184.41 S
+-0.22 0.12 (edit-bit to make the memory copy readonly and prevent from further changes. Users) 126 170.41 B
+0.12 (can use the \322edit\323 command to start another editing section. Following are the) 126 156.41 S
+0.12 (ar) 126 142.41 S
+0.12 (guments:) 135.34 142.41 S
+4 F
+0.12 (cellName, viewName:) 126 116.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 116.41 S
+0.12 (.) 491.14 116.41 S
+4 F
+-0.35 0.12 (childr) 126 96.41 B
+-0.35 0.12 (en:) 154.93 96.41 B
+2 F
+-0.35 0.12 ( This is the children list of the cellview) 170.6 96.41 B
+-0.35 0.12 (. Applications need to supply the list) 359.24 96.41 B
+FMENDPAGE
+%%EndPage: "29" 24
+%%Page: "30" 24
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-30) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (for setting up parent-child relationship correctly) 126 712 S
+0.12 (. This list is a string contains cell) 361.38 712 S
+0.12 (names separated by space.) 126 698 S
+4 F
+0.12 (log:) 126 678 S
+2 F
+0.12 ( This is the log message to be recorded as an attribute of the 0.1 version.) 145.8 678 S
+4 F
+0.12 (fullPathName:) 126 658 S
+2 F
+0.12 ( This is returned by the procedure. It is the full path name to the data) 198.19 658 S
+0.12 (copy used to install.) 126 644 S
+-0.6 0.12 (The procedure will return errors when the install operation can not be completed. For) 126 618 B
+0.12 (example, the cellview is checked out or has been installed. Following are the error) 126 604 S
+0.12 (macros:) 126 590 S
+4 F
+0.12 (. idmsCanNotOpenW) 126 564 S
+0.12 (orklibForW) 228.88 564 S
+0.12 (rite) 286.05 564 S
+0.12 (. idmsCvCanNotBeInstalled) 126 544 S
+0.12 (. idmsCanNotCheckinNotW) 126 524 S
+0.12 (riteableFile) 260.7 524 S
+0.12 (. idmsNoFileInW) 126 504 S
+0.12 (orkdirT) 208.65 504 S
+0.12 (oBeCheckedIn) 245.04 504 S
+0.12 (. idmsPr) 126 484 S
+0.12 (eT) 167.16 484 S
+0.12 (riggerFailed) 178.74 484 S
+FMENDPAGE
+%%EndPage: "30" 25
+%%Page: "31" 25
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-31) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (15.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o pur) 168.61 696.41 S
+0.12 (ge a cellview from memory) 193.97 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCPurgeCellView\050cellName,viewName,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char **fullPathName;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslPurgeCellView\050) 144 505.74 S
+0.1 (STRING cellName;) 144 487.74 S
+0.1 (STRING viewName;) 144 469.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+-0.69 0.12 (This procedure releases the link lock of the cellview to be ready for the pur) 126 408.41 B
+-0.69 0.12 (ging of the) 485.68 408.41 B
+0.12 (memory copy) 126 394.41 S
+0.12 (. The checkout status of the cellview will not be changed.) 192.83 394.41 S
+-0.91 0.12 (When users issue the \322pur) 126 368.41 B
+-0.91 0.12 (ge\323 command, applications make this call to release the link) 250.36 368.41 B
+0.12 (lock. Applications should warn users to have a save if the memory copy is editable) 126 354.41 S
+-0.33 0.12 (and dirty) 126 340.41 B
+-0.33 0.12 (. After the call, applications can free the design data from memory and void) 168.95 340.41 B
+0.12 (the edit bit and dirty bit. Following are the ar) 126 326.41 S
+0.12 (guments:) 347.41 326.41 S
+4 F
+0.12 (cellName, viewName:) 126 300.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 300.41 S
+0.12 (.) 491.14 300.41 S
+4 F
+-0.92 0.12 (fullPathName:) 126 280.41 B
+2 F
+-0.92 0.12 ( This is returned by the procedure. It is the full path name to the version) 198.19 280.41 B
+0.12 (copy where the memory copy is read from.) 126 266.41 S
+0.12 (The procedure will always return i) 126 240.41 S
+4 F
+0.12 (dmsSuccess) 295.61 240.41 S
+2 F
+0.12 ( \050zero\051.) 353.43 240.41 S
+FMENDPAGE
+%%EndPage: "31" 26
+%%Page: "32" 26
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-32) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (16.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o cancel checkout a cellview) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCCancelCheckoutCellView\050cellName,viewName,fullPathName\051) 144 627.74 S
+0.1 (char *cellName;) 144 609.74 S
+0.1 (char *viewName;) 144 591.74 S
+0.1 (char **fullPathName;) 144 573.74 S
+2 12 Q
+0.12 (Mainsail:) 144 548.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 523.74 S
+0.1 (PROCEDURE dmsMslCancelCheckoutCellView\050) 144 505.74 S
+0.1 (STRING cellName;) 144 487.74 S
+0.1 (STRING viewName;) 144 469.74 S
+0.1 (PRODUCES STRING fullPathName;) 144 451.74 S
+0.1 (\051;) 144 433.74 S
+2 12 Q
+0.12 (This procedure cancels the checkout of the cellview in the \336rst hit library) 126 408.41 S
+0.12 (. The) 485.29 408.41 S
+0.12 (checkout copy will be deleted from the working directory) 126 394.41 S
+0.12 (. All changes done to the) 408.4 394.41 S
+-0.14 0.12 (cellview after checkout will be lost. This procedure returns the full path name to the) 126 380.41 B
+0.12 (deleted checkout copy) 126 366.41 S
+0.12 (.) 234.98 366.41 S
+0.12 (When users issue the \322cancel checkout\323 command, applications should warn users) 126 340.41 S
+0.12 (that this operation will result in losing all the changes done to the checkout copy) 126 326.41 S
+0.12 (. If) 520.93 326.41 S
+0.12 (the cellview has a dirty copy in memory) 126 312.41 S
+0.12 (, the cancel checkout will not be allowed.) 322.76 312.41 S
+-0.73 0.12 (Users should explicitly pur) 126 298.41 B
+-0.73 0.12 (ge the memory copy before the cancel checkout. AFter the) 256.41 298.41 B
+0.12 (call, the edit bit and dirty bit should be set to be OFF) 126 284.41 S
+0.12 (. Following are the ar) 385.29 284.41 S
+0.12 (guments:) 490.64 284.41 S
+4 F
+0.12 (cellName, viewName:) 126 258.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 258.41 S
+0.12 (.) 491.14 258.41 S
+4 F
+-0.88 0.12 (fullPathName:) 126 238.41 B
+2 F
+-0.88 0.12 ( This is returned by the procedure. It is the full path name to the deleted) 198.19 238.41 B
+0.12 (checkout copy in working directory) 126 224.41 S
+0.12 (.) 300.5 224.41 S
+0.12 (The procedure will return errors when the cancel checkout operation can not be) 126 198.41 S
+-0.02 0.12 (completed. For example, cellviews not checked out. Following are the error macros:) 126 184.41 B
+4 F
+0.12 (. idmsCvNotFoundInAnyLibrary) 126 158.41 S
+0.12 (. idmsCvCheckoutCanNotBeCancelled) 126 138.41 S
+0.12 (. idmsCvW) 126 118.41 S
+0.12 (asNotCheckout) 177.94 118.41 S
+0.12 (. idmsPr) 126 98.41 S
+0.12 (eT) 167.16 98.41 S
+0.12 (riggerFailed) 178.74 98.41 S
+FMENDPAGE
+%%EndPage: "32" 27
+%%Page: "33" 27
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-33) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (17.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o get information of a cellview) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCInfoCellView\050searchLibOnly,cellName,viewName,information\051) 144 627.74 S
+0.1 (int searchLibOnly;) 144 609.74 S
+0.1 (char *cellName;) 144 591.74 S
+0.1 (char *viewName;) 144 573.74 S
+0.1 (DMSINFO **information;) 144 555.74 S
+2 12 Q
+0.12 (Mainsail:) 144 530.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 505.74 S
+0.1 (PROCEDURE dmsMslInfoCellView\050) 144 487.74 S
+0.1 (LONG INTEGER searchLibOnly;) 144 469.74 S
+0.1 (STRING cellName;) 144 451.74 S
+0.1 (STRING viewName;) 144 433.74 S
+0.1 (PRODUCES POINTER \050DMSINFO\051 information;) 144 415.74 S
+0.1 (\051;) 144 397.74 S
+2 12 Q
+-0.74 0.12 (This procedure searches the cellview on the rwpaths and returns the status code of the) 126 372.41 B
+-0.47 0.12 (cellview) 126 358.41 B
+-0.47 0.12 (. The search will start from the workdir and go through the whole rwpaths or) 166.81 358.41 B
+0.12 (libraries on the rwpaths based on the option of the searchLibOnly) 126 344.41 S
+0.12 (. If the cellview is) 447.46 344.41 S
+-0.15 0.12 (found, the full path name to the cellview will be returned. If the cellview is found in) 126 330.41 B
+-0.54 0.12 (a library) 126 316.41 B
+-0.54 0.12 (, extra information regarding the library name, version number and checkout) 166.06 316.41 B
+0.12 (user will be provided. Following are the ar) 126 302.41 S
+0.12 (guments:) 335.46 302.41 S
+4 F
+0.12 (sear) 126 276.41 S
+0.12 (chLibOnly:) 146.69 276.41 S
+2 F
+0.12 ( This is for de\336ning the search mode. The options are) 202.52 276.41 S
+0.12 (idmsSearchWholeRwpaths and idmsSearchLibOnly) 126 262.41 S
+0.12 (.) 380.33 262.41 S
+4 F
+0.12 (cellName, viewName:) 126 242.41 S
+2 F
+0.12 ( This is the cell name and view name of the cellview) 233.53 242.41 S
+0.12 (.) 491.14 242.41 S
+4 F
+0.12 (information:) 126 222.41 S
+2 F
+0.12 ( This is returned by the procedure as a DMSINFO data structure. The) 188.08 222.41 S
+0.12 (data structure is de\336ned in fwierr) 126 208.41 S
+0.12 (.h for C and fwidms.hdr for Mainsail. It contains) 288.3 208.41 S
+-0.63 0.12 (information about the library name, cellName, viewName, version number) 126 194.41 B
+-0.63 0.12 (, checkout) 487.64 194.41 B
+0.12 (user) 126 180.41 S
+0.12 (, and full path name to the most current version of the cellview) 145.98 180.41 S
+0.12 (.) 454.33 180.41 S
+-0.16 0.12 (The information reported by this call is also available to other iDMS procedures. So) 126 154.41 B
+0.12 (this call is not a prerequisite call for calling other iDMS procedures and used only) 126 140.41 S
+0.12 (when it is necessary) 126 126.41 S
+0.12 (. Following are the returned codes:) 223.88 126.41 S
+4 F
+-0.33 0.12 (. idmsInfoCvNotFoundOnRwpaths:) 126 100.41 B
+2 F
+-0.33 0.12 ( cellview is not found anywhere. This is returned) 299.17 100.41 B
+FMENDPAGE
+%%EndPage: "33" 28
+%%Page: "34" 28
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-34) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (only when the search mode is idmsSearchWholeRwpaths.) 126 712 S
+4 F
+-0.95 0.12 (. idmsInfoCvNotFoundInAnyLibrary:) 126 692 B
+2 F
+-0.95 0.12 ( cellview is not found in libraries on the rwpaths) 308.23 692 B
+0.12 (but maybe in an unix directory) 126 678 S
+0.12 (. This is returned only when the search mode is) 276.39 678 S
+0.12 (idmsSearchLibOnly) 126 664 S
+0.12 (.) 223.87 664 S
+4 F
+0.12 (. idmsInfoCvIsInW) 126 644 S
+0.12 (orkdir:) 216.87 644 S
+2 F
+0.12 ( cellview is in workdir) 251.69 644 S
+0.12 (, and thus can be edited.) 361.9 644 S
+4 F
+-0.42 0.12 (. idmsInfoCvCheckedOutByMe:) 126 624 B
+2 F
+-0.42 0.12 ( cellview is checked out by the current user) 281.36 624 B
+-0.42 0.12 (, and thus) 490.64 624 B
+0.12 (can be edited.) 126 610 S
+4 F
+0.12 (. idmsInfoCvIsInReadonlyUnixdir:) 126 590 S
+2 F
+0.12 ( cellview is in readonly unix directory) 296.39 590 S
+0.12 (, and thus) 482.83 590 S
+0.12 (can not be edited.) 126 576 S
+4 F
+-0.83 0.12 (. idmsInfoCvIsInReadonlyLibrary:) 126 556 B
+2 F
+-0.83 0.12 ( cellview is in readonly library) 294.9 556 B
+-0.83 0.12 (, and thus can not be) 440.73 556 B
+0.12 (edited.) 126 542 S
+4 F
+0.12 (. idmsInfoCvCheckedOutByAnotherUser:) 126 522 S
+2 F
+0.12 ( cellview is checked out by another user) 329.5 522 S
+0.12 (,) 526 522 S
+0.12 (and thus can not be edited.) 126 508 S
+4 F
+-0.67 0.12 (. idmsInfoCvCanBeCheckedOut:) 126 488 B
+2 F
+-0.67 0.12 ( cellview is not checked out by anyone, and thus can) 285.91 488 B
+0.12 (be checked out and edited.) 126 474 S
+0.12 (The data structure of the information \050C example\051:) 126 454 S
+0.12 (typedef struct dmsInfo {) 126 434 S
+0.12 ( int location;) 126 414 S
+0.12 ( char libPath[256];) 126 394 S
+0.12 ( char libName[256];) 126 374 S
+0.12 ( char cellName[256];) 126 354 S
+0.12 ( char viewName[256];) 126 334 S
+0.12 ( char verName[256];) 126 314 S
+0.12 ( char coUser[256];) 126 294 S
+0.12 ( char fullPathName[256];) 126 274 S
+0.12 (} DMSINFO;) 126 254 S
+0.12 (The location codes are listed in the next procedure dmsGetLastCellV) 126 234 S
+0.12 (iewInfo.) 464.74 234 S
+FMENDPAGE
+%%EndPage: "34" 29
+%%Page: "35" 29
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-35) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (18.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o get information about the last cellview processed) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCGetLastCellViewInfo\050information\051) 144 627.74 S
+0.1 (DMSINFO **information;) 144 609.74 S
+2 12 Q
+0.12 (Mainsail:) 144 584.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 559.74 S
+0.1 (PROCEDURE dmsMslGetLastCellViewInfo\050) 144 541.74 S
+0.1 (PRODUCES POINTER \050DMSINFO\051 information;) 144 523.74 S
+0.1 (\051;) 144 505.74 S
+2 12 Q
+-0.77 0.12 (This procedure returns the information about the cellview most recently processed by) 126 480.41 B
+-0.82 0.12 (iDMS. The information is guaranteed between two iDMS procedure calls. Any iDMS) 126 466.41 B
+0.12 (procedure calls will change the information stored. Following is the ar) 126 452.41 S
+0.12 (gument:) 471.73 452.41 S
+4 F
+0.12 (information:) 126 426.41 S
+2 F
+0.12 ( This is returned by the procedure as a DMSINFO data structure. The) 188.08 426.41 S
+0.12 (data structure is de\336ned in fwierr) 126 412.41 S
+0.12 (.h for C and fwidms.hdr for Mainsail. It contains) 288.3 412.41 S
+-0.47 0.12 (information about the location, library name, cell name, view name, version number) 126 398.41 B
+-0.47 0.12 (,) 534.23 398.41 B
+0.12 (checkout user) 126 384.41 S
+0.12 (, and full path name to the cellview) 193.35 384.41 S
+0.12 (. The data structure is the same as) 366.11 384.41 S
+0.12 (the information dmsCInfoCellV) 126 370.41 S
+0.12 (iew/dmsMslInfoCellV) 282.67 370.41 S
+0.12 (iew used.) 392.17 370.41 S
+-0.9 0.12 (The returned code will be the location code of the cellview) 126 350.41 B
+-0.9 0.12 (. Following are the location) 405.76 350.41 B
+0.12 (codes:) 126 336.41 S
+4 F
+0.12 (. idmsCvNotFound:) 126 316.41 S
+2 F
+0.12 (cellview was not found.) 225.77 316.41 S
+4 F
+0.12 (. idmsCvInW) 126 296.41 S
+0.12 (orkdir:) 188.17 296.41 S
+2 F
+0.12 (cellview was found in the working directory) 226.11 296.41 S
+0.12 (.) 443 296.41 S
+4 F
+0.12 (. idmsCvInUnixdir:) 126 276.41 S
+2 F
+0.12 (cellview was found in a unix directory other than the workdir) 224.55 276.41 S
+0.12 (.) 525.66 276.41 S
+4 F
+0.12 (. idmsCvInRwlib:) 126 256.41 S
+2 F
+0.12 (cellview was found in a read/writable library) 214.99 256.41 S
+0.12 (.) 434.77 256.41 S
+4 F
+0.12 (. idmsCvInRolib:) 126 236.41 S
+2 F
+0.12 (cellview was found in a read only library) 212.99 236.41 S
+0.12 (.) 413.97 236.41 S
+4 F
+0.12 (. idmsCvInW) 126 216.41 S
+0.12 (orklib:) 188.17 216.41 S
+2 F
+0.12 (cellview was found in the working library) 224.78 216.41 S
+0.12 (.) 430.11 216.41 S
+FMENDPAGE
+%%EndPage: "35" 30
+%%Page: "36" 30
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-36) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (19.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o report iDMS message) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (char *) 144 645.74 S
+0.1 (dmsCReportMessage\050\051) 144 627.74 S
+2 12 Q
+0.12 (Mainsail:) 144 602.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 577.74 S
+0.1 (PROCEDURE dmsMslReportMessage\050) 144 559.74 S
+0.1 (PRODUCES STRING dmsMessage;) 144 541.74 S
+0.1 (\051;) 144 523.74 S
+2 12 Q
+-0.21 0.12 (This procedure returns a string which contains the last iDMS message buf) 126 498.41 B
+-0.21 0.12 (fered. The) 486.83 498.41 B
+-0.71 0.12 (message will be either completion or error information depends on the last iDMS call.) 126 484.41 B
+0.12 (Applications can print out the message directly or copy the message into a string) 126 458.41 S
+0.12 (variable.) 126 444.41 S
+FMENDPAGE
+%%EndPage: "36" 31
+%%Page: "37" 31
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-37) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (20.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o print information into iDMS log \336le) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCPrintIdmsLog\050log\051) 144 627.74 S
+0.1 (char *log;) 144 609.74 S
+2 12 Q
+0.12 (Mainsail:) 144 584.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 559.74 S
+0.1 (PROCEDURE dmsMslPrintIdmsLog\050) 144 541.74 S
+0.1 (STRING log;) 144 523.74 S
+0.1 (\051;) 144 505.74 S
+2 12 Q
+-0.42 0.12 (This procedure prints the log information into iDMS\325) 126 480.41 B
+-0.42 0.12 (s log \336le. The log \336le is created) 384.81 480.41 B
+0.12 (when iDMS got initialized, and is mainly for debugging purpose.) 126 466.41 S
+0.12 (This procedure will always return idmsSuccess.) 126 440.41 S
+FMENDPAGE
+%%EndPage: "37" 32
+%%Page: "38" 32
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-38) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (21.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o reload DMS.P) 168.61 696.41 S
+0.12 (A) 246.8 696.41 S
+0.12 (TH \336le) 254.25 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCParsePath\050\051) 144 627.74 S
+2 12 Q
+0.12 (Mainsail:) 144 602.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 577.74 S
+0.1 (PROCEDURE dmsMslParsePath\050) 144 559.74 S
+0.1 (\051;) 144 541.74 S
+2 12 Q
+0.12 (This procedure reparses the DMS.P) 126 516.41 S
+0.12 (A) 299.73 516.41 S
+0.12 (TH \336le and install the new iDMS setup.) 307.17 516.41 S
+-0.01 0.12 (When users issue the \322reload DMS.P) 126 490.41 B
+-0.01 0.12 (A) 306.81 490.41 B
+-0.01 0.12 (TH\323 command, applications make this call to) 314.26 490.41 B
+0.12 (reload the DMS.P) 126 476.41 S
+0.12 (A) 213.1 476.41 S
+0.12 (TH \336le de\336ned by environment variable DMSP) 220.54 476.41 S
+0.12 (A) 453 476.41 S
+0.12 (TH.) 460.45 476.41 S
+-0.48 0.12 (The procedure will return errors when the reload of DMS.P) 126 450.41 B
+-0.48 0.12 (A) 412.51 450.41 B
+-0.48 0.12 (TH operation can not be) 419.95 450.41 B
+-0.63 0.12 (completed. For example, environment variable DMSP) 126 436.41 B
+-0.63 0.12 (A) 387.81 436.41 B
+-0.63 0.12 (TH not set or set to an invalid) 395.25 436.41 B
+0.12 (\336le or syntax errors in the DMS.P) 126 422.41 S
+0.12 (A) 291.09 422.41 S
+0.12 (TH \336le. Following are the error macros:) 298.54 422.41 S
+4 F
+0.12 (. idmsEnvir) 126 396.41 S
+0.12 (onmentV) 182.18 396.41 S
+0.12 (aribaleDmspathNotSet) 224.32 396.41 S
+0.12 (. idmsDmspathSyntaxErr) 126 376.41 S
+0.12 (or) 248.79 376.41 S
+FMENDPAGE
+%%EndPage: "38" 33
+%%Page: "39" 33
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-39) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (22.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o show DMS.P) 168.61 696.41 S
+0.12 (A) 241.91 696.41 S
+0.12 (TH setup) 249.36 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (char *) 144 645.74 S
+0.1 (dmsCPrintPath\050viewName\051) 144 627.74 S
+0.1 (char *viewName;) 144 609.74 S
+2 12 Q
+0.12 (Mainsail:) 144 584.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 559.74 S
+0.1 (PROCEDURE dmsMslPrintPath\050) 144 541.74 S
+0.1 (STRING viewName;) 144 523.74 S
+0.1 (PRODUCES STRING dmsMessage;) 144 505.74 S
+0.1 (\051;) 144 487.74 S
+2 12 Q
+-0.52 0.12 (This procedure returns a string which contains the information about the iDMS setup) 126 462.41 B
+-0.62 0.12 (of a certain view name. The view name can be \322*\323 to get all views\325 setup information.) 126 448.41 B
+-0.81 0.12 (When users issue the \322show DMS.P) 126 422.41 B
+-0.81 0.12 (A) 297.9 422.41 B
+-0.81 0.12 (TH\323 command, applications make the call to get) 305.35 422.41 B
+-0.58 0.12 (information about iDMS setup. Applications can print out the information directly or) 126 408.41 B
+0.12 (copy the information into a string variable. Following is the ar) 126 394.41 S
+0.12 (gument:) 432.28 394.41 S
+4 F
+0.12 (viewName:) 126 368.41 S
+2 F
+0.12 ( This is the view name.) 181.04 368.41 S
+FMENDPAGE
+%%EndPage: "39" 34
+%%Page: "40" 34
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-40) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (23.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o know the current iDMS version) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (char *) 144 645.74 S
+0.1 (dmsCVersionNumber\050\051) 144 627.74 S
+2 12 Q
+0.12 (Mainsail:) 144 602.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 577.74 S
+0.1 (PROCEDURE dmsMslVersionNumber\050) 144 559.74 S
+0.1 (PRODUCES STRING dmsVersion;) 144 541.74 S
+0.1 (\051;) 144 523.74 S
+2 12 Q
+0.12 (This procedure returns a string with the iDMS version number) 126 498.41 S
+0.12 (.) 432 498.41 S
+0.12 (Applications make the call to verify proper iDMS libraries have been used.) 126 472.41 S
+-0.8 0.12 (The procedure will return a string with the version number) 126 446.41 B
+-0.8 0.12 (. Applications can print out) 406.59 446.41 B
+0.12 (the version directly or copy the version into a string variable.) 126 432.41 S
+FMENDPAGE
+%%EndPage: "40" 35
+%%Page: "41" 35
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-41) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (24.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o know the working directory of a view) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCGetWorkingDir\050viewName,workingDir\051) 144 627.74 S
+0.1 (char *viewName;) 144 609.74 S
+0.1 (char **workingDir;) 144 591.74 S
+2 12 Q
+0.12 (Mainsail:) 144 566.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 541.74 S
+0.1 (PROCEDURE dmsMslGetWorkingDir\050) 144 523.74 S
+0.1 (STRING viewName;) 144 505.74 S
+0.1 (PRODUCES STRING workingDir;) 144 487.74 S
+0.1 (\051;) 144 469.74 S
+2 12 Q
+-0.82 0.12 (This procedure returns the working directory of a given view name. Following are the) 126 444.41 B
+0.12 (ar) 126 430.41 S
+0.12 (guments:) 135.34 430.41 S
+4 F
+0.12 (viewName:) 126 404.41 S
+2 F
+0.12 ( This is the view name.) 181.04 404.41 S
+4 F
+0.12 (workingDir:) 126 384.41 S
+2 F
+0.12 ( This is returned by the procedure. It is the full path to the working) 187.29 384.41 S
+0.12 (directory of the view) 126 370.41 S
+0.12 (.) 227.99 370.41 S
+0.12 (The procedure will always return idmsSuccess \050zero\051.) 126 344.41 S
+FMENDPAGE
+%%EndPage: "41" 36
+%%Page: "42" 36
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-42) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (25.) 144 696.41 S
+0.12 (T) 162 696.41 S
+0.12 (o know the working library of a view) 168.61 696.41 S
+0.12 (C:) 144 670.41 S
+3 10 Q
+0.1 (int) 144 645.74 S
+0.1 (dmsCGetWorkingLib\050viewName,workingLib\051) 144 627.74 S
+0.1 (char *viewName;) 144 609.74 S
+0.1 (char **workingLib;) 144 591.74 S
+2 12 Q
+0.12 (Mainsail:) 144 566.41 S
+3 10 Q
+0.1 (LONG INTEGER) 144 541.74 S
+0.1 (PROCEDURE dmsMslGetWorkingLib\050) 144 523.74 S
+0.1 (STRING viewName;) 144 505.74 S
+0.1 (PRODUCES STRING workingLib;) 144 487.74 S
+0.1 (\051;) 144 469.74 S
+2 12 Q
+0.12 (This procedure returns the working library of a given view name. Following are the) 126 444.41 S
+0.12 (ar) 126 430.41 S
+0.12 (guments:) 135.34 430.41 S
+4 F
+0.12 (viewName:) 126 404.41 S
+2 F
+0.12 ( This is the view name.) 181.04 404.41 S
+4 F
+0.12 (workingLib:) 126 384.41 S
+2 F
+0.12 ( This is returned by the procedure. It is the working library name of the) 186.63 384.41 S
+0.12 (view) 126 370.41 S
+0.12 (.) 149.01 370.41 S
+0.12 (The procedure will always return idmsSuccess \050zero\051.) 126 344.41 S
+FMENDPAGE
+%%EndPage: "42" 37
+%%Page: "43" 37
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-43) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+1 14 Q
+0 X
+(2.4  Extended Procedure Interface) 72 693.07 T
+2 12 Q
+-0.78 0.12 (A set of procedures with a extra ar) 126 664.41 B
+-0.78 0.12 (gument \322libName\323 are also provided for specifying) 290.02 664.41 B
+-0.17 0.12 (a library on the rwpaths to work on. All these procedures have the \336rst ar) 126 650.41 B
+-0.17 0.12 (gument for) 482.95 650.41 B
+0.12 (specifying the library name. iDMS will skip all the libraries on the rwpaths which) 126 636.41 S
+-0.28 0.12 (does not match the speci\336ed library name. These procedures are only available in C.) 126 622.41 B
+0.12 (Following is the list of the procedures:) 126 608.41 S
+4 11 Q
+0.11 (. dmsCReadonlyCellV) 126 583.07 S
+0.11 (iewByLib\050libName,cName,vName,verName,FPN\051) 224.32 583.07 S
+0.11 (. dmsCReadonlyCellV) 126 558.07 S
+0.11 (iewT) 224.32 558.07 S
+0.11 (ypeByLib\050libName,cName,vtName,verName,vName,FPN\051) 245.31 558.07 S
+0.11 (. dmsCCheckoutCellV) 126 533.07 S
+0.11 (iewByLib\050libName,cName,vName,verName,FPN\051) 224.32 533.07 S
+0.11 (. dmsCEditCellV) 126 508.07 S
+0.11 (iewByLib\050libName,cName,vName,verName,FPN\051) 200.7 508.07 S
+0.11 (. dmsCReadOrEditByPolicyByLib\050libName,cName,vName,verName,FPN\051) 126 483.07 S
+0.11 (. dmsCInstallCellV) 126 458.07 S
+0.11 (iewByLib\050libName,cName,vName,childr) 210.79 458.07 S
+0.11 (en,log,FPN\051) 392.14 458.07 S
+0.11 (. dmsCCheckinCellV) 126 433.07 S
+0.11 (iewByLib\050libName,cName,vName,verName,childr) 218.71 433.07 S
+0.11 (en,advance,log,FPN\051) 443.35 433.07 S
+0.11 (. dmsCUpdateCellV) 126 408.07 S
+0.11 (iewByLib\050libName,cName,vName,verName,childr) 214.95 408.07 S
+0.11 (en,advance,log,FPN\051) 439.58 408.07 S
+0.11 (. dmsCCancelCheckoutCellV) 126 383.07 S
+0.11 (iewByLib\050libName,cName,vName,verName,FPN\051) 256.1 383.07 S
+2 12 Q
+0.12 (char *libName;) 126 357.41 S
+1 14 Q
+(2.5  Example of Coding) 72 328.07 T
+2 12 Q
+-0.27 0.12 (A example C program named fwitk.c.txt is in the documentation area for illustrating) 126 299.41 B
+0.12 (the coding convention for iDMS integration. This program implements the input,) 126 285.41 S
+0.12 (output and miscellaneous commands with edit bit and dirty bit. Integrators are) 126 271.41 S
+-0.3 0.12 (encouraged to run and study this program. This program will give integrators a clear) 126 257.41 B
+-0.44 0.12 (idea of how each commands work and how to implement the commands in your own) 126 243.41 B
+0.12 (applications.) 126 229.41 S
+0.12 (Please refer to the following instruction for making the itk executable.) 126 203.41 S
+1 14 Q
+(2.6  How to Make the Executable) 72 174.07 T
+2 12 Q
+0.12 (T) 126 145.41 S
+0.12 (o make the executable, you need to link the iDMS library idms.a, Cadence library) 132.61 145.41 S
+-0.05 0.12 (cdsV) 126 131.41 B
+-0.05 0.12 (o.a and cdsDB.a with your executable. The executable can be either a Mainsail) 149.58 131.41 B
+0.12 (boot or a C binary) 126 117.41 S
+0.12 (. Also, C libraries -lc, -lm and -ll are required. Following is a) 214.65 117.41 S
+0.12 (example for making executable idmb:) 126 103.41 S
+FMENDPAGE
+%%EndPage: "43" 38
+%%Page: "44" 38
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(2-44) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (cc fwitk.o $\050IDMS\051/idms.a $\050CADENCE\051/lib/cdsV) 144 712 S
+0.12 (o.a \134) 395.36 712 S
+0.12 ($\050CADENCE\051/lib/cdsDB.a $\050CADENCE\051/lib/cdsR) 144 686 S
+0.12 (WS.a -lc -lm -ll -o itk) 396.23 686 S
+0.12 (After making the executable, you need to run a Cadence application cdsld on your) 126 660 S
+0.12 (executable to get the license to run. Following is the example:) 126 646 S
+0.12 ($\050CADENCE\051/bin/cdsld itk) 144 620 S
+1 14 Q
+(2.7  Environment V) 72 590.67 T
+(ariables) 197.2 590.67 T
+2 12 Q
+0.12 (Following are environment variables required to run your application properly:) 126 562 S
+0.12 (Environment variables required by Cadence:) 126 536 S
+0.12 (setenv CDS_INST) 126 510 S
+0.12 (ALL_DIR /usr/cad/alpha/cadence/4.21.a6) 216.45 510 S
+0.12 (setenv CDS_LICENSE_DIR $\050CDS_INST) 126 484 S
+0.12 (ALL_DIR\051/etc/license) 336.88 484 S
+0.12 (Environment variables required by iDMS:) 126 458 S
+0.12 (setenv IDMS /usr/cad/alpha/idms/2.1) 126 432 S
+0.12 (1.a0) 308.65 432 S
+0.12 (setenv DMSP) 126 406 S
+0.12 (A) 192.51 406 S
+0.12 (TH /home/eda/cchiu/dms.pth) 199.96 406 S
+0.12 (Optional environment variables for iDMS:) 126 380 S
+0.12 (setenv IDMS_GLOBALFILE /usr/cad/alpha/idms/2.1) 126 354 S
+0.12 (1.a0/iDMSglobalT) 389.92 354 S
+0.12 (able) 481.28 354 S
+0.12 (setenv IDMS_MAPPINGKEYWORD check_out) 126 328 S
+0.12 (setenv IDMS_USER) 126 302 S
+0.12 (TRIGGERFILE /home/fw/fw/user) 227.48 302 S
+0.12 (.trigger) 395.73 302 S
+0.12 (or) 126 276 S
+0.12 (setenv IDMS_DISABLEUSER) 126 250 S
+0.12 (TRIGGER) 278.95 250 S
+FMENDPAGE
+%%EndPage: "44" 39
+%%Page: "45" 39
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Procedural Interface) 377.8 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(April.01,1993) 276.56 36.03 T
+(2-45) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+1 14 Q
+0 X
+(2.8  Summary) 72 710.67 T
+2 12 Q
+-0.73 0.12 (Note 1: workdir and worklib are not dif) 126 326 B
+-0.73 0.12 (ferent from any unixdir/library in the rwpaths.) 314.87 326 B
+0.12 (They may or may not be there. It is recommended that they to be there. iDMS does) 126 312 S
+0.12 (not assume either as a safety net/default last entry) 126 298 S
+0.12 (.) 369.95 298 S
+-0.2 0.12 (Note 2: X indicates the operation scope of a command. O indicates the \336le/checkout) 126 272 B
+0.12 (copy will be deleted after the operation.) 126 258 S
+5 F
+(T) 176.63 684 T
+(able 1: Quick Refer) 183.53 684 T
+(ence for iDMS 2.1 pr) 283.58 684 T
+(ocedur) 390.28 684 T
+(es) 425.38 684 T
+2 F
+(Command) 93.81 651 T
+(workdir) 171.81 651 T
+(worklib) 222.54 651 T
+(rwpaths) 272.61 658 T
+(unix dir) 272.78 644 T
+(rwpaths) 323.01 658 T
+(library) 326.01 644 T
+(Comment) 429.94 651 T
+(createCellV) 78 620 T
+(iew) 134.56 620 T
+(X) 222 620 T
+(create version 0.0, no checkout) 373.2 620 T
+(createUnixFile) 78 598 T
+(X) 171.6 598 T
+(create a empty \336le in workdir) 373.2 598 T
+(readonly) 78 576 T
+(X) 272.4 576 T
+(X) 322.8 576 T
+-0.27 (search through the whole rwpaths) 373.2 576 P
+(checkout) 78 554 T
+(X) 322.8 554 T
+(skip all unix dirs on rwpaths) 373.2 554 T
+(load) 78 532 T
+(X) 171.6 532 T
+(will check read permission) 373.2 532 T
+(edit) 78 510 T
+(X) 171.6 510 T
+(X) 322.8 510 T
+(does checkout and load) 373.2 510 T
+(save) 78 488 T
+(X) 171.6 488 T
+(will check write permission) 373.2 488 T
+(checkin) 78 466 T
+(O) 171.6 466 T
+(X) 322.8 466 T
+(skip all unix dirs on rwpaths) 373.2 466 T
+(update) 78 444 T
+(O) 171.6 444 T
+(X) 322.8 444 T
+(skip all unix dirs on rwpaths) 373.2 444 T
+(install) 78 422 T
+(O) 171.6 422 T
+(X) 222 422 T
+(work on 0.0 with no checkout) 373.2 422 T
+(pur) 78 400 T
+(ge) 93.77 400 T
+(X) 322.8 400 T
+(skip all unix dirs on rwpaths) 373.2 400 T
+(cancelCheckout) 78 378 T
+(O) 171.6 378 T
+(X) 322.8 378 T
+(skip all unix dirs on rwpaths) 373.2 378 T
+(information) 78 356 T
+(X) 171.6 356 T
+(X) 272.4 356 T
+(X) 322.8 356 T
+(optional search mode) 373.2 356 T
+72 673.75 72 348.25 2 L
+V
+0 Z
+N
+165.6 674.25 165.6 347.75 2 L
+V
+N
+216 674.25 216 347.75 2 L
+V
+N
+266.4 674.25 266.4 347.75 2 L
+V
+N
+316.8 674.25 316.8 347.75 2 L
+V
+N
+367.2 674.25 367.2 347.75 2 L
+V
+N
+540 673.75 540 348.25 2 L
+V
+N
+71.75 674 540.25 674 2 L
+V
+N
+72.25 635.25 539.75 635.25 2 L
+V
+N
+72.25 632.75 539.75 632.75 2 L
+V
+N
+71.75 612 540.25 612 2 L
+V
+N
+71.75 590 540.25 590 2 L
+V
+N
+71.75 568 540.25 568 2 L
+V
+N
+71.75 546 540.25 546 2 L
+V
+N
+71.75 524 540.25 524 2 L
+V
+N
+71.75 502 540.25 502 2 L
+V
+N
+71.75 480 540.25 480 2 L
+V
+N
+71.75 458 540.25 458 2 L
+V
+N
+71.75 436 540.25 436 2 L
+V
+N
+71.75 414 540.25 414 2 L
+V
+N
+71.75 392 540.25 392 2 L
+V
+N
+71.75 370 540.25 370 2 L
+V
+N
+71.75 348 540.25 348 2 L
+V
+N
+FMENDPAGE
+%%EndPage: "45" 40
+%%Trailer
+%%BoundingBox: 0 0 612 792
+%%Pages: 39 1
+%%DocumentFonts: Helvetica-Oblique
+%%+ Helvetica-Bold
+%%+ Times-Roman
+%%+ Courier
+%%+ Times-Italic
+%%+ Times-Bold

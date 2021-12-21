@@ -1,0 +1,16 @@
+# Unified Setup defined.  6/15/95
+
+################################################################################
+#
+# dirStruct file for IDMS under Unified Setup:
+#
+# This describes the expected directory structure under $WORK_AREA_ROOT_DIR.
+# This is read by a script ($SETUP_REV/bin/makeWorkArea.pl) which creates, as
+# necessary, the expected work area directory structure.
+#
+# $Id: idms.dirStruct,v 1.1 1996/06/06 01:44:33 athfw Exp $
+#
+################################################################################
+
+opuslib
+rundir

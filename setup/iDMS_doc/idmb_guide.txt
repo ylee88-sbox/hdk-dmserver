@@ -1,0 +1,921 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				iDMB User's Guide
+
+				 Version 2.11.a0
+
+
+
+
+				  Jan.19, 1993
+
+
+
+
+
+
+
+
+-------------------------------
+INTEL DESIGN MANAGEMENT BROWSER
+-------------------------------		
+
+<<<<<[ Topic: General ]>>>>>
+
+------------
+INTRODUCTION
+------------
+
+* The IDMB is a application built on top of IDMS interface to provide the
+  UNIX level database accessing. It can be used to operate data as well
+  as query status of data and audittrail history.
+
+
+--------
+START UP
+--------
+
+* IDMB is a stand alone appliction which can be run from UNIX.
+
+* The environment variable DMSPATH need to be set to a valid DMS.PATH
+  file which will be read and parsed by IDMB.
+
+* When IDMB is run, command manual of IDMB will be displayed. Users will need
+  to input the command and answer prompts to have IDMB run properly.  
+
+* The behavior of IDMB will then base on user's inputs.
+
+* The result or message will be shown on screen after each command.
+
+
+--------------
+USER INTERFACE
+--------------
+
+* User's inputs define IDMB's behaviors.
+
+* Each prompt of IDMB will have a default value which shown in parenthesis.
+  Users can choose to input a new vlaue or just hit return to use default.
+
+  Ex: Tool Name: (idmb)
+
+* Semicolon can be used to abort commands in any prompts.
+
+* All inputs take wild card and list expression except the tool name.
+
+  Example: Cell Name: (*) p12 r* ???
+      	   Cell names are "p12", all cell names with "r" prefix and all 3
+	   characters cell names.
+
+
+--------
+MESSAGES
+--------
+
+* Messages can be grouped into three categories.
+
+	*IDMS MESSAGE* indicates a execution is successful.
+
+	*IDMS WARNING* indicates a execution has recoverable errors.
+
+	*IDMS ERROR*   indicates a execution has unrecoverable errors.
+
+* Extra information will be prefixed by *CADENCE* for debugging purpose.
+
+
+-----------------
+RCS FUNCTIONALITY
+-----------------
+
+* For text files, iDMB will try to refresh RCS header and append new log
+  messages when a file is fetched or checked out.
+
+
+------------------
+HOW DOES IDMB WORK
+------------------
+
+* All commands of IDMB need the user to input the tool name. The IDMB takes the
+  tool name and use the tool's search path and policies to execute commands.
+
+
+--------
+COMMANDS 
+--------
+
+<<<<<[ Topic: DMS.PATH ]>>>>>
+
+* [S] DMS.PATH management: Search path/Working dir/Reparse/Print result
+
+  Based on the parsed result of DMS.PATH file, IDMB returns related information
+  of a tool/view.
+
+  Example: Query the search path used by tool "idmb"
+
+	Command: s
+	[S]earch path/[W]orking dir/[R]eparse/[P]rint result: s
+	Tool Name: (idmb) 
+
+	*IDMS MESSAGE* TOOL: idmb LIB SEARCH PATH: ~cchiu/dms ~cchiu/opus3 
+	~cchiu/dms ~cchiu/opus3 
+
+	^^^^^^^^^^^^^^^^^ S ^^^^^^^^^^^^^^^^^
+
+  Example: Query the working directory of tool "idmb" view "sch".
+
+	Command: s
+	[S]earch path/[W]orking dir/[R]eparse/[P]rint result: w
+	Tool Name: (idmb) 
+	View Name: (*) sch
+
+	*IDMS MESSAGE* TOOL: idmb VIEW: sch WORKING DIR: /cadfs7/eda/cchiu/garden/
+	/cadfs7/eda/cchiu/garden/
+
+	^^^^^^^^^^^^^^^^^ W ^^^^^^^^^^^^^^^^^
+
+  Example: Reparse the DMS.PATH file and reconfigure the DMS behaviors.
+
+	Command: s
+	[S]earch path/[W]orking dir/[R]eparse/[P]rint result: r
+	*IDMS MESSAGE* PARSE DMS.PATH FILE O.K.
+	<<<Start Parsing /home/eda/cchiu/iDMS/1.1/user.pth>>>
+	   $include /home/eda/cchiu/iDMS/1.1/group.pth
+	   <<<Start Parsing /home/eda/cchiu/iDMS/1.1/group.pth>>>
+	      $include /home/eda/cchiu/iDMS/1.1/project.pth
+	      <<<Start Parsing /home/eda/cchiu/iDMS/1.1/project.pth>>>
+	      <<<End Of Parsing /home/eda/cchiu/iDMS/1.1/project.pth>>>
+	   <<<End Of Parsing /home/eda/cchiu/iDMS/1.1/group.pth>>>
+	<<<End Of Parsing /home/eda/cchiu/iDMS/1.1/user.pth>>>
+	OK
+
+	^^^^^^^^^^^^^^^^^ R ^^^^^^^^^^^^^^^^^
+
+  Example: Print parsed DMS.PATH results of tool "idmb" view "icf".
+
+	Command: s
+	[S]earch path/[W]orking dir/[R]eparse/[P]rint result: p
+	Tool Name: (idmb) 
+	View Name: (*) icf
+
+
+	Tool Name: idmb
+
+
+	libpath Entry:
+
+	1.libpath (idmb.*)
+        	DIR (~cchiu/dms)
+	        DIR (~cchiu/opus3)
+
+	worklib Entry:
+
+	1.worklib (idmb.*)
+        	N/C (newWorkLib)
+
+	workdir Entry:
+
+	1.workdir (idmb.*)
+        	DIR (~/garden)
+
+	rwpaths Entry:
+
+	1.rwpaths (idmb.* icf sch)
+        	R/W (newWorkLib)
+	        DIR (~/chpr/garden)
+        	R/W (appendLib.b workLib.c sourceLib.d)
+
+	^^^^^^^^^^^^^^^^^ P ^^^^^^^^^^^^^^^^^
+
+<<<<<[ Topic: Configuration ]>>>>>
+
+* [Y] Configuration management: List/Create/Text/Delete/Add/Remove
+
+  List all configurations in a library, dump contents of a configuration into
+  a text file, create a new configuration in a library, delete a configuration
+  from a library, add/remove cellviews to/from a configuration.
+
+  Example: List all configurations in library "workLib".
+
+	Command: y
+	[L]ist/[T]ext/[C]reate/[D]elete config [A]dd/[R]emove cellview: l
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+
+	Configuration: ECO.001
+	Configuration: ECO.002
+	*IDMS MESSAGE* LIST ALL CONFIG IN LIB: workLib O.K.
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ L ^^^^^^^^^^^^^^^^^
+
+  Example: Create a new configuration "ECO.003" in library "workLib".
+
+	Command: y
+	[L]ist/[T]ext/[C]reate/[D]elete config [A]dd/[R]emove cellview: c
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+
+	Give The Configuration: (configName) ECO.003
+	Give working group: fw
+	Give user group: eda
+	*IDMS MESSAGE* CREATE CONFIG: ECO.003 IN LIB: workLib O.K.
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ C ^^^^^^^^^^^^^^^^^
+
+  Example: Dump the content of configuration "ECO.002" into a text file named
+	   ECO.002.ascii and also shown on screen.
+
+	Command: y
+	[L]ist/[T]ext/[C]reate/[D]elete config [A]dd/[R]emove cellview: t
+	Tool Name: (idmb) 
+	Give The Configuration: (configName) ECO.002
+	Give File Name To Dump To: (ECO.002.ascii) 
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	; Cadence design data management : configuration dump ;
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	;--- root config : ECO.002 ---;
+	ctemplate( "ECO.002"
+	  '(
+
+	    ;--- cellview elements segment ---;
+	    cellview( "p12" "icf" "6.0" )
+	    cellview( "sio" "icf" "2.0" )
+	    cellview( "rom" "icf" "1.0" )
+
+	    ;--- attached file elements segment ---;
+
+	    ;--- subConfig elements segment ---;
+	  )
+	)
+
+	*IDMS MESSAGE* DUMP CONFIG: ECO.002 IN LIB: workLib TO FILE: ECO.002.ascii O.K.
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ T ^^^^^^^^^^^^^^^^^
+
+  Example: Delete a configuration "ECO.003" from library "workLib".
+
+	Command: y
+	[L]ist/[T]ext/[C]reate/[D]elete config [A]dd/[R]emove cellview: d
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+
+	Give The Configuration: (configName) ECO.003
+	*IDMS MESSAGE* REMOVE CONFIG: ECO.003 FROM LIB: workLib O.K.
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ D ^^^^^^^^^^^^^^^^^
+
+  Example: Add cellviews into configuration "ECO.002".
+
+	Command: y
+	[L]ist/[T]ext/[C]reate/[D]elete config [A]dd/[R]emove cellview: a
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+
+	Give The Configuration: (configName) ECO.002
+	Cell Name: (*) ???
+	View Name: (*) 
+	Version Name (pi.si): (current) current    
+
+	*IDMS MESSAGE* ADD LIB: workLib CV: ram.icf  TO CONFIG: ECO.002 O.K.
+
+	*IDMS MESSAGE* REPLACE LIB: workLib CV: p12.icf  IN CONFIG: ECO.002 O.K.
+
+	*IDMS MESSAGE* REPLACE LIB: workLib CV: rom.icf  IN CONFIG: ECO.002 O.K.
+
+	*IDMS MESSAGE* REPLACE LIB: workLib CV: sio.icf  IN CONFIG: ECO.002 O.K.
+
+	*IDMS MESSAGE* ADD LIB: workLib CV: a2d.icf  TO CONFIG: ECO.002 O.K.
+
+	*IDMS MESSAGE* TOTAL: 5 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ A ^^^^^^^^^^^^^^^^^
+
+  Example: Remove cellviews from configuration "ECO.002".
+
+	Command: y
+	[L]ist/[T]ext/[C]reate/[D]elete config [A]dd/[R]emove cellview: r
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+
+	Give The Configuration: (configName) ECO.002
+	Cell Name: (*) r*
+	View Name: (*) 
+	Version Name (pi.si): (current) 
+
+	*IDMS MESSAGE* REMOVE LIB: workLib CV: ram.icf FROM CONFIG: ECO.002 O.K.
+
+	*IDMS MESSAGE* REMOVE LIB: workLib CV: rom.icf FROM CONFIG: ECO.002 O.K.
+
+	*IDMS MESSAGE* TOTAL: 2 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ R ^^^^^^^^^^^^^^^^^
+
+<<<<<[ Topic: Audittrail ]>>>>>
+
+* [A] Audittrail management: Enable/Disable/Inquire
+
+  Enable, disable and query audittrail history of libraries on search path.
+
+  Example: Enable library "workLib" to start recording audittrail.
+
+	Command: a
+	[E]nable/[D]isable/[I]nquire: e
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+
+	*IDMS MESSAGE* ENABLE AUDITTRAIL FOR LIB: workLib 
+	workLib 
+
+	^^^^^^^^^^^^^^^^^ E ^^^^^^^^^^^^^^^^^
+
+  Example: Disable library "workLib" to end recording audittrail.
+
+	Command: a
+	[E]nable/[D]isable/[I]nquire: d
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+
+	*IDMS MESSAGE* DISABLE AUDITTRAIL FOR LIB: workLib 
+	workLib 
+
+	^^^^^^^^^^^^^^^^^ D ^^^^^^^^^^^^^^^^^
+
+  Example: Query audittril on library "workLib" of "who checkout memory.* 0.1".
+
+	Command: a
+	[E]nable/[D]isable/[I]nquire: i
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+
+	By Who: (*) 
+	From Time: (Wed May  1 13:52:09 1991) 
+	To   Time: (Thu Apr 30 13:52:10 1992) 
+	By Cell: (*) memory
+	By View: (*) 
+	By Version: (*) 0.1
+	By Action (Add/Create/Checkin/Checkout/Delete/Extract/Un-Checkout): (*)Checkout
+
+
+	<<<<< Start Parsing /cadfs7/eda/cchiu/dms/workLib/AuditTrail >>>>>
+	[cchiu][Wed Mar 25 11:42:32 1992][CellView][memory][icf][0.1][Checkout]
+	<<<<< End Of Parsing /cadfs7/eda/cchiu/dms/workLib/AuditTrail >>>>>
+	*IDMS MESSAGE* QUERY LIB: workLib AUDITTARIL O.K.
+	/cadfs7/eda/cchiu/dms/workLib/AuditTrail
+
+	^^^^^^^^^^^^^^^^^ I ^^^^^^^^^^^^^^^^^
+
+  Note:	The default "From Time:" is one year earlier. The default "To Time:" is
+	current time.
+
+  Note:	The "By Action:" is case sensitive.
+
+<<<<<[ Topic: Property ]>>>>>
+
+* [P] Property management: Create/List/Remove
+
+  Display all, create and remove properties of a version.
+
+  Example: Create property "cvsClean" on current version for cellviews.
+
+	Command: p
+	[L]ist/[C]reate/[R]emove: c
+	Tool Name: (idmb) 
+	Lib Name: (*) workLib
+	Cell Name: (*) r*
+	View Name: (*) 
+	Version Name (pi.si): (current) 
+
+	Property Name: (propName) cvsClean
+	Property Type(String/Integer/Boolean/Time): (s) b
+	Property Boolean Value:(t/f) (t) t
+	*IDMS MESSAGE* CREATE PROPERTY: cvsClean LIB: workLib CV: ram.icf VER: 2.0 O.K.
+
+	*IDMS MESSAGE* CREATE PROPERTY: cvsClean LIB: workLib CV: rom.icf VER: 3.0 O.K.
+
+	*IDMS MESSAGE* TOTAL: 2 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ C ^^^^^^^^^^^^^^^^^
+
+  Example: List all properties attached to current version for cellviews.
+
+	Command: p
+	[L]ist/[C]reate/[R]emove: l
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+	Cell Name: (*) r*
+	View Name: (*) 
+	Version Name (pi.si): (current) 
+
+	Property Name: [cvsClean]       Type: [boolean] Value: [TRUE]
+	*IDMS MESSAGE* PROPERTY LIST OF LIB: workLib CV: ram.icf VER: 2.0
+
+	Property Name: [cvsClean]       Type: [boolean] Value: [TRUE]
+	*IDMS MESSAGE* PROPERTY LIST OF LIB: workLib CV: rom.icf VER: 3.0
+
+	*IDMS MESSAGE* TOTAL: 2 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ L ^^^^^^^^^^^^^^^^^
+
+  Example: Remove property "cvsClean" on current version for cellviews.
+
+	Command: p
+	[L]ist/[C]reate/[R]emove: r
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+	Cell Name: (*) r*
+	View Name: (*) 
+	Version Name (pi.si): (current) 
+
+	Property Name: (propName) cvsClean
+	*IDMS MESSAGE* REMOVE PROPERTY: cvsClean LIB: workLib CV: ram.icf VER: 2.0 O.K.
+
+	*IDMS MESSAGE* REMOVE PROPERTY: cvsClean LIB: workLib CV: rom.icf VER: 3.0 O.K.
+
+	*IDMS MESSAGE* TOTAL: 2 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ R ^^^^^^^^^^^^^^^^^
+
+<<<<<[ Topic: Query ]>>>>>
+
+* [V] View database
+
+  Query cellviews on current searchpath.
+
+  Example: Query all files locked in library worklib
+
+	Command: v
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+	Cell Name: (*) 
+	View Name: (*) 
+
+	CI Owner Name: (*) 
+	CO User Name/locked: (*) locked
+
+  LIBNAME   CELLNAME   VIEWNAME  VERSION CI_OWNER  CO_USER LAST CI_TIME/CO_TIME
+---------- ---------- ---------- ------- -------- -------- --------------------
+   workLib     memory        icf   0.1      cchiu    cchiu  Thu Apr 30 14:49 92
+
+   workLib       zcd2        icf   0.1      cchiu    cchiu  Thu Apr 30 14:49 92
+
+   workLib        ram        icf   2.0      cchiu      eda  Thu Apr 30 14:51 92
+
+   workLib       8051        icf   0.1      cchiu    cchiu  Thu Apr 30 14:49 92
+
+   workLib        p12        icf   6.1      cchiu      eda  Thu Apr 30 14:51 92
+
+   workLib         io        icf   0.1      cchiu    cchiu  Thu Apr 30 14:49 92
+
+   workLib        rom        icf   3.0      cchiu      eda  Thu Apr 30 14:51 92
+
+   workLib        sio        icf   2.1      cchiu      eda  Thu Apr 30 14:51 92
+
+   workLib        a2d        icf   2.0      cchiu      eda  Thu Apr 30 14:51 92
+
+	*IDMS MESSAGE* TOTAL: 9 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ V ^^^^^^^^^^^^^^^^^
+
+  Note:	"CI_OWNER" is the version creator. "CO_USER" is the current locker.
+
+  Note:	"LAST CI_TIME/CO_TIME" indicates last checkin time if it's not locked.
+	"LAST CI_TIME/CO_TIME" indicates checkout time if it's locked.
+
+<<<<<[ Topic: RCS ]>>>>>
+
+* [L] Lock files for edit (co -l)
+
+  Checkout a cellview with a edit lock. If the checked out file is text and has
+  valid RCS header and log information resides in, header will be refreshed and
+  additional log will be appended.
+
+  Example: Lock all cellviews with 3 characters of cell name.
+
+	Command: l
+	Tool Name: (idmb) 
+	Lib Name: (*) workLib
+	Conifg Name (name/default/none): none
+	Cell Name: (*) ???
+	View Name: (*) 
+	Version Name (pi.si): (current) 
+
+	*IDMS MESSAGE* CHECKOUT ram.icf 2.0 FROM LIB: workLib CONFIG: 
+	/cadfs7/eda/cchiu/garden/ram.icf
+
+	*IDMS MESSAGE* CHECKOUT p12.icf 5.0 FROM LIB: workLib CONFIG: 
+	/cadfs7/eda/cchiu/garden/p12.icf
+
+	*IDMS MESSAGE* CHECKOUT rom.icf 3.0 FROM LIB: workLib CONFIG: 
+	/cadfs7/eda/cchiu/garden/rom.icf
+
+	*IDMS MESSAGE* CHECKOUT sio.icf 2.0 FROM LIB: workLib CONFIG: 
+	/cadfs7/eda/cchiu/garden/sio.icf
+
+	*IDMS MESSAGE* CHECKOUT a2d.icf 2.0 FROM LIB: workLib CONFIG: 
+	/cadfs7/eda/cchiu/garden/a2d.icf
+
+	*IDMS MESSAGE* TOTAL: 5 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ L ^^^^^^^^^^^^^^^^^
+
+  Note:	The default configuration name will be the one specified in DMS.PATH
+	file. If users input "none" as the configuration name, the default one
+	will not be used and the most current version will be checkout.
+
+  Note: Any version name specified will over write the configuration mechanism.
+
+* [C] Cancel edit lock of files (unlock)
+
+  Cancel checkout lock on a cellview.
+
+  Example:
+
+	Command: c
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+	Cell Name: (*) r*
+	View Name: (*) 
+
+	*IDMS MESSAGE* CANCEL CHECKOUT OF LIB: workLib CV: ram.icf VER: 2.0
+
+	*IDMS MESSAGE* CANCEL CHECKOUT OF LIB: workLib CV: rom.icf VER: 3.0
+
+	*IDMS MESSAGE* TOTAL: 2 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ C ^^^^^^^^^^^^^^^^^
+
+* [N] Install a new file in worklib (initci)
+
+  Create and install a new file from the working directory to the working library.
+
+  Example:
+
+	Command: n
+	Tool Name: (idmb) 
+	Cell Name: (*) new
+	View Name: (*) icf
+
+	*IDMS MESSAGE* INSTALL new.icf 0.1 IN LIB: workLib CONFIG:
+	/cadfs7/eda/cchiu/garden/new.icf
+
+	*IDMS MESSAGE* TOTAL: 1 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ N ^^^^^^^^^^^^^^^^^
+
+* [F] Fetch files to workdir for readonly (co)
+
+  Fetch a readonly copy to working directory for read only. If the fetched file
+  is text and has valid RCS header and log information resides in, header will
+  be refreshed and additional log will be appended.
+
+  Example:
+
+	Command: f
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+	Conifg Name (name/default/none): ECO.002
+	Cell Name: (*) *o*
+	View Name: (*) 
+	Version Name (pi.si): (current) 
+
+	*IDMS MESSAGE* FETCH LIB: workLib CV: memory.icf  TO DIR: /cadfs7/eda/cchiu/garden/ O.K.
+	/cadfs7/eda/cchiu/dms/workLib/memory_4/icf_1.1_0
+
+	*IDMS MESSAGE* FETCH LIB: workLib CV: io.icf  TO DIR: /cadfs7/eda/cchiu/garden/ O.K.
+	/cadfs7/eda/cchiu/dms/workLib/io_3/icf_1.1_0
+
+	*IDMS MESSAGE* FETCH LIB: workLib CV: rom.icf  TO DIR: /cadfs7/eda/cchiu/garden/ O.K.
+	/cadfs7/eda/cchiu/dms/workLib/rom_7/icf_1.1_0
+
+	*IDMS MESSAGE* FETCH LIB: workLib CV: sio.icf  TO DIR: /cadfs7/eda/cchiu/garden/ O.K.
+	/cadfs7/eda/cchiu/dms/workLib/sio_8/icf_1.2_0
+
+	*IDMS MESSAGE* TOTAL: 4 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ F ^^^^^^^^^^^^^^^^^
+
+* [W] Check in files from working directory (ci)
+
+  Checkin cellviews from working directory.
+
+  Example: Checkin cell "p12" and "sio" into library "workLib".
+
+	Command: w
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+	Cell Name: (*) p12 sio
+	View Name: (*) 
+
+	Checkin: (p12.icf)
+	Log Message: (checkin from idmb) Fix a big bug
+	Configuration: (none) ECO.002
+	Advance Primary Index(Y/N): (no) y
+	*IDMS MESSAGE* REPLACE LIB: workLib CV: p12.icf 6.0 IN CONFIG: ECO.002 O.K.
+
+	*IDMS MESSAGE* CHECKIN p12.icf 5.1 TO LIB: workLib CONFIG: 
+	/cadfs7/eda/cchiu/garden/p12.icf
+
+	Checkin: (sio.icf)
+	Log Message: (checkin from idmb) Make it work       
+	Configuration: (none) ECO.001
+	Advance Primary Index(Y/N): (no) 
+	*IDMS MESSAGE* REPLACE LIB: workLib CV: sio.icf 2.1 IN CONFIG: ECO.001 O.K.
+
+	*IDMS MESSAGE* CHECKIN sio.icf 2.0 TO LIB: workLib CONFIG: 
+	/cadfs7/eda/cchiu/garden/sio.icf
+
+	*IDMS MESSAGE* TOTAL: 2 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ W ^^^^^^^^^^^^^^^^^
+
+* [Z] Make diff between two versions of files (diff)
+
+  The difference between two versions of a cellview will be shown.
+
+  Example:
+
+	Command: z
+	Tool Name: (idmb) 
+	Lib Name: (*) workLib
+	Cell Name: (*) test
+	View Name: (*) icf
+	Version Name (pi.si/current): (current) 0.1
+
+	Make diff with version (pi.si/current): (current) 2.0
+	1a2,5
+	> ver 0.2
+	> ver 1.0
+	> create ver 2.0
+	> 
+	*IDMS MESSAGE* DIFF LIB: workLib CV: test.icf 0.1 AND 2.0 O.K.
+
+	*IDMS MESSAGE* TOTAL: 1 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ Z ^^^^^^^^^^^^^^^^^
+
+* [R] Log history of files (rlog)
+
+  Show log messages of all versions of cellviews.
+
+  Example:
+
+	Command: r
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+	Cell Name: (*) memory
+	View Name: (*) icf
+ 
+  LIBNAME   CELLNAME   VIEWNAME  VERSION CI_OWNER  CO_USER LAST CI_TIME/CO_TIM 
+---------- ---------- ---------- ------- -------- -------- --------------------
+   workLib     memory        icf   2.0      cchiu     NONE May  4 16:29:38 1992
+LOG: checkin from idmb
+   workLib     memory        icf   1.0      cchiu     NONE May  1 13:16:21 1992
+LOG: checkin from idmb
+   workLib     memory        icf   0.2      cchiu     NONE May  1 13:14:40 1992
+LOG: checkin from idmb
+   workLib     memory        icf   0.1      cchiu     NONE May  1 10:27:50 1992
+LOG: imported
+   workLib     memory        icf   0.0       NONE     NONE May  1 10:27:50 1992
+*IDMS MESSAGE* TOTAL: 1 CELL(S)
+O.K.
+ 
+^^^^^^^^^^^^^^^^^ R ^^^^^^^^^^^^^^^^^
+
+<<<<<[ Topic: File I/O ]>>>>>
+
+* [I] Import files into library
+
+  Import cellviews from unix directory into library based on a file list.
+
+  Example: Import cellview from a file list "cellview.list".
+
+	Command: i
+	Give The Path To Library: (.) ~/dms
+	Give The Library Name: (workLib) newWorkLib
+	Give File of CellView List: (cellview.list) 
+	Give ViewType (text/binary) Of Files: (text) 
+	*WARNING* view icf does not exist in library newWorkLib
+	IMPORT CV: 8051.icf FROM /home/eda/cchiu/data/8051.icf O.K.
+	IMPORT CV: a2d.icf FROM /home/eda/cchiu/data/a2d.icf O.K.
+	IMPORT CV: io.icf FROM /home/eda/cchiu/data/io.icf O.K.
+	IMPORT CV: memory.icf FROM /home/eda/cchiu/data/memory.icf O.K.
+	IMPORT CV: p12.icf FROM /home/eda/cchiu/data/p12.icf O.K.
+	IMPORT CV: ram.icf FROM /home/eda/cchiu/data/ram.icf O.K.
+	IMPORT CV: rom.icf FROM /home/eda/cchiu/data/rom.icf O.K.
+	IMPORT CV: sio.icf FROM /home/eda/cchiu/data/sio.icf O.K.
+	IMPORT CV: zcd2.icf FROM /home/eda/cchiu/data/zcd2.icf O.K.
+	*IDMS MESSAGE* TOTAL: 9 CELL(S) IMPORTED BY LIST: cellview.list TO LIB: newWorkLib
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ I ^^^^^^^^^^^^^^^^^
+
+  Note:	The content of file "cellview.list" is below which can be obtained by
+	"ls /data/directory/*.icf > cellview.list".
+
+	/home/eda/cchiu/data/8051.icf*
+	/home/eda/cchiu/data/a2d.icf*
+	/home/eda/cchiu/data/io.icf*
+	/home/eda/cchiu/data/memory.icf*
+	/home/eda/cchiu/data/p12.icf*
+	/home/eda/cchiu/data/ram.icf*
+	/home/eda/cchiu/data/rom.icf*
+	/home/eda/cchiu/data/sio.icf*
+	/home/eda/cchiu/data/zcd2.icf*
+
+* [X] Export files out of library
+
+  Export cellviews out of database into a directory based on a file list.
+
+  Example: Export data from library "workLib" to current directory based on
+	   file list "cellview.list".
+
+	Command: x
+	Give The Path To Library: (.) ~/dms
+	Give The Library Name: (workLib) 
+	Give File of CellView List: (cellview.list) 
+	Give the Directory to Export to: (.) 
+	EXPORT CV: 8051.icf TO /cadfs7/eda/cchiu/iDMS/1.1/ O.K.
+	EXPORT CV: a2d.icf TO /cadfs7/eda/cchiu/iDMS/1.1/ O.K.
+	EXPORT CV: io.icf TO /cadfs7/eda/cchiu/iDMS/1.1/ O.K.
+	EXPORT CV: memory.icf TO /cadfs7/eda/cchiu/iDMS/1.1/ O.K.
+	EXPORT CV: p12.icf TO /cadfs7/eda/cchiu/iDMS/1.1/ O.K.
+	EXPORT CV: ram.icf TO /cadfs7/eda/cchiu/iDMS/1.1/ O.K.
+	EXPORT CV: rom.icf TO /cadfs7/eda/cchiu/iDMS/1.1/ O.K.
+	EXPORT CV: sio.icf TO /cadfs7/eda/cchiu/iDMS/1.1/ O.K.
+	EXPORT CV: zcd2.icf TO /cadfs7/eda/cchiu/iDMS/1.1/ O.K.
+	*IDMS MESSAGE* TOTAL: 9 CELL(S) EXPORTED BY LIST: cellview.list FROM LIB: workLib
+
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ X ^^^^^^^^^^^^^^^^^
+
+
+* [E] Find physical location of files
+
+  Return the current location of a cellview.
+
+  Example: Find all occurences of cellview "p12.icf" on the search path.
+
+	Command: e
+	Tool Name: (idmb) 
+	Lib Name: (*) 
+	Cell Name: (*) p12
+	View Name: (*) icf
+
+	*IDMS MESSAGE* CV: p12.icf 2.0 IN LIB: appendLib CONFIG: 
+	/cadfs7/eda/cchiu/dms/appendLib/p12_13/icf_69.2_0
+
+	*IDMS MESSAGE* CV: p12.icf 0.1 IN LIB: newWorkLib CONFIG: 
+	/cadfs7/eda/cchiu/dms/newWorkLib/p12_7/icf_5.0_1
+
+	*IDMS MESSAGE* CV: p12.icf 6.1 IN LIB: workLib CONFIG: 
+	/cadfs7/eda/cchiu/garden/p12.icf
+
+	*IDMS MESSAGE* TOTAL: 3 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ E ^^^^^^^^^^^^^^^^^
+
+* [G] Policy read/lock files
+
+  Lock a cellview if it's in a library specified as RW, readonly if RO.
+
+  Example: Checkout the cellview "p12.icf" in RW(workLib).
+
+	Command: g
+	Tool Name: (idmb) 
+	Lib Name: (*) workLib
+	Cell Name: (*) p12
+	View Name: (*) icf
+	Version Name (pi.si): (current) 
+
+	cellview (p12 icf), version 0.1 has been checked out by cchiu
+	*IDMS MESSAGE* CHECKOUT p12.icf 0.1 FROM LIB: workLib CONFIG: ECO.001
+	/cadfs7/eda/cchiu/garden/p12.icf
+
+	*IDMS MESSAGE* TOTAL: 1 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ G ^^^^^^^^^^^^^^^^^
+
+* [D] Delete files
+
+  Delete cellviews from database.
+
+  Example:
+
+	Command: d
+	Tool Name: (idmb) 
+	Lib Name: (workLib) 
+	Cell Name: (*) junk
+	View Name: (*) icf
+
+	*IDMS MESSAGE* DELETE CV: junk.icf FROM LIB: workLib
+
+	*IDMS MESSAGE* TOTAL: 1 CELL(S)
+	O.K.
+
+	^^^^^^^^^^^^^^^^^ D ^^^^^^^^^^^^^^^^^
+
+<<<<<[ Topic: Misc ]>>>>>
+
+* [M] Misc utility: Memory usage/Unix command/Edit dms.pth
+
+  Miscellaneous	utility.
+
+  Example: Report memory used by the IDMB process.
+
+	Command: m
+	[M]emory usage/[U]nix command/[E]dit dms.pth: (m) m
+	*IDMS MESSAGE* MEMORY USED: 1600304 BYTES
+
+	Execution time=0.43 seconds.
+
+	^^^^^^^^^^^^^^^^^ M ^^^^^^^^^^^^^^^^^
+
+  Example: Execute an UNIX shell command.
+
+	Command: m
+	[M]emory usage/[U]nix command/[E]dit dms.pth: (m) u
+	UNIX command: ls -l idmb
+	-rwxr-xr-x   1 cchiu    cadedag  4157928 Jan 25 16:12 idmb
+	*IDMS MESSAGE* EXECUTE UNIX COMMAND: ls -l idmb O.K.
+	ls -l idmb
+
+	Execution time=6.85 seconds.
+
+	^^^^^^^^^^^^^^^^^ U ^^^^^^^^^^^^^^^^^
+
+  Example: Edit the DMS.PATH file and reparse it
+
+        Command: m
+        [M]emory usage/[U]nix command/[E]dit dms.pth: (m) e
+
+	.. editor vi with the dms.pth file ..
+
+	*IDMS MESSAGE* PARSE DMS PATH FILE O.K.
+	<<<START PARSING /cadfs7/eda/cchiu/iDMS/2.11/dms.pth>>>
+	   $include ~cchiu/iDMS/2.1/dms.pth
+	   <<<START PARSING /cadfs7/eda/cchiu/iDMS/2.1/dms.pth>>>
+	   <<<END OF PARSING /cadfs7/eda/cchiu/iDMS/2.1/dms.pth>>>
+	<<<END OF PARSING /cadfs7/eda/cchiu/iDMS/2.11/dms.pth>>>
+	vi $DMSPATH
+
+	Execution time=7.47 seconds.
+
+	^^^^^^^^^^^^^^^^^ E ^^^^^^^^^^^^^^^^^
+
+
+* [;] Abort commands
+
+  Abort commands at prompts.
+
+  Example:
+
+	Command: v
+	Tool Name: (idmb) ;
+	*IDMS WARNING* COMMAND ABORTED BY SEMICOLON
+
+	^^^^^^^^^^^^^^^^^ V ^^^^^^^^^^^^^^^^^
+
+<<<<<[ Topic: Quit ]>>>>>
+
+* [Q] Quit DMB
+
+  Quit the IDMB.
+
+

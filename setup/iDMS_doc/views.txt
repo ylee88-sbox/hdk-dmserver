@@ -1,0 +1,69 @@
+ 5Using the Multiple Viewnames functionality
+The iDMS multiple views functionality allows a tool to specify only the data format it desires to read, which allows reader tools to become independent of the specific view names given to the formats. This chapter helps the tool to integrate with iDMS so as to use this functionality. The reader who desires to learn more on how the multiple views as a whole work is referred to the iDMS administration guide.
+	The multiple viewname functionality is NOT available for writing cellviews. Tools that write cellviews MUST in all cases know exactly the viewname of the cellview they are writing.
+5.1  Terminology
+In this section the terminology used is described.
+Viewtype: The viewtype of a cellview is the data format of that file. Some examples of viewtypes therefore, are sch, alf, layout, schematic, etc. iDMS allows applications that read data to specify only the viewtype.
+Viewname: The viewname of a cellview is the logical name provided for this cellview, which usually has something to do with the origin of the cellview, e.g: for a cellview which is of viewtype sch, different tools may call the viewname lssch or hdlsch, depending on which tool writes the particular sch file. In other words a viewname is an instantiation of a viewtype. Often a viewname is referred to simply as view. iDMS insists that applications specify the viewname when they WRITE data. For reading data applications may specify either the viewname or the viewtype.
+Extension: The extension of a cellview is the extension of the UNIX file, which represents the cellview when it is checked out from the DMS. 
+E.g: Consider a cell called ALU, which has 2 views lsssch and hdlsch. Each of these views is of the viewtype sch. Now, when a user checks out a cellview say (ALU, hdlsch) - the file will be in the corresponding working directory (workdir) and this file is called (say) ALU.hsch. Thus for this cellview, the viewtype is sch, the viewname is hdlsch, and the extension is hsch.
+5.2  Working
+This section is a short overview of how iDMS implements the multiple views. The intent is to give the application programmer a better understanding of the functionality available. iDMS has a global per project file pointed to by the environment variable IDMS_GLOBALFILE, this file can have potentially several tables which are useful to enforce methodology on the project. The two tables of interest to us are the "iDMSIntelDataFormatToNameTable" and the "iDMSViewNameToExtTable". 
+5.2.1  iDMSIntelDataFormatToNameTable
+This table has two columns. The first column consists of the viewtype, and the second column consists of a colon delimited ordered list of viewnames, which that viewtype maps to. 
+E.g: 
+Table iDMSIntelDataFormatToNameTable (
+############################################################
+# The following table defines viewtype -> viewnames mapping
+############################################################
+# Format-name Switch_list
+############################################################
+ sch lsssch:hdlsch
+ alf alf:alfp6:alfexp
+############################################################
+)
+The semantics of this for the application which would like to read a file say a.alf is as follows: When the application makes a call to iDMS asking for a cell "a" of viewtype "alf", iDMS will look at this table and then look for the cell "a" with viewname "alf" through the RWpath (read/write path in dms.pth). If this cellview is not found, then iDMS will look for the cell "a" with viewname "alfp6" through the RWpath entry corresponding to the calling tool with view alfp6. If this search is also unsuccessful, then iDMS will look for cell "a" with viewname "alfexp". 
+2	If this table is not present in the global file, or if the global file is not defined, then the default mapping is a 1:1 mapping between the viewtype and the viewname. In our above example, this means that iDMS will look for cell "a" with viewname "alf", when asked for cell "a" with viewtype "alf". 
+5.2.2  iDMSViewNameToExtTable
+Similar to the above table - this table is also a 2 column table. However, each column of this table has exactly one entry. The first column is the viewname and the second column is the file extension that this name corresponds to. By using this table, the application is independent of the actual name of the file when it exists in the working directories.
+E.g:
+Table iDMSViewNameToExtTable(
+############################################################
+# The following table defines format -> viewnames mapping
+############################################################
+# Viewname Extension
+############################################################
+ lsssch lsch
+ hdlsch hsch
+ alf alf
+ alfp6 alfp
+ alfexp alfe
+ alftop alft
+ alfbot alfb
+############################################################
+)
+Now to continue the above example - if an application wanted a cell named "a", and a viewtype "sch", then assuming that the cellview ("a", "lsssch") was checked out to the user and the dms.pth pointed to the working directory. Then iDMS would return to the application the fullpath name to the file "a.lsch", The application would not know either the viewname or the physical file extension.
+2	If this table is not specified - the default mapping is the idempotent function, i.e: iDMS would look for the viewname as the extension. Thus if the iDMSIntelDataFormatToNameTable were defined, but the iDMSViewNameToExtTable were either not defined or did not contain the lsssch entry, then an application looking for the cell "a" viewtype "sch" would get the full path to the file a.lsssch.
+2	The case both the above table are not defined or do not contain the appropriate entry. Then, iDMS will look for the file as cellname.viewtype.
+5.3  Integration
+As will be seen from the above the application is totally independent of the tables/extensions and any methodology chosen by the project will encapsulate the application in a seamless manner. In order for any application to take advantage of the above functionality it should call the following iDMS procedure when reading a cellview.
+5.3.1  C-interface
+int dmsCReadCellViewByViewType(cellName, viewType, FilePath)
+char *cellName, *viewType;
+char **filePath;
+The arguments are the cellname, viewtype and a pointer which will return with the value of the filepath. We should emphasize that the memory contents of the filepath are guaranteed until the next call to iDMS. If the application requires it for longer it should copy it into some variable of their own.
+5.3.2  Mainsail-interface
+LONG INTEGER
+PROCEDURE dmsMslReadCellViewByViewType(
+ USES STRING cellName;
+ USES STRING viewType;
+ PRODUCES STRING filePath; );
+The arguments are the same as those for the C interface. The filePath as before is available to the application until the next call to iDMS.
+5.3.3  SKILL-interface
+dmsSkillReadCellViewByViewType(
+	t_cellName
+	t_viewType
+) => t_pathName/nil
+The SKILL interface is different in that the procedure returns the fullpathname if successful. The arguments are as above.
+
+	For an application that would like to checkout the cellview. This interface is not useful. The reason is that a checkout implies that the application will write the cellview. For this, iDMS requires that the application know exactly which cell and viewname is being written. This interface is described in detail in the first chapter.

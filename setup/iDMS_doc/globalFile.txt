@@ -1,0 +1,120 @@
+ 1Guide to the iDMS global file
+The iDMS global file is a mechanism provided for projects to enable them to customize their data management environment. This document describes each of the tables in the file, and how they are intended to be used. It also provides examples and some cases of what should not be done. The reader is cautioned about careful usage of this feature, since the tables are themselves analyzed at run-time, and some errors may lead to a chaotic situation. In future releases, we hope to improve the error handling capability of this product.
+In order for a global file to be read by iDMS, the account where the tool is running should have the environment variable IDMS_GLOBALFILE defined to point to this file. If this environment variable is not defined, or there is a syntax error detected while parsing this file, iDMS will revert to default behavior for each of the tables. This default behavior is described along with each table. 
+2	If a particular table is not present in this file, then the iDMS reverts to the default behavior for that table. 
+1.1  The attribute Control Table 
+Table Name: iDMSAttributeControlTable
+Number of Columns: 3 viz: attribute Name, attribute inheritance value, list of attributes nullified when this attribute is set.
+Type: Indexed by the attribute Name in column 1.
+Default behavior: If the file is not defined or there is a syntax error in reading the file, the attribute PI is disabled. If the file is read correctly and the table is not defined, then all attributes are inherited and there are no inter-attribute dependencies.
+This table is meant to enable projects to control two things:
+1.	The inheritance of attributes: When a cellview is checked out, then the UNIX meta-data, or the shadow property holding the attributes of this new version, will contain ONLY those attributes which are supposed to be inherited. 
+2.	The nullification of attributes: When an attribute is set, it is possible that a user may require some other attributes of this object to be nullified(reset). This feature enables the user to specify this.
+-	Example 
+Table iDMSAttributeControlTable (
+###############################################################
+# attrName attrIsInherited attrNullifies
+###############################################################
+myTestAttr1 0 myHierAttr/attr1:myTestAttr2
+myTestAttr2 1 myHierAttr/attr2:myTestAttr1
+myHierAttr/attr2 1 -
+myHierAttr/attr2 1 myHierAttr/attr1
+################################################################
+This table describes the way iDMS sets and nullifies attributes. When the attribute in the attrName column is set - it causes all the attributes in the attrNullifies column to be reset. The attrIsInherited column can be a 0/1/2. If the value is a 0, then the attribute is not copied to the shadow version. If it is a 1, then the attribute is copied to the shadow version with its present value. If it is a 2, then the attribute is copied but with a NULL value.
+If there are any attributes on an object which are not present in this table, then at checkout time, they are not moved to the new version, and at setting time, they do not nullify any other attributes.
+2	The attrName myHierAttr/attr1 denotes a hierarchical attribute myHierAttr with a sub attribute named attr1.
+2	If the IDMS_GLOBALFILE environment variable is not set by the user, then attribute PI and all global table functionality is disabled externally. The default viewmapping is used as defined in the views.doc document,
+1.2  The Generated Attribute Table
+Table Name: iDMSGeneratedAttributeTable
+Number of Columns: 3 viz: dms event, viewname, and the list of attributes to be generated, when the event occurs.
+Type: Indexed by the event and the viewname.
+Default behavior: If the file is not defined or there is a syntax error in reading the file, the attribute PI is disabled. If the file is read correctly and the table is not defined, or the event/viewname is not specified then no attributes are generated, 
+This table allows the project to let iDMS help with attributes that they want tracked automatically depending on certain event or a certain viewname.
+-	Example
+Table iDMSGeneratedAttributeTable(
+#########################################
+# event viewName attributeList
+##############################################
+checkin alflay dirty:username:toolname:time
+checkin sch_netlist time
+############################################
+)
+2	Possible events are: create, checkout, save, install, checkin, update, and cancelCheckout. Note that in this case, create refers to createUnixFile because Opus does not allow attributes to be set on newly created cellviews.
+2	The attributes that can be generated automatically are: dirty, toolname, username, and time. They must be spelled exactly as they are here.
+	The call to this procedure is performed only when the event is completed successfully. 
+	If the attribute PI is disabled as described above, then this functionality is also disabled.
+1.3  The Intel Data format to user viewNameList mapping table 
+Table Name: iDMSIntelDataFormatToNameTable
+Number of Columns:3 viz The toolname, viewType or Intel Data Format, and the user defined viewName list
+Type: Indexed by both toolname and viewType (Intel Data Format)
+Default behavior: If the table is not defined, the file is not loaded or environment variable is not defined, then iDMS takes a 1:1 mapping and the viewType = viewName is assumed.
+This table enables users to get an extra degree of freedom with respect to the data they read.
+-	Example
+Table iDMSIntelDataFormatToNameTable (
+#####################################################
+# toolName viewType viewNameList
+#####################################################
+ dls sch lsssch:hdlsch:p6sch
+ dls alf alflay:alfpln:alf
+ chppr sch hdlsch:lsssch
+ dls text icf:text:txt:isf:saf
+##################################################
+)
+Consider a tool like dls would like to read an alf file. It requests the cell named x from iDMS. The following sequence of events take place:
+1.	iDMS looks up the table and initiates search for cellview (x,alflay).
+2.	If a cellview is found in the RWpath corresponding to the dms.pth entry for dls.alflay, we are done and the pathname is returned.
+3.	iDMS looks down dms.pth entry for dls.alfpln for (x,alfpln). If found, we are done and the pathname is returned.
+4.	iDMS looks down dms.pth entry for dls.alf for (x,alf). If found, we are done and the pathname is returned.
+5.	The cellview was not found, so return error.
+Had this entry not been in the table, then iDMS would simply look in the dms.pth file for dls.alf (since by default it is a 1:1 mapping from viewType - viewName).
+	This table works together with the next one (viewName-Extension table) in a very important manner. This is described in the next section.
+	This table is used for the read calls only NOT for the write calls.
+1.4  The user viewName to file extension table 
+Table Name: iDMSViewNameToExtTable
+Number of Columns:2 viz the viewName and the UNIX file extension.
+Type: Indexed by viewName
+Default behavior: If the table is not defined, the file is not loaded or environment variable is not defined, iDMS takes a 1:1 mapping and the viewName = extension is assumed.
+This table provides the user with a way of controlling the extensions which are written to UNIX. It also provides tools a way to have backward compatibility as well, so that non-Cadence data could be read by simply giving an internal view the same extension.
+-	Example
+Table iDMSViewNameToExtTable (
+#####################################################
+# viewName Ext
+####################################################
+ lsssch lsch
+ hdlsch hsch
+ p6sch psch
+ p6alf palf
+###################################################
+)
+The way this table interacts with the above table is important to the user. Consider an example of an application (dls) requesting a cell x of the sch format. iDMS will look into the iDMSIntelDataFormatToNameTable table and look for the viewName lsssch. Now, iDMS looks down the RWpath for dls.lssch - searching every Cadence library for the cellview (x, lssch), and every UNIX directory for the file x.lsch.
+	When a cellview z.lssch is checked out in the above scheme of things, it will exist the some UNIX directory as x.sch.
+1.5  The user trigger table
+Table Name: iDMSUserTriggerTable
+Number of Columns:3 viz: dms event, pre-trigger name post-trigger name.
+Type: Indexed by the dms event
+Default behavior: If the table is not defined, the file is not loaded or environment variable is not defined. iDMS assumes no user triggers.
+This table provides the user with a way to customize the dms event behavior. The user triggers are all written in SKILL and loaded in at run-time. The pre-trigger is called before the dms event is started. If this call returns a nil, then the event is not executed. The post-trigger is called after the dms event is completed successfully, and its return value does not have any bearing on the event itself.
+-	Example
+Table iDMSUserTriggerTable (
+#####################################################
+# event pre-trigger post-trigger 
+###############################################
+checkout myPreFunc myPostFunc
+checkin - myCheckinFunc 
+###################################################
+)
+The case a project wants only one of the pre or post triggers, they should make the other field a "-", as shown above. If any event does not occur in the table iDMS assumes that the user does not want any user triggers invoked.
+In order for the user triggers to be invoked the format of each function defined should be:
+-	Function declaration for myCheckinFunc
+myCheckinFunc(
+	t_nullgt
+	t_cellName
+	t_viewName
+	t_pathName
+) => t/nil
+In addition, the user must have the environment variable IDMS_USERTRIGGERFILE be set to point to the file which holds all these SKILL functions at run-time. 
+2	Possible events are: create, checkout, save, install, checkin, update, and cancelCheckout. Note that in this case, create refers to both createCellView and createUnixFile
+	The pre-trigger should be used sparingly due to the fact that if the pre-trigger fails, the intended operation will not be executed.
+	All the user defined SKILL triggers MUST be in the same file.
+	The user has to take responsibility to ensure that the nullgt flag is treated appropriately. Otherwise, if the trigger tries to do a graphic application in a null_gt mode, the result could be a FATAL.
+	If for any reason any tool/user should want to disable ALL user triggers - they should set the IDMS_DISABLEUSERTRIGGER environment variable, before starting the tool. In such a case iDMS will not invoke the user trigger mechanism.

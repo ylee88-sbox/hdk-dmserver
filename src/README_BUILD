@@ -1,0 +1,5 @@
+Build notes:
+
+Use gcc at least 4.5.x, eg have PATH=/usr/intel/pkgs/gcc/4.5.1/bin:$PATH
+
+configure --prefix=/p/dt/env/jyong2_dmserver --with-synchronicity_header=/p/dt/cad/em64t_SLES10/synchronicity/V6R2013HF2/syncinc/linux_a64/scapi --with-synchronicity_ldflags="-L/p/dt/cad/em64t_SLES10/synchronicity/V6R2013HF2/syncinc/linux_a64/lib.Linux/ -Wl,-rpath-link,/p/dt/cad/em64t_SLES10/synchronicity/V6R2013HF2/syncinc/linux_a64/code/bin,-rpath-link,/p/dt/cad/em64t_SLES10/synchronicity/V6R2013HF2/syncinc/linux_a64/lib.Linux" --with-synchronicity_libs="-lfl -lscapi"

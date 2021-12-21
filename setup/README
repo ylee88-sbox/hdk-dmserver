@@ -1,0 +1,371 @@
+#========================================================================
+#
+# dmserver version 8.2+ README FILE
+#
+#========================================================================
+
+Please read carefully, there are quite a few changes
+
+Directories
+===========
+
+bin            - dmserver, idmSlave, idmb, itk and server_ipc executables
+                 and for the DesignSync flavors of same, invocation time
+                 environment creation wrappers
+
+libs           - "*.a" libraries so relink.csh can be done repeteadly
+
+iDMS_doc       - iDMS (old) documentation
+
+setup          - Unified Environment setup control files
+
+
+CHANGES
+=======
+
+1. Post installation work
+  - linking with your version of DesignSync
+  - Handling the setuid bit ( enabling correct use of LAN-cache )
+2. Better relink.csh
+3. Using multiple versions of synchronicity on the same project concurrently
+4. Better wrappers. "One size fits all"
+5. The setup and wrappers are now more restrictive.
+6. Bug fixes. Optimized code compiled natively on SUSE. Limitations.
+7. dmsapi extensions from CCDO now part of the official DTS installation
+8. The new turbo and twin turbo modes offer significant speedup
+9. How to debug
+
+1. Post installation work
+---------------------------------------------------
+
+- linking with your version of DesignSync
+
+  After pulling dmserver (and related utils) from the release area.  The first
+  thing you're going to need to do is to re-build the executables by re-linking
+  the DTS provided object code with the libraries exported by the version of
+  DesignSync currently in use by your project.
+
+  But before you do that...
+
+- Handling the setuid bit ( enabling correct use of LAN-cache )
+
+  Most projects make use of DesignSync's share population method that uses
+  a dbAdmin exclusive write LAN-cache disk area - This allows projects to save
+  on the amount of disk space consumed when populating multiple tags of the same
+  clump of data.
+
+  The UNIX permissions on the root dir(s) of the cache disk space have to be manually
+  setup to limit access and that access is then maintained by the DesignSync
+  code so that it is readonly to a user group and read/write-only by the cache files
+  owner (syncAdm).  This is the vendor's way to protect the cache from accidental
+  deletion/corruption by users ( unwise or inadvertent use of rm -rf, editing, etc )
+
+  Using an example from CCDO, syncAdm is "dpgenv" and all valid users belong
+  to group the "nhm":
+
+  If we list the synchronicity binaries from $SYNC_DIR/bin.Linux we see
+
+  1196 -rwsr-x---  1 dpgenv nhm 1217194 2006-06-15 19:39 stclc*
+  1196 -rwsr-x---  1 dpgenv nhm 1217194 2006-06-15 19:39 dssc*
+   940 -rwsr-x---  1 dpgenv nhm  956762 2006-06-15 19:39 syncd*
+   940 -rwsr-x---  1 dpgenv nhm  956612 2006-06-15 19:39 syncfisrv*
+   920 -rwsr-x---  1 dpgenv nhm  937814 2006-06-15 19:39 syncfisrvpp*
+
+  (Note these permissions are achived by running DesignSync's suidenable utility after
+        installing the release as dpgenv with new files being created for group nhm)
+
+  For dmserver, and the related utilities released with it, being compatible with
+  this data access scheme requires that the iDMS-executables (which are linked with
+  DesignSync libraries) be released to users with the same UNIX ownership and execute
+  permissions that are seen on the DesignSync client cmds (shown above).
+
+  To do this;
+    <become your dbAdmin>
+    <place a copy of this release when your users will execute it from ( all the files
+        of the release will then be owned by your dbAdmin account - the same account
+        that owns the LAN-cache disk file space )>
+    <establish a command shell in which you can execute dssc or stclc>
+    cd <to the root dir of this release>
+    setenv DMSERVER_BIN_DIR `pwd`/bin
+    cd bin
+    ./relink.csh
+    
+  As a result you should see something that looks like the following:
+  > /bin/ls $DMSERVER_BIN_DIR/{dmserver,idm*,itk}
+
+   592 -rwsr-xr-x  1 syncAdm prjGrp  600192 2008-04-09 11:51 dmserver*
+   628 -rwsr-xr-x  1 syncAdm prjGrp  637461 2008-04-09 11:51 idmSlave*
+   716 -rwsr-xr-x  1 syncAdm prjGrp  727020 2008-04-09 11:51 idmb*
+   628 -rwsr-xr-x  1 syncAdm prjGrp  638835 2008-04-09 11:51 itk*
+
+  Note the "s" bit and same owner/group like for dssc & co...
+
+  Also note that when you move executables around, the setuid bit gets "dropped".
+  Any linker generated hardcoded paths will remain so it would be ok to restore the "s"
+  bit by running:
+  
+  chmod u+s dmserver ... ... ...
+
+
+2. Better relink.csh
+---------------------------------------------
+
+You do not be to be in UE or in a specific directory to run relink.csh
+
+You can now run relink.csh on the Suse64 - you do not have to perform the re-link on Red Hat.
+
+<path_to_dmserver_installation>/bin/relink.csh -bin_dir <path_to_dmserver_installation>/bin 
+      -sync_dir <synchronicity_client_path_up_to_and_including_syncinc>
+
+
+$DMSERVER_BIN_DIR/relink.csh -bin_dir $DMSEVER_BIN_DIR -sync_dir $SYNC_DIR
+
+The switches "-bin_dir" and "sync_dir" can specify any directory. I used the variables here for convenience.
+
+
+
+3. Using multiple versions of synchronicity on the same project concurrently
+------------------------------------------------------------------------------
+
+Because of problems that can occur when you have $SYNC_DIR set to a different location than the one "burned in"
+and the ensuing tickets, we are now checking at launch-time if they match and abort dmserver if not.
+
+If projects use multiple versions of synchronicity, we recommend that use uses the CCDO methodology
+and encode into the dmserver version release dir name both the dts version and relink.csh'ed synchronicity version.
+
+You can install multiple copies of dmserver 8.2_stOpt64 from dt_installer and run relink.csh with different
+values for -sync_dir.
+
+Example from WSM:
+
+echo $DMSEVER_BIN_DIR
+/nfs/site/proj/dpg/unified/da_projects/prd/nhm/utils/tool_utils/dmserver/sync_4.2sp4hf4_mssql_dts_6.3.2_wsm_1.1/bin
+
+sync_4.2sp4hf4_mssql_dts_6.3.2
+^^^^^^^^^^^^^^^^^^^^     ^^^^^
+version of sync          dts version
+client
+
+
+
+4. Better wrappers. "One size fits all"
+---------------------------------------
+
+If you look carefully, you'll notice that we use a wrapper to launch each executable.  This is done to
+ensure that the correct Synchronicity environment is asserted prior to activating the DesignSync linked
+modules - esp the TCLLIBPATH environment variable.
+
+Given the need to to that, we leverage its existence to do some other checking to cut-off a number of
+self-inflicted problems that get rasied by new projects.
+
+NOTE: that the wrapper is coded in perl rather than t/csh due to a bug in how t/csh deals with already open
+file descriptors - needed in particular by dmserver...
+
+However, we can use one single perl wrapper and link to it under 4 different names.
+
+Straight from the wrapper comments:
+
+# The old wrappers are now simplified and they are all linked
+# to this one (sync_wrapper.pl). The name of the links are
+# important because they are what most users setup's are accustomed to lauching ( defined in related setup dir )
+#
+# Thus <exe>_sync_wrapper -> sync_wrapper.pl
+#
+# will ultimately exec:
+#
+# $DMSEVER_BIN_DIR/<exe>
+#
+# Current wrappers:
+#   dmserver_sync_wrapper
+#   idmb_sync_wrapper
+#   idmSlave_sync_wrapper
+#   itk_sync_wrapper
+#
+
+As described in the generic wrapper comments, the wrapper tries to "source" a .csh file into perl.
+To do this, I've implemented a approximation of a csh -> perl source command which seems to work
+decent enough for the "average" $SYNC_DIR/.syncinc file.
+
+In the spirit of the DEBUG (see #9), if you "setenv  DEBUGDMS" you get what variables from the csh file are set.
+
+If you are an environment DA and need more information, please look directly in the wrapper code.
+
+The wrappers now also check if $SYNC_DIR points to the same place as the hardcoded libs in the executable.
+If a difference is found, they will exit with an error.
+
+For example, running platocbd in NHM with dmserver 8.2_stOpt64 straight out of dts CAD_ROOT will generate
+this message in the platocbd invocation window:
+
+-E- dmserver_sync_wrapper - *******************************************************************************************
+-E- dmserver_sync_wrapper - SYNC_DIR (/p/dpg/unified/proliferable/ds/4.2sp3_nhm/syncinc) is set to a different value than
+-E- dmserver_sync_wrapper - the one linked in dmserver (/p/dt/cad/x86-64_linux26/synchronicity/4.0/syncinc)
+-E- dmserver_sync_wrapper - this causes unpredictable behavior so you need to either:
+-E- dmserver_sync_wrapper - a) setenv $SYNC_DIR /p/dt/cad/x86-64_linux26/synchronicity/4.0/syncinc and rerun -OR-
+-E- dmserver_sync_wrapper - b) $DMSERVER_BIN_DIR/relink.csh -bin_dir $DMSERVER_BIN_DIR -sync_dir $SYNC_DIR
+-E- dmserver_sync_wrapper      (option b) needs syncadm priviledges)
+-E- dmserver_sync_wrapper - *******************************************************************************************
+
+If you feel that this is too restrictive please let me know (Sorin.Blebea@intel.com)
+
+
+5. The setup and wrappers are now more restrictive.
+---------------------------------------------------
+
+As specified above, we support only one synchronicity at the time for any version of installed dmserver
+
+In the project environment, it is also important to check if the "setuid" bit is set and if dmserver and synchronicity
+executables belong to same user and group.
+
+This check is added in the dmserver.postsetup
+
+For example, if you try to run in Nehalem environment with a version straight out of DTS development:
+
+pvxSETUP-nhm-b0> source /p/dt/env_work01/dmserver/release/8.2_stOpt64/setup/dmserver.postSetup
+-E- dmserver.postSetup: Sync user  (dpgenv) is different from dmserver (sorin)
+-E- dmserver.postSetup: Sync group (nhm) is different from dmserver (dt_users)
+-E- dmserver.postSetup: Sync user  (dpgenv) is different from idmb (sorin)
+-E- dmserver.postSetup: Sync group (nhm) is different from idmb (dt_users)
+-E- dmserver.postSetup: Sync user  (dpgenv) is different from itk (sorin)
+-E- dmserver.postSetup: Sync group (nhm) is different from itk (dt_users)
+-E- dmserver.postSetup: Sync user  (dpgenv) is different from idmSlave (sorin)
+-E- dmserver.postSetup: Sync group (nhm) is different from idmSlave (dt_users)
+-E- dmserver.postSetup: idmb is missing the 's' bit - you should run chmod u+s as user dpgenv
+-E- dmserver.postSetup: itk is missing the 's' bit - you should run chmod u+s as user dpgenv
+-E- dmserver.postSetup: idmSlave is missing the 's' bit - you should run chmod u+s as user dpgenv
+
+6. Bug fixes. Optimized code compiled natively on SUSE. Limitations
+-------------------------------------------------------------------
+
+All builds of dmserver are now complete. In the past, the SUSE builds were incomplete, just containing the _novendor executables.
+
+Also, you don't need a RedHat machine to build/link and relink.csh any more.
+
+The "native" SUSE64 build is still 32 bits since we still link with synchronicity libraries that are available
+only on 32 bits.
+
+As of this moment (6/19/2008 12:50), synchronicity 5.0p2 is still released on RH32
+
+All dmserver executables seem to run fine on SLES10.
+
+All major bugs opened against dmserver have been fixed. The code is also now compiled with -O2 which allows the new additions 
+(turbo) to work as fast as possible.
+
+Among other things, a dms.pth file can be longer than 400k lines now (previously would die ~131K)
+The full path to older versions of cells (in synchronicity cache) also works (again)
+
+Message handling between the iDMS and DesignSync layers was improved to address/support the DesignSync v4.2sp4HF5 patch
+the enables action retrys when the data server is in backup or maintenence modes.
+
+
+7. dmsapi extensions from CCDO now part of the official DTS installation
+---------------------------------------------------------------------------
+
+These files were installed here from CCDO after a minimum cleanup. It is possible to talk to dmserver in tcl and perl
+using cwshell executable.
+
+We are planning in the future to support a straight perl - dmserver loop and to remove dependencies to cwshell.
+
+Will add more documentation about this in the future. For now, it is done to make sure the dmserver installation will
+work for nhm/wsm/+++ out of the box.
+
+8. The new turbo and twin turbo modes offer significant speedup
+---------------------------------------------------------------
+
+This feature is present in the code but it is by default disabled. It was developed for wsm and it is still in beta.
+
+To invoke, setenv TURBO_DMSERVER <value>:
+
+If TURBO_DMSERVER is not set, nobody will ever know that any change happened
+If TURBO_DMSERVER is set to <something> simple turbo is engaged
+If TURBO_DMSERVER is set to TWIN we get the TT (twin turbo)
+
+It turns out that the dominant time when reading cells from libraries is the API call which retrieves the version information.
+
+Instead of this, the turbo version simply uses the .SYNC/Contents file to retrieve the version. This works right now
+only for straight files (like lnfs from v00basiclay) and not for collections (future release).
+No other changes between simple turbo and vanilla mode.
+
+The mechanism seems to be pretty reliable (opendir + .SYNC/Contents) and was developed and tested in production for
+WSM/NHM with the sscan tool. The turbo part is a C++ translation of the sscan perl code.
+
+The "twin turbo" mode is also faster than even reading straight from Unix directories since it does
+opportunistic cache-ing of all directories where a cell is found.
+For example, the first time a lnf cell is fond in v00basiclay, all 7151 cells attributes (full path, version, etc) are
+cached.
+
+Because the order of caching directories is random, this might produce random results if there are duplicate cell names
+in libraries. This is something we check for reactivelly. 
+
+If you work in a test case where you know there are no duplicates, please give it a try. 
+
+Benchmark
+---------
+
+Machine:
+
+Linux plxc1128 2.6.5-7.276.PTF.196309.1-smp #1 SMP Mon Jul 24 10:45:31 UTC 2006 x86_64 x86_64 x86_64 GNU/Linux
+Dual 3.6 GHz x86_64 Intel(R) Xeon(TM) CPU 3.60GHz with 7.694 GB RAM, and 15 GB swap space with gcc version 3.3.3 on Linux 2.6.5-7.276.PTF.196309.1-smp
+
+IDMS debug mode (slightly slower) with writing lots of info in a log file (also flushed)
+
+Test case: mlpicsp.lnf
+
+WARD location: NFS DISK (no /tmp)
+
+Speed varies. The LNF read part (Total - DMSERVER time) is 90s +/- 30s. 
+
+We are quoting the advertised number 
+
+========+===========+========================+====================+=====================+
+Mode    |Total time | Total time improvement | DMSERVER find time | DMSERVER improvement|
+========+===========+========================+====================+=====================+
+classic | 18m15s    |     1X                 |  16m05s            |  1X                 |
+--------+-----------+------------------------+--------------------+---------------------+
+turbo   |  2m22s    |    >7X (7.71)          |   1m06s            | >10X (14.62)        |
+--------+-----------+------------------------+--------------------+---------------------+
+twin t  |  1m14s    |    >14X (14.79)        |      6s            | >50X (160)          |
+========+===========+========================+====================+=====================+
+
+9. How to debug
+---------------
+
+In the process of implementing turbo and fixing some bugs I had to resurrect the iDMS debug feature
+in order to be able to track the behavior.
+I added more messages, it is quite verbose and useful when debugging various problems with the API.
+
+To enable:
+
+*WARNING* - in spite of having "FILE" in the name the variable DMSLOGFILE IS A *DIRECTORY*
+            (somebody made this decision 15 years ago or so...)
+
+setenv DMSLOGFILE /tmp/$LOGNAME/dmslog 
+setenv DEBUGDMS t
+
+#for the turbo part, adding more stuff
+setenv TURBO_DEBUG
+
+
+If the setuid bit is set, Linux disables any LD_LIBRARY_PATH and dynamic loading mechanism
+for obvious security reasons.  So there is no need to do this explicitly
+
+Do not bother trying to attach to these processes with a debugger if you are not logged in as the tool owner.
+
+If you move the location of your synchronicity client code/release, the executables will also break since the
+hardcoded paths (placed in sync code by DesignSync's suidenable and iDMS code by relink.csh process) will no
+longer be valid.
+
+A "classic" dmserver, which does not use setuid looks like this if LD_LIBRARY_PATH is not set.
+
+ldd dmserver |grep scapi
+       libscapi.so => not found
+
+It will then pick the library from whatever location LD_LIBRARY_PATH points to so we could have a dmserver that
+works well with multiple versions of synchronicity.
+
+For the setuid enabled one, (linked with -rpath) we get "the worse of both worlds" since we are using shared libraries,
+but we cannot change them since they are "burned in the executable":
+
+ldd $DMSERVER_BIN_DIR/dmserver | grep scapi
+        libscapi.so => /p/dpg/unified/proliferable/ds/4.2sp4hf4_mssql/syncinc/lib.Linux/libscapi.so (0x55626000)
+
+This can be accomplished by running relink.csh which not only "burns in" the specified path but also sets the setuid bit.

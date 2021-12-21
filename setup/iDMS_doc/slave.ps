@@ -1,0 +1,1900 @@
+%!
+%%BeginFeature: *Duplex True
+true statusdict /setduplexmode get exec false statusdict /settumble get exec
+%%EndFeature
+%%BoundingBox: (atend)
+%%Pages: (atend)
+%%DocumentFonts: (atend)
+%%EndComments
+%
+% FrameMaker PostScript Prolog 3.0, for use with FrameMaker 3.0
+% Copyright (c) 1986,87,89,90,91 by Frame Technology Corporation.
+% All rights reserved.
+%
+% Known Problems:
+%	Due to bugs in Transcript, the 'PS-Adobe-' is omitted from line 1
+/FMversion (3.0) def 
+% Set up Color vs. Black-and-White
+	/FMPrintInColor systemdict /colorimage known
+		systemdict /currentcolortransfer known or def
+% Uncomment this line to force b&w on color printer
+%   /FMPrintInColor false def
+/FrameDict 195 dict def 
+systemdict /errordict known not {/errordict 10 dict def
+		errordict /rangecheck {stop} put} if
+% The readline in 23.0 doesn't recognize cr's as nl's on AppleTalk
+FrameDict /tmprangecheck errordict /rangecheck get put 
+errordict /rangecheck {FrameDict /bug true put} put 
+FrameDict /bug false put 
+mark 
+% Some PS machines read past the CR, so keep the following 3 lines together!
+currentfile 5 string readline
+00
+0000000000
+cleartomark 
+errordict /rangecheck FrameDict /tmprangecheck get put 
+FrameDict /bug get { 
+	/readline {
+		/gstring exch def
+		/gfile exch def
+		/gindex 0 def
+		{
+			gfile read pop 
+			dup 10 eq {exit} if 
+			dup 13 eq {exit} if 
+			gstring exch gindex exch put 
+			/gindex gindex 1 add def 
+		} loop
+		pop 
+		gstring 0 gindex getinterval true 
+		} def
+	} if
+/FMVERSION {
+	FMversion ne {
+		/Times-Roman findfont 18 scalefont setfont
+		100 100 moveto
+		(FrameMaker version does not match postscript_prolog!)
+		dup =
+		show showpage
+		} if
+	} def 
+/FMLOCAL {
+	FrameDict begin
+	0 def 
+	end 
+	} def 
+	/gstring FMLOCAL
+	/gfile FMLOCAL
+	/gindex FMLOCAL
+	/orgxfer FMLOCAL
+	/orgproc FMLOCAL
+	/organgle FMLOCAL
+	/orgfreq FMLOCAL
+	/yscale FMLOCAL
+	/xscale FMLOCAL
+	/manualfeed FMLOCAL
+	/paperheight FMLOCAL
+	/paperwidth FMLOCAL
+/FMDOCUMENT { 
+	array /FMfonts exch def 
+	/#copies exch def
+	FrameDict begin
+	0 ne dup {setmanualfeed} if
+	/manualfeed exch def
+	/paperheight exch def
+	/paperwidth exch def
+	/yscale exch def
+	/xscale exch def
+	currenttransfer cvlit /orgxfer exch def
+	currentscreen cvlit /orgproc exch def
+	/organgle exch def /orgfreq exch def
+	setpapername 
+	manualfeed {true} {papersize} ifelse 
+	{manualpapersize} {false} ifelse 
+	{desperatepapersize} if
+	end 
+	} def 
+	/pagesave FMLOCAL
+	/orgmatrix FMLOCAL
+	/landscape FMLOCAL
+/FMBEGINPAGE { 
+	FrameDict begin 
+	/pagesave save def
+	3.86 setmiterlimit
+	/landscape exch 0 ne def
+	landscape { 
+		90 rotate 0 exch neg translate pop 
+		}
+		{pop pop}
+		ifelse
+	xscale yscale scale
+	/orgmatrix matrix def
+	gsave 
+	} def 
+/FMENDPAGE {
+	grestore 
+	pagesave restore
+	end 
+	showpage
+	} def 
+/FMFONTDEFINE { 
+	FrameDict begin
+	findfont 
+	ReEncode 
+	1 index exch 
+	definefont 
+	FMfonts 3 1 roll 
+	put
+	end 
+	} def 
+/FMFILLS {
+	FrameDict begin
+	array /fillvals exch def
+	end 
+	} def 
+/FMFILL {
+	FrameDict begin
+	 fillvals 3 1 roll put
+	end 
+	} def 
+/FMNORMALIZEGRAPHICS { 
+	newpath
+	0.0 0.0 moveto
+	1 setlinewidth
+	0 setlinecap
+	0 0 0 sethsbcolor
+	0 setgray 
+	} bind def
+	/fx FMLOCAL
+	/fy FMLOCAL
+	/fh FMLOCAL
+	/fw FMLOCAL
+	/llx FMLOCAL
+	/lly FMLOCAL
+	/urx FMLOCAL
+	/ury FMLOCAL
+/FMBEGINEPSF { 
+	end 
+	/FMEPSF save def 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	[/fy /fx /fh /fw /ury /urx /lly /llx] {exch def} forall 
+	fx fy translate 
+	rotate
+	fw urx llx sub div fh ury lly sub div scale 
+	llx neg lly neg translate 
+	} bind def
+/FMENDEPSF {
+	FMEPSF restore
+	FrameDict begin 
+	} bind def
+FrameDict begin 
+/setmanualfeed {
+%%BeginFeature *ManualFeed True
+	 statusdict /manualfeed true put
+%%EndFeature
+	} def
+/max {2 copy lt {exch} if pop} bind def
+/min {2 copy gt {exch} if pop} bind def
+/inch {72 mul} def
+/pagedimen { 
+	paperheight sub abs 16 lt exch 
+	paperwidth sub abs 16 lt and
+	{/papername exch def} {pop} ifelse
+	} def
+	/papersizedict FMLOCAL
+/setpapername { 
+	/papersizedict 14 dict def 
+	papersizedict begin
+	/papername /unknown def 
+		/Letter 8.5 inch 11.0 inch pagedimen
+		/LetterSmall 7.68 inch 10.16 inch pagedimen
+		/Tabloid 11.0 inch 17.0 inch pagedimen
+		/Ledger 17.0 inch 11.0 inch pagedimen
+		/Legal 8.5 inch 14.0 inch pagedimen
+		/Statement 5.5 inch 8.5 inch pagedimen
+		/Executive 7.5 inch 10.0 inch pagedimen
+		/A3 11.69 inch 16.5 inch pagedimen
+		/A4 8.26 inch 11.69 inch pagedimen
+		/A4Small 7.47 inch 10.85 inch pagedimen
+		/B4 10.125 inch 14.33 inch pagedimen
+		/B5 7.16 inch 10.125 inch pagedimen
+	end
+	} def
+/papersize {
+	papersizedict begin
+		/Letter {lettertray letter} def
+		/LetterSmall {lettertray lettersmall} def
+		/Tabloid {11x17tray 11x17} def
+		/Ledger {ledgertray ledger} def
+		/Legal {legaltray legal} def
+		/Statement {statementtray statement} def
+		/Executive {executivetray executive} def
+		/A3 {a3tray a3} def
+		/A4 {a4tray a4} def
+		/A4Small {a4tray a4small} def
+		/B4 {b4tray b4} def
+		/B5 {b5tray b5} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	/FMdicttop countdictstack 1 add def 
+	statusdict begin stopped end 
+	countdictstack -1 FMdicttop {pop end} for 
+	} def
+/manualpapersize {
+	papersizedict begin
+		/Letter {letter} def
+		/LetterSmall {lettersmall} def
+		/Tabloid {11x17} def
+		/Ledger {ledger} def
+		/Legal {legal} def
+		/Statement {statement} def
+		/Executive {executive} def
+		/A3 {a3} def
+		/A4 {a4} def
+		/A4Small {a4small} def
+		/B4 {b4} def
+		/B5 {b5} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	stopped 
+	} def
+/desperatepapersize {
+	statusdict /setpageparams known
+		{
+		paperwidth paperheight 0 1 
+		statusdict begin
+		{setpageparams} stopped pop 
+		end
+		} if
+	} def
+/savematrix {
+	orgmatrix currentmatrix pop
+	} bind def
+/restorematrix {
+	orgmatrix setmatrix
+	} bind def
+/dmatrix matrix def
+/dpi    72 0 dmatrix defaultmatrix dtransform
+    dup mul exch   dup mul add   sqrt def
+/freq dpi 18.75 div 8 div round dup 0 eq {pop 1} if 8 mul dpi exch div def
+/sangle 1 0 dmatrix defaultmatrix dtransform exch atan def
+/DiacriticEncoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /space /exclam /quotedbl
+/numbersign /dollar /percent /ampersand /quotesingle /parenleft
+/parenright /asterisk /plus /comma /hyphen /period /slash /zero /one
+/two /three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E /F /G /H /I /J /K
+/L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft /backslash
+/bracketright /asciicircum /underscore /grave /a /b /c /d /e /f /g /h
+/i /j /k /l /m /n /o /p /q /r /s /t /u /v /w /x /y /z /braceleft /bar
+/braceright /asciitilde /.notdef /Adieresis /Aring /Ccedilla /Eacute
+/Ntilde /Odieresis /Udieresis /aacute /agrave /acircumflex /adieresis
+/atilde /aring /ccedilla /eacute /egrave /ecircumflex /edieresis
+/iacute /igrave /icircumflex /idieresis /ntilde /oacute /ograve
+/ocircumflex /odieresis /otilde /uacute /ugrave /ucircumflex
+/udieresis /dagger /.notdef /cent /sterling /section /bullet
+/paragraph /germandbls /registered /copyright /trademark /acute
+/dieresis /.notdef /AE /Oslash /.notdef /.notdef /.notdef /.notdef
+/yen /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/ordfeminine /ordmasculine /.notdef /ae /oslash /questiondown
+/exclamdown /logicalnot /.notdef /florin /.notdef /.notdef
+/guillemotleft /guillemotright /ellipsis /.notdef /Agrave /Atilde
+/Otilde /OE /oe /endash /emdash /quotedblleft /quotedblright
+/quoteleft /quoteright /.notdef /.notdef /ydieresis /Ydieresis
+/fraction /currency /guilsinglleft /guilsinglright /fi /fl /daggerdbl
+/periodcentered /quotesinglbase /quotedblbase /perthousand
+/Acircumflex /Ecircumflex /Aacute /Edieresis /Egrave /Iacute
+/Icircumflex /Idieresis /Igrave /Oacute /Ocircumflex /.notdef /Ograve
+/Uacute /Ucircumflex /Ugrave /dotlessi /circumflex /tilde /macron
+/breve /dotaccent /ring /cedilla /hungarumlaut /ogonek /caron
+] def
+/ReEncode { 
+	dup 
+	length 
+	dict begin 
+	{
+	1 index /FID ne 
+		{def} 
+		{pop pop} ifelse 
+	} forall 
+	0 eq {/Encoding DiacriticEncoding def} if 
+	currentdict 
+	end 
+	} bind def
+/graymode true def
+	/bwidth FMLOCAL
+	/bpside FMLOCAL
+	/bstring FMLOCAL
+	/onbits FMLOCAL
+	/offbits FMLOCAL
+	/xindex FMLOCAL
+	/yindex FMLOCAL
+	/x FMLOCAL
+	/y FMLOCAL
+/setpattern {
+	 /bwidth  exch def
+	 /bpside  exch def
+	 /bstring exch def
+	 /onbits 0 def  /offbits 0 def
+	 freq sangle landscape {90 add} if 
+		{/y exch def
+		 /x exch def
+		 /xindex x 1 add 2 div bpside mul cvi def
+		 /yindex y 1 add 2 div bpside mul cvi def
+		 bstring yindex bwidth mul xindex 8 idiv add get
+		 1 7 xindex 8 mod sub bitshift and 0 ne
+		 {/onbits  onbits  1 add def 1}
+		 {/offbits offbits 1 add def 0}
+		 ifelse
+		}
+		setscreen
+	 {} settransfer
+	 offbits offbits onbits add div FMsetgray
+	/graymode false def
+	} bind def
+/grayness {
+	FMsetgray
+	graymode not {
+		/graymode true def
+		orgxfer cvx settransfer
+		orgfreq organgle orgproc cvx setscreen
+		} if
+	} bind def
+	/HUE FMLOCAL
+	/SAT FMLOCAL
+	/BRIGHT FMLOCAL
+	/Colors FMLOCAL
+FMPrintInColor 
+	
+	{
+	/HUE 0 def
+	/SAT 0 def
+	/BRIGHT 0 def
+	% array of arrays Hue and Sat values for the separations [HUE BRIGHT]
+	/Colors   
+	[[0    0  ]    % black
+	 [0    0  ]    % white
+	 [0.00 1.0]    % red
+	 [0.37 1.0]    % green
+	 [0.60 1.0]    % blue
+	 [0.50 1.0]    % cyan
+	 [0.83 1.0]    % magenta
+	 [0.16 1.0]    % comment / yellow
+	 ] def
+      
+	/BEGINBITMAPCOLOR { 
+		BITMAPCOLOR} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPCOLORc} def
+	/BEGINBITMAPTRUECOLOR { 
+		BITMAPTRUECOLOR } def
+	/BEGINBITMAPTRUECOLORc { 
+		BITMAPTRUECOLORc } def
+	/K { 
+		Colors exch get dup
+		0 get /HUE exch store 
+		1 get /BRIGHT exch store
+		  HUE 0 eq BRIGHT 0 eq and
+			{1.0 SAT sub setgray}
+			{HUE SAT BRIGHT sethsbcolor} 
+		  ifelse
+		} def
+	/FMsetgray { 
+		/SAT exch 1.0 exch sub store 
+		  HUE 0 eq BRIGHT 0 eq and
+			{1.0 SAT sub setgray}
+			{HUE SAT BRIGHT sethsbcolor} 
+		  ifelse
+		} bind def
+	}
+	
+	{
+	/BEGINBITMAPCOLOR { 
+		BITMAPGRAY} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPGRAYc} def
+	/BEGINBITMAPTRUECOLOR { 
+		BITMAPTRUEGRAY } def
+	/BEGINBITMAPTRUECOLORc { 
+		BITMAPTRUEGRAYc } def
+	/FMsetgray {setgray} bind def
+	/K { 
+		pop
+		} def
+	}
+ifelse
+/normalize {
+	transform round exch round exch itransform
+	} bind def
+/dnormalize {
+	dtransform round exch round exch idtransform
+	} bind def
+/lnormalize { 
+	0 dtransform exch cvi 2 idiv 2 mul 1 add exch idtransform pop
+	} bind def
+/H { 
+	lnormalize setlinewidth
+	} bind def
+/Z {
+	setlinecap
+	} bind def
+	/fillvals FMLOCAL
+/X { 
+	fillvals exch get
+	dup type /stringtype eq
+	{8 1 setpattern} 
+	{grayness}
+	ifelse
+	} bind def
+/V { 
+	gsave eofill grestore
+	} bind def
+/N { 
+	stroke
+	} bind def
+/M {newpath moveto} bind def
+/E {lineto} bind def
+/D {curveto} bind def
+/O {closepath} bind def
+	/n FMLOCAL
+/L { 
+ 	/n exch def
+	newpath
+	normalize
+	moveto 
+	2 1 n {pop normalize lineto} for
+	} bind def
+/Y { 
+	L 
+	closepath
+	} bind def
+	/x1 FMLOCAL
+	/x2 FMLOCAL
+	/y1 FMLOCAL
+	/y2 FMLOCAL
+	/rad FMLOCAL
+/R { 
+	/y2 exch def
+	/x2 exch def
+	/y1 exch def
+	/x1 exch def
+	x1 y1
+	x2 y1
+	x2 y2
+	x1 y2
+	4 Y 
+	} bind def
+/RR { 
+	/rad exch def
+	normalize
+	/y2 exch def
+	/x2 exch def
+	normalize
+	/y1 exch def
+	/x1 exch def
+	newpath
+	x1 y1 rad add moveto
+	x1 y2 x2 y2 rad arcto
+	x2 y2 x2 y1 rad arcto
+	x2 y1 x1 y1 rad arcto
+	x1 y1 x1 y2 rad arcto
+	closepath
+	16 {pop} repeat
+	} bind def
+/C { 
+	grestore
+	gsave
+	R 
+	clip
+	} bind def
+	/FMpointsize FMLOCAL
+/F { 
+	FMfonts exch get
+	FMpointsize scalefont
+	setfont
+	} bind def
+/Q { 
+	/FMpointsize exch def
+	F 
+	} bind def
+/T { 
+	moveto show
+	} bind def
+/RF { 
+	rotate
+	0 ne {-1 1 scale} if
+	} bind def
+/TF { 
+	gsave
+	moveto 
+	RF
+	show
+	grestore
+	} bind def
+/P { 
+	moveto
+	0 32 3 2 roll widthshow
+	} bind def
+/PF { 
+	gsave
+	moveto 
+	RF
+	0 32 3 2 roll widthshow
+	grestore
+	} bind def
+/S { 
+	moveto
+	0 exch ashow
+	} bind def
+/SF { 
+	gsave
+	moveto
+	RF
+	0 exch ashow
+	grestore
+	} bind def
+/B { 
+	moveto
+	0 32 4 2 roll 0 exch awidthshow
+	} bind def
+/BF { 
+	gsave
+	moveto
+	RF
+	0 32 4 2 roll 0 exch awidthshow
+	grestore
+	} bind def
+/G { 
+	gsave
+	newpath
+	normalize translate 0.0 0.0 moveto 
+	dnormalize scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	closepath fill
+	grestore
+	} bind def
+/A { 
+	gsave
+	savematrix
+	newpath
+	2 index 2 div add exch 3 index 2 div sub exch 
+	normalize 2 index 2 div sub exch 3 index 2 div add exch 
+	translate 
+	scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	restorematrix
+	stroke
+	grestore
+	} bind def
+	/x FMLOCAL
+	/y FMLOCAL
+	/w FMLOCAL
+	/h FMLOCAL
+	/xx FMLOCAL
+	/yy FMLOCAL
+	/ww FMLOCAL
+	/hh FMLOCAL
+	/FMsaveobject FMLOCAL
+	/FMoptop FMLOCAL
+	/FMdicttop FMLOCAL
+/BEGINPRINTCODE { 
+	/FMdicttop countdictstack 1 add def 
+	/FMoptop count 4 sub def 
+	/FMsaveobject save def
+	userdict begin 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	3 index neg 3 index neg translate
+	} bind def
+/ENDPRINTCODE {
+	count -1 FMoptop {pop pop} for 
+	countdictstack -1 FMdicttop {pop end} for 
+	FMsaveobject restore 
+	} bind def
+/gn { 
+	0 
+	{	46 mul 
+		cf read pop 
+		32 sub 
+		dup 46 lt {exit} if 
+		46 sub add 
+		} loop
+	add 
+	} bind def
+	/str FMLOCAL
+/cfs { 
+	/str sl string def 
+	0 1 sl 1 sub {str exch val put} for 
+	str def 
+	} bind def
+/ic [ 
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0
+	{0 hx} {1 hx} {2 hx} {3 hx} {4 hx} {5 hx} {6 hx} {7 hx} {8 hx} {9 hx}
+	{10 hx} {11 hx} {12 hx} {13 hx} {14 hx} {15 hx} {16 hx} {17 hx} {18 hx}
+	{19 hx} {gn hx} {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}
+	{13} {14} {15} {16} {17} {18} {19} {gn} {0 wh} {1 wh} {2 wh} {3 wh}
+	{4 wh} {5 wh} {6 wh} {7 wh} {8 wh} {9 wh} {10 wh} {11 wh} {12 wh}
+	{13 wh} {14 wh} {gn wh} {0 bl} {1 bl} {2 bl} {3 bl} {4 bl} {5 bl} {6 bl}
+	{7 bl} {8 bl} {9 bl} {10 bl} {11 bl} {12 bl} {13 bl} {14 bl} {gn bl}
+	{0 fl} {1 fl} {2 fl} {3 fl} {4 fl} {5 fl} {6 fl} {7 fl} {8 fl} {9 fl}
+	{10 fl} {11 fl} {12 fl} {13 fl} {14 fl} {gn fl}
+	] def
+	/sl FMLOCAL
+	/val FMLOCAL
+	/ws FMLOCAL
+	/im FMLOCAL
+	/bs FMLOCAL
+	/cs FMLOCAL
+	/len FMLOCAL
+	/pos FMLOCAL
+/ms { 
+	/sl exch def 
+	/val 255 def 
+	/ws cfs 
+	/im cfs 
+	/val 0 def 
+	/bs cfs 
+	/cs cfs 
+	} bind def
+400 ms 
+/ip { 
+	is 
+	0 
+	cf cs readline pop 
+	{	ic exch get exec 
+		add 
+		} forall 
+	pop 
+	
+	} bind def
+/wh { 
+	/len exch def 
+	/pos exch def 
+	ws 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/bl { 
+	/len exch def 
+	/pos exch def 
+	bs 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/s1 1 string def
+/fl { 
+	/len exch def 
+	/pos exch def 
+	/val cf s1 readhexstring pop 0 get def
+	pos 1 pos len add 1 sub {im exch val put} for
+	pos len 
+	} bind def
+/hx { 
+	3 copy getinterval 
+	cf exch readhexstring pop pop 
+	} bind def
+	/h FMLOCAL
+	/w FMLOCAL
+	/d FMLOCAL
+	/lb FMLOCAL
+	/bitmapsave FMLOCAL
+	/is FMLOCAL
+	/cf FMLOCAL
+/wbytes { 
+	dup 
+	8 eq {pop} {1 eq {7 add 8 idiv} {3 add 4 idiv} ifelse} ifelse
+	} bind def
+/BEGINBITMAPBWc { 
+	1 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAPGRAYc { 
+	8 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAP2BITc { 
+	2 {} COMMONBITMAPc
+	} bind def
+/COMMONBITMAPc { 
+	/r exch def
+	/d exch def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	r                    
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} image 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BEGINBITMAPBW { 
+	1 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAPGRAY { 
+	8 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAP2BIT { 
+	2 {} COMMONBITMAP
+	} bind def
+/COMMONBITMAP { 
+	/r exch def
+	/d exch def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/bitmapsave save def 
+	r                    
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} image
+	bitmapsave restore 
+	grestore
+	} bind def
+	/proc1 FMLOCAL
+	/proc2 FMLOCAL
+	/newproc FMLOCAL
+/Fmcc {
+    /proc2 exch cvlit def
+    /proc1 exch cvlit def
+    /newproc proc1 length proc2 length add array def
+    newproc 0 proc1 putinterval
+    newproc proc1 length proc2 putinterval
+    newproc cvx
+} bind def
+/ngrayt 256 array def
+/nredt 256 array def
+/nbluet 256 array def
+/ngreent 256 array def
+	/gryt FMLOCAL
+	/blut FMLOCAL
+	/grnt FMLOCAL
+	/redt FMLOCAL
+	/indx FMLOCAL
+	/cynu FMLOCAL
+	/magu FMLOCAL
+	/yelu FMLOCAL
+	/k FMLOCAL
+	/u FMLOCAL
+/colorsetup {
+	currentcolortransfer
+	/gryt exch def
+	/blut exch def
+	/grnt exch def
+	/redt exch def
+	0 1 255 {
+		/indx exch def
+		/cynu 1 red indx get 255 div sub def
+		/magu 1 green indx get 255 div sub def
+		/yelu 1 blue indx get 255 div sub def
+		/k cynu magu min yelu min def
+		/u k currentundercolorremoval exec def
+		nredt indx 1 0 cynu u sub max sub redt exec put
+		ngreent indx 1 0 magu u sub max sub grnt exec put
+		nbluet indx 1 0 yelu u sub max sub blut exec put
+		ngrayt indx 1 k currentblackgeneration exec sub gryt exec put
+	} for
+	{255 mul cvi nredt exch get}
+	{255 mul cvi ngreent exch get}
+	{255 mul cvi nbluet exch get}
+	{255 mul cvi ngrayt exch get}
+	setcolortransfer
+	{pop 0} setundercolorremoval
+	{} setblackgeneration
+	} bind def
+	/tran FMLOCAL
+/fakecolorsetup {
+	/tran 256 string def
+	0 1 255 {/indx exch def 
+		tran indx
+		red indx get 77 mul
+		green indx get 151 mul
+		blue indx get 28 mul
+		add add 256 idiv put} for
+	currenttransfer
+	{255 mul cvi tran exch get 255.0 div}
+	exch Fmcc settransfer
+} bind def
+/BITMAPCOLOR { 
+	/d 8 def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/bitmapsave save def 
+	colorsetup
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} {is} {is} true 3 colorimage 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPCOLORc { 
+	/d 8 def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	colorsetup
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} {is} {is} true 3 colorimage
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPTRUECOLORc { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        
+        /is w string def
+        
+        ws 0 w getinterval is copy pop 
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        {ip} {gip} {bip} true 3 colorimage
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPTRUECOLOR { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        /is w string def
+        /gis w string def
+        /bis w string def
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        { cf is readhexstring pop } 
+        { cf gis readhexstring pop } 
+        { cf bis readhexstring pop } 
+        true 3 colorimage 
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPTRUEGRAYc { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        
+        /is w string def
+        
+        ws 0 w getinterval is copy pop 
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        {ip gip bip w gray} image
+        bitmapsave restore 
+        grestore
+        } bind def
+/ww FMLOCAL
+/r FMLOCAL
+/g FMLOCAL
+/b FMLOCAL
+/i FMLOCAL
+/gray { 
+        /ww exch def
+        /b exch def
+        /g exch def
+        /r exch def
+        0 1 ww 1 sub { /i exch def r i get .299 mul g i get .587 mul
+			b i get .114 mul add add r i 3 -1 roll floor cvi put } for
+        r
+        } bind def
+/BITMAPTRUEGRAY { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        /is w string def
+        /gis w string def
+        /bis w string def
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        { cf is readhexstring pop 
+          cf gis readhexstring pop 
+          cf bis readhexstring pop w gray}  image
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPGRAY { 
+	8 {fakecolorsetup} COMMONBITMAP
+	} bind def
+/BITMAPGRAYc { 
+	8 {fakecolorsetup} COMMONBITMAPc
+	} bind def
+/ENDBITMAP {
+	} bind def
+end 
+	/ALDsave FMLOCAL
+	/ALDmatrix matrix def ALDmatrix currentmatrix pop
+/StartALD {
+	/ALDsave save def
+	 savematrix
+	 ALDmatrix setmatrix
+	} bind def
+/InALD {
+	 restorematrix
+	} bind def
+/DoneALD {
+	 ALDsave restore
+	} bind def
+%%EndProlog
+%%BeginSetup
+(3.0) FMVERSION
+1 1 612 792 0 1 9 FMDOCUMENT
+0 0 /Helvetica-Oblique FMFONTDEFINE
+1 0 /Helvetica-Bold FMFONTDEFINE
+2 0 /Times-Roman FMFONTDEFINE
+3 0 /Times-Italic FMFONTDEFINE
+4 0 /Times-Bold FMFONTDEFINE
+5 1 /ZapfDingbats FMFONTDEFINE
+6 0 /Courier FMFONTDEFINE
+32 FMFILLS
+0 0 FMFILL
+1 0.1 FMFILL
+2 0.3 FMFILL
+3 0.5 FMFILL
+4 0.7 FMFILL
+5 0.9 FMFILL
+6 0.97 FMFILL
+7 1 FMFILL
+8 <0f1e3c78f0e1c387> FMFILL
+9 <0f87c3e1f0783c1e> FMFILL
+10 <cccccccccccccccc> FMFILL
+11 <ffff0000ffff0000> FMFILL
+12 <8142241818244281> FMFILL
+13 <03060c183060c081> FMFILL
+14 <8040201008040201> FMFILL
+16 1 FMFILL
+17 0.9 FMFILL
+18 0.7 FMFILL
+19 0.5 FMFILL
+20 0.3 FMFILL
+21 0.1 FMFILL
+22 0.03 FMFILL
+23 0 FMFILL
+24 <f0e1c3870f1e3c78> FMFILL
+25 <f0783c1e0f87c3e1> FMFILL
+26 <3333333333333333> FMFILL
+27 <0000ffff0000ffff> FMFILL
+28 <7ebddbe7e7dbbd7e> FMFILL
+29 <fcf9f3e7cf9f3f7e> FMFILL
+30 <7fbfdfeff7fbfdfe> FMFILL
+%%EndSetup
+%%Page: "41" 1
+%%BeginPaperSize: Letter
+%%EndPaperSize
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Skill Procedural Interface) 356.7 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(3-41) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+72 693 540 702 C
+72 693 540 702 R
+7 X
+0 K
+V
+72 697.97 578.95 703.94 R
+0 X
+V
+0.5 H
+0 Z
+N
+0 0 612 792 C
+1 18 Q
+0 X
+0 K
+(Using the Basic Skill Procedural Interface) 154.04 708 T
+1 36 Q
+( 3) 509.98 708 T
+2 12 Q
+-0.69 0.12 (The iDMS SKILL interface is a subset of the C and Mainsail interfaces. It is designed) 126 635 B
+-0.77 0.12 (for use by Opus-based, non-UIMAN tools. While the architecture of the solution may) 126 621 B
+-0.8 0.12 (change in the future - the interface itself will remain stable, thereby providing a stable) 126 607 B
+-0.49 0.12 (interface for all the tools built over on top of it. In the \336rst section, we provide a brief) 126 593 B
+0.12 (overview of the architecture of the solution in iDMS 2.1. In the later sections, the) 126 579 S
+0.12 (interface itself is presented. It is assumed that the reader is familiar with the C and) 126 565 S
+0.12 (Mainsail interface enough so that the parameters need not be explained again.) 126 551 S
+1 14 Q
+(3.1  Architecture) 72 521.67 T
+2 12 Q
+-0.75 0.12 (Every Opus session has one) 126 493 B
+3 F
+-0.75 0.12 (idmSlave) 262.38 493 B
+2 F
+-0.75 0.12 ( process. This process is responsible for making) 307.31 493 B
+0.12 (sure that the SKILL interface described in this chapter behaves in a manner de\336ned) 126 479 S
+0.12 (by project and user methodology - as described by the user) 126 465 S
+0.12 (\325) 415.86 465 S
+0.12 (s dms.pth \336le, and the) 419.31 465 S
+0.12 (project\325) 126 451 S
+0.12 (s global \336le. These \336les have been described elsewhere.) 163.6 451 S
+-0.89 0.12 (When the user \050by means of the .cdsinit, .cdslocal or explicitly\051 loads up the fwidms.il) 126 425 B
+0.12 (context, the context will start the idmSlave process, and set up the ipc channels) 126 411 S
+0.12 (necessary to communicate with the idmSlave. There are two variables of interest) 126 397 S
+0.12 (here, namely:) 126 383 S
+0.12 (1.) 144 357 S
+0.12 (When the global variable) 162 357 S
+4 F
+0.12 (idmsContextIsLoaded) 288.9 357 S
+2 F
+0.12 ( is bound, it indicates that) 404.46 357 S
+0.12 (the context fwidms.il has been loaded. This maybe useful to the application) 162 343 S
+-0.45 0.12 (programmer who wants to check if the context is already loaded before doing) 162 329 B
+0.12 (something - like maybe loading some context which uses the iDMS SKILL) 162 315 S
+0.12 (interface.) 162 301 S
+0.12 (2.) 144 275 S
+-0.97 0.12 (When the global variable) 162 275 B
+4 F
+-0.97 0.12 (idmsSlaveIsAlive) 285.04 275 B
+2 F
+-0.97 0.12 ( is set, it implies that the idmSlave) 374.92 275 B
+0.12 (process is alive and working. There is a time lag between the time the) 162 261 S
+-0.07 0.12 (idmSlave is started and the time it is ready to receive messages. In that time,) 162 247 B
+-0.51 0.12 (the PI is disabled, and the \337ag) 162 233 B
+4 F
+-0.51 0.12 (idmsSlaveInW) 309.48 233 B
+-0.51 0.12 (ait) 385.56 233 B
+2 F
+-0.51 0.12 ( is set. The user is advised to) 399.25 233 B
+-0.49 0.12 (start the slave at the initialization time and use it after ensuring that it is alive.) 162 219 B
+0.12 (Also, the user must ensure that they do not do a \322busy\323 wait on either \337ags,) 162 205 S
+0.12 (as this will prevent Opus from receiving the slave process\325 message of) 162 191 S
+-0.47 0.12 (readiness. When the) 162 177 B
+4 F
+-0.47 0.12 (idmsSlaveIsAlive) 262.89 177 B
+2 F
+-0.47 0.12 ( \337ag is t, the) 352.77 177 B
+4 F
+-0.47 0.12 (idmsSlaveInW) 414.16 177 B
+-0.47 0.12 (ait) 490.25 177 B
+2 F
+-0.47 0.12 ( is nil -) 503.93 177 B
+0.12 (indicating that the initialization is complete.) 162 163 S
+0.12 (3.) 144 137 S
+0.12 (If the above \337ags) 162 137 S
+4 F
+0.12 (idmsSlaveIsAlive) 250.09 137 S
+2 F
+0.12 ( and) 339.97 137 S
+4 F
+0.12 (idmsSlaveInW) 363.89 137 S
+0.12 (ait) 439.97 137 S
+2 F
+0.12 ( are both nil it) 453.66 137 S
+0.12 (implies that the idmSlave has not been initialized. If any of the above) 162 123 S
+0.12 (variables is unbounded then the fwidms.il \336le has not been loaded.) 162 109 S
+FMENDPAGE
+%%EndPage: "41" 2
+%%Page: "42" 2
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(3-42) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (The user has to de\336ne the following environment variables BEFORE bringing up) 126 712 S
+0.12 (Opus.) 126 698 S
+4 F
+0.12 (IDMS) 158.03 698 S
+2 F
+0.12 ( should point to the location where the idmSlave binary is located.) 189.83 698 S
+4 F
+0.12 (DMSP) 126 684 S
+0.12 (A) 159.57 684 S
+0.12 (TH) 167.46 684 S
+2 F
+0.12 ( is the full path name to the dms.pth \336le to be used, and) 185.03 684 S
+4 F
+-0.6 0.12 (IDMS_GLOBALFILE) 126 670 B
+2 F
+-0.6 0.12 (is the full path name to the iDMS global \336le. Information on) 246.94 670 B
+-0.38 0.12 (the last two variables is provided in the basic integration and multiple views chapter) 126 656 B
+-0.38 0.12 (.) 534.14 656 B
+-0.85 0.12 (In addition, the environment variable) 126 642 B
+4 F
+-0.85 0.12 (IDMS_USER) 307.49 642 B
+-0.85 0.12 (TRIGGERFILE) 377.45 642 B
+2 F
+-0.85 0.12 ( should point to) 463.41 642 B
+0.12 (the SKILL \336le containing the user triggers, in case the user is using triggers to) 126 628 S
+0.12 (customize iDMS behavior) 126 614 S
+0.12 (.) 254.02 614 S
+5 18 Q
+(\340) 126 582 T
+2 12 Q
+0.12 (Once the idmSlave is initialized call to set/change the environment variables) 147.6 582 S
+0.12 (using opus based skill commands will not work. The user/application will have) 147.6 568 S
+0.12 (to have the correct variables set BEFORE starting the slave.) 147.6 554 S
+5 18 Q
+(\340) 126 522 T
+2 12 Q
+0.12 (The case the user desires to disable all the user triggers, they need to set the) 147.6 522 S
+0.12 (environment variable) 147.6 508 S
+4 F
+0.12 (IDMS_DISABLEUSER) 255.37 508 S
+0.12 (TRIGGER) 378.82 508 S
+2 F
+0.12 (.) 436.3 508 S
+1 14 Q
+(3.2  Calls to control idmSlave) 72 474.67 T
+2 12 Q
+0.12 (W) 126 446 S
+0.12 (e have the following calls available:) 136.48 446 S
+0.12 (1.) 144 420 S
+0.12 (T) 162 420 S
+0.12 (o start the idmSlave process:) 168.61 420 S
+6 10 Q
+0.1 (dmsSkillStartSlave\050\051 => t/nil) 144 395.33 S
+2 12 Q
+-0.33 0.12 (The call returns a nil if the slave process could not be started. Some possible reasons) 126 370 B
+-0.17 0.12 (for this are that the executable could not be found on the path, or that the executable) 126 356 B
+0.12 (itself has a problem like - license expired, cdsd died, etc.) 126 342 S
+0.12 (2.) 144 316 S
+0.12 (T) 162 316 S
+0.12 (o terminate the idmSlave process:) 168.61 316 S
+6 10 Q
+0.1 (dmsSkillTerminateSlave\050\051 => t/nil) 144 291.33 S
+2 12 Q
+-0.01 0.12 (The call causes the idmSlave to terminate in an orderly manner) 126 266 B
+-0.01 0.12 (. Subsequent calls to) 435.79 266 B
+0.12 (idmSlave will generate an error message.) 126 252 S
+0.12 (3.) 144 226 S
+0.12 (T) 162 226 S
+0.12 (o check if the idmSlave process is alive:) 168.61 226 S
+6 10 Q
+0.1 (dmsSkillIsSlaveAlive\050\051 => t/nil) 144 201.33 S
+2 12 Q
+0.12 (Returns a t/nil depending on whether the idmSlave process is alive or not.) 126 176 S
+1 14 Q
+(3.3  Calls to provide basic iDMS functionality) 72 146.67 T
+2 12 Q
+0.12 (The calls in this section are described in a very sketchy manner) 126 118 S
+0.12 (, due to the fact that) 436.63 118 S
+0.12 (they have been described in detail in the chapter on integration with iDMS 2.1. The) 126 104 S
+62.02 638 66.02 650 R
+V
+62.02 504 66.02 562 R
+V
+FMENDPAGE
+%%EndPage: "42" 3
+%%Page: "43" 3
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Skill Procedural Interface) 356.7 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(3-43) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 63 540 720 R
+7 X
+V
+2 12 Q
+0 X
+-0.75 0.12 (user is advised to read that chapter - in order to understand the return codes and return) 126 712 B
+0.12 (ar) 126 698 S
+0.12 (guments as applicable. There are some changes in the interface between C and) 135.34 698 S
+-0.35 0.12 (SKILL, due to the nature of the two languages. An important dif) 126 684 B
+-0.35 0.12 (ference is that many) 438.96 684 B
+-0.24 0.12 (of the procedures have an optional toolname ar) 126 670 B
+-0.24 0.12 (gument because several tools can run) 355.13 670 B
+0.12 (on Opus at the same time. If that is the case, then the applications must ensure they) 126 656 S
+-0.35 0.12 (use this parameter to maintain consistency in their return values.T) 126 642 B
+-0.35 0.12 (o create a cellview) 446.45 642 B
+0.12 (in the work library:) 126 628 S
+0.12 (1.) 144 602 S
+0.12 (dmsSkillCreateCellV) 162 602 S
+0.12 (iew\050) 266.17 602 S
+6 10 Q
+0.1 (t_cellName) 180 577.33 S
+0.1 (t_viewName) 180 553.33 S
+0.1 ([t_toolName]) 180 529.33 S
+0.1 (\051 => t_fullPathName/nil) 144 505.33 S
+2 12 Q
+0.12 (2.) 144 456 S
+0.12 (T) 162 456 S
+0.12 (o create a unix \336le in the work directory:) 168.61 456 S
+6 10 Q
+0.1 (dmsSkillCreateUnixFile\050) 144 431.33 S
+0.1 (t_cellName) 180 407.33 S
+0.1 (t_viewName) 180 383.33 S
+0.1 ([t_toolName]) 180 359.33 S
+0.1 (\051 => t_fullPathName/nil) 144 335.33 S
+2 12 Q
+0.12 (3.) 144 286 S
+0.12 (T) 162 286 S
+0.12 (o get a cellview for readonly:) 168.61 286 S
+6 10 Q
+0.1 (dmsSkillReadonlyCellViewType\050) 144 261.33 S
+0.1 (t_cellName) 180 237.33 S
+0.1 (t_viewType) 180 213.33 S
+0.1 ([t_toolName]) 180 189.33 S
+0.1 (\051 => \050t_fullPathName t_viewName\051/nil) 144 165.33 S
+2 12 Q
+0.12 (4.) 144 116 S
+0.12 (T) 162 116 S
+0.12 (o get a cellview for readonly) 168.61 116 S
+0.12 (, specifying the viewname;) 308.86 116 S
+6 10 Q
+0.1 (dmsSkillReadonlyCellView\050) 144 91.33 S
+0.1 (t_cellName) 180 67.33 S
+62.02 88 66.02 98 R
+V
+FMENDPAGE
+%%EndPage: "43" 4
+%%Page: "44" 4
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(3-44) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+6 F
+0 X
+0.1 (t_viewName) 180 713.33 S
+0.1 ([t_toolName]) 180 689.33 S
+0.1 (\051 => t_path/nil) 144 665.33 S
+2 12 Q
+0.12 (5.) 144 640 S
+0.12 (T) 162 640 S
+0.12 (o checkout a cellview:) 168.61 640 S
+6 10 Q
+0.1 (dmsSkillCheckoutCellView\050) 144 615.33 S
+0.1 (t_libName/nil) 180 591.33 S
+0.1 (t_cellName) 180 567.33 S
+0.1 (t_viewName) 180 543.33 S
+0.1 (t_versionName/nil) 180 519.33 S
+0.1 ([t_toolName]) 180 495.33 S
+0.1 (\051 => t_fullPathName/nil) 144 471.33 S
+2 12 Q
+0.12 (6.) 144 422 S
+0.12 (T) 162 422 S
+0.12 (o load a cellview from the work directory:) 168.61 422 S
+6 10 Q
+0.1 (dmsSkillLoadCellView\050) 144 397.33 S
+0.1 (t_cellName) 180 373.33 S
+0.1 (t_viewName) 180 349.33 S
+0.1 ([t_toolName]) 180 325.33 S
+0.1 (\051 => t_fullPathName/nil) 144 301.33 S
+2 12 Q
+0.12 (7.) 144 252 S
+0.12 (T) 162 252 S
+0.12 (o edit a cellview:) 168.61 252 S
+6 10 Q
+0.1 (dmsSkillEditCellView\050) 144 227.33 S
+0.1 (t_libName/nil) 180 203.33 S
+0.1 (t_cellName) 180 179.33 S
+0.1 (t_viewName) 180 155.33 S
+0.1 (t_versionName/nil) 180 131.33 S
+0.1 ([t_toolName]) 180 107.33 S
+FMENDPAGE
+%%EndPage: "44" 5
+%%Page: "45" 5
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Skill Procedural Interface) 356.7 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(3-45) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+6 F
+0 X
+0.1 (\051 => t_fullPathName/nil) 144 713.33 S
+FMENDPAGE
+%%EndPage: "45" 6
+%%Page: "46" 6
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(3-46) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (8.) 144 712 S
+0.12 (T) 162 712 S
+0.12 (o read or edit a cellview based on the policy speci\336ed in dms.pth:) 168.61 712 S
+6 10 Q
+0.1 (dmsSkillReadOrEditByPolicy\050) 144 687.33 S
+0.1 (t_cellName) 180 663.33 S
+0.1 ([t_toolName]) 180 639.33 S
+0.1 (\051 => t_fullPathName/nil) 144 615.33 S
+2 12 Q
+0.12 (9.) 144 566 S
+0.12 (T) 162 566 S
+0.12 (o save a cellview to the workdir:) 168.61 566 S
+6 10 Q
+0.1 (dmsSkillSaveCellView\050) 144 541.33 S
+0.1 (t_cellName) 180 517.33 S
+0.1 (t_viewName) 180 493.33 S
+0.1 ([t_toolName]) 180 469.33 S
+0.1 (\051 => t_fullPathName/nil) 144 445.33 S
+2 12 Q
+0.12 (10.) 144 396 S
+0.12 (T) 162 396 S
+0.12 (o checkin a cellview:) 168.61 396 S
+6 10 Q
+0.1 (dmsSkillCheckinCellView\050) 144 371.33 S
+0.1 (t_libName/nil) 180 347.33 S
+0.1 (t_cellName) 180 323.33 S
+0.1 (t_viewName) 180 299.33 S
+0.1 (t_versionName/nil) 180 275.33 S
+0.1 (g_advanceFlag) 180 251.33 S
+0.1 (t_logMessage/nil) 180 227.33 S
+0.1 (t_path/nil) 180 203.33 S
+0.1 ([t_toolName]) 180 179.33 S
+0.1 (\051 => t/nil) 144 155.33 S
+FMENDPAGE
+%%EndPage: "46" 7
+%%Page: "47" 7
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Skill Procedural Interface) 356.7 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(3-47) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (1) 144 712 S
+0.12 (1.) 149.67 712 S
+0.12 (T) 162 712 S
+0.12 (o update a cellview in a library:) 168.61 712 S
+6 10 Q
+0.1 ( dmsSkillUpdateCellView\050) 144 687.33 S
+0.1 (t_libName/nil) 180 663.33 S
+0.1 (t_cellName) 180 639.33 S
+0.1 (t_viewName) 180 615.33 S
+0.1 (g_advanceFlag) 180 591.33 S
+0.1 (t_log/nil) 180 567.33 S
+0.1 ([t_toolName]) 180 543.33 S
+0.1 (\051 => t_fullPathName/nil) 144 519.33 S
+2 12 Q
+0.12 (12.) 144 470 S
+0.12 (T) 162 470 S
+0.12 (o install a cellview in the workLib:) 168.61 470 S
+6 10 Q
+0.1 (dmsSkillInstallCellView\050) 144 445.33 S
+0.1 (t_cellName) 180 421.33 S
+0.1 (t_viewName) 180 397.33 S
+0.1 (t_log/nil) 180 373.33 S
+0.1 ([t_toolName]) 180 349.33 S
+0.1 (\051 => t_fullPathName/nil) 144 325.33 S
+2 12 Q
+0.12 (13.) 144 276 S
+0.12 (T) 162 276 S
+0.12 (o pur) 168.61 276 S
+0.12 (ge a cellview from slave process\325 memory:) 193.97 276 S
+6 10 Q
+0.1 (dmsSkillPurgeCellView\050) 144 251.33 S
+0.1 (t_cellName) 180 227.33 S
+0.1 (t_viewName) 180 203.33 S
+0.1 ([t_toolName]) 180 179.33 S
+0.1 (\051 => t/nil) 144 155.33 S
+FMENDPAGE
+%%EndPage: "47" 8
+%%Page: "48" 8
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(3-48) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (14.) 144 712 S
+0.12 (T) 162 712 S
+0.12 (o cancel a checkout:) 168.61 712 S
+6 10 Q
+0.1 (dmsSkillCancelCheckoutCellView\050) 144 687.33 S
+0.1 (t_libName/nil) 180 663.33 S
+0.1 (t_cellName) 180 639.33 S
+0.1 (t_viewName) 180 615.33 S
+0.1 (t_versionName/nil) 180 591.33 S
+0.1 ([t_toolName]) 180 567.33 S
+0.1 (\051 => t_fullPathName/nil) 144 543.33 S
+2 12 Q
+0.12 (15.) 144 494 S
+0.12 (T) 162 494 S
+0.12 (o get information about a cellview:) 168.61 494 S
+6 10 Q
+0.1 (dmsSkillInfoCellView\050) 144 469.33 S
+0.1 (t_searchLibOnly) 180 445.33 S
+0.1 (t_cellName) 180 421.33 S
+0.1 (t_viewName) 180 397.33 S
+0.1 ([t_toolName]) 180 373.33 S
+0.1 (\051 =>) 144 349.33 S
+0.1 (\050t_info t_libName t_cell t_view t_ver t_coUser t_path) 180.72 349.33 S
+0.1 (t_location t_libPath\051/nil) 187.2 337.33 S
+2 12 Q
+0.12 (While the call is very similar to that in C, the application can use the following) 126 312 S
+0.12 (vairables to get the desired behaviour) 126 298 S
+0.12 (.) 309.43 298 S
+0.12 (t_searchLibOnly can have the values:) 126 272 S
+4 F
+0.12 (idmsSear) 144 246 S
+0.12 (chWholeRwpaths) 192.72 246 S
+2 F
+0.12 (: If the application wants both the unix dirs and) 285.02 246 S
+0.12 (libraries on the R) 126 232 S
+0.12 (W path searched.) 210.45 232 S
+-0.78 0.12 (i) 144 206 B
+4 F
+-0.78 0.12 (dmsSear) 147.45 206 B
+-0.78 0.12 (chLibOnly) 192.72 206 B
+2 F
+-0.78 0.12 (: If the application wants only libraries on the R) 249.12 206 B
+-0.78 0.12 (W path to be) 476.95 206 B
+0.12 (searched.) 126 192 S
+0.12 (t_info can have one of the following values, which are self explanatory:) 126 166 S
+4 F
+0.12 (idmsInfoCvNotFoundOnRwpaths) 144 140 S
+0.12 (idmsInfoCvNotFoundInAnyLibrary) 147.12 114 S
+FMENDPAGE
+%%EndPage: "48" 9
+%%Page: "49" 9
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Skill Procedural Interface) 356.7 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(3-49) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+4 12 Q
+0 X
+0.12 (idmsInfoCvIsInW) 144 712 S
+0.12 (orkdir) 238.44 712 S
+0.12 (idmsInfoCvCheckedOutByMe) 144 686 S
+0.12 (idmsInfoCvIsInReadonlyUnixdir) 144 660 S
+0.12 (idmsInfoCvIsInReadonlyLibrary) 144 634 S
+0.12 (idmsInfoCvCheckedOutByAnotherUser) 144 608 S
+0.12 (idmsInfoCvCanBeCheckedOut) 144 582 S
+0.12 (idmsInfoUnknownEvent) 144 556 S
+2 F
+0.12 (16.) 144 530 S
+0.12 (T) 162 530 S
+0.12 (o report the last message stored by iDMS.) 168.61 530 S
+6 10 Q
+0.1 (dmsSkillReportMessage\050) 144 505.33 S
+0.1 (\051 => t_message/nil) 144 481.33 S
+2 12 Q
+0.12 (17.) 144 432 S
+-0.14 0.12 (T) 162 432 B
+-0.14 0.12 (o reparse the dms.pth \336le: Although this command is similar to those in the) 168.61 432 B
+-0.49 0.12 (C and the Mainsail interfaces, it has a slightly dif) 162 418 B
+-0.49 0.12 (ferent ef) 399.45 418 B
+-0.49 0.12 (fect than the calls in) 440.11 418 B
+0.12 (the other languages. Since each individual tool in Opus uses the same) 162 404 S
+0.12 (idmSlave, reparsing the dms.pth will ef) 162 390 S
+0.12 (fectively change how iDMS behaves) 355.35 390 S
+0.12 (for all of the tools, rather than changing just one tool\325) 162 376 S
+0.12 (s DMS. Thus the user) 425 376 S
+-0.84 0.12 (must ensure that the dms.pth \336le has been written correctly for all applications) 162 362 B
+0.12 (running on opus which use this interface.) 162 348 S
+6 10 Q
+0.1 (dmsSkillReparseDMS\050\051 = t/nil) 144 323.33 S
+5 18 Q
+(\340) 126 292 T
+2 12 Q
+-0.58 0.12 (Using this command ONL) 147.6 292 B
+-0.58 0.12 (Y causes any changes to the DMSP) 274.21 292 B
+-0.58 0.12 (A) 443.99 292 B
+-0.58 0.12 (TH pointed \336le to) 451.44 292 B
+0.12 (be read in. This command is not useful for changing the environment variable) 147.6 278 S
+-0.23 0.12 (itself. Indeed once the slave has been initialized, the user/application CANNOT) 147.6 264 B
+0.12 (modify the value of the environnment variable either by setting the variable in) 147.6 250 S
+0.12 (opus, or on the unix shell.) 147.6 236 S
+0.12 (18.) 144 204 S
+0.12 (T) 162 204 S
+0.12 (o print search path info:) 168.61 204 S
+6 10 Q
+0.1 (dmsSkillPrintPath\050) 144 179.33 S
+0.1 (t_viewName) 180 155.33 S
+0.1 ([t_toolName]) 180 131.33 S
+0.1 (\051 => t_pathInfo/nil) 144 107.33 S
+FMENDPAGE
+%%EndPage: "49" 10
+%%Page: "50" 10
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(3-50) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (19.) 144 688 S
+0.12 (T) 162 688 S
+0.12 (o get the current version number of iDMS software:) 168.61 688 S
+6 10 Q
+0.1 (dmsSkillVersionNumber\050\051 => t_versionName/nil) 144 663.33 S
+2 12 Q
+0.12 (20.) 144 614 S
+0.12 (T) 162 614 S
+0.12 (o get the workDir for a view:) 168.61 614 S
+6 10 Q
+0.1 (dmsSkillGetWorkingDir\050) 144 589.33 S
+0.1 (t_viewName) 180 565.33 S
+0.1 ([t_toolName]) 180 541.33 S
+0.1 (\051 => t_workingDir/nil) 144 517.33 S
+2 12 Q
+0.12 (21.) 144 468 S
+0.12 (T) 162 468 S
+0.12 (o get the workLib for a view:) 168.61 468 S
+6 10 Q
+0.1 (dmsSkillGetWorkingLib\050) 144 443.33 S
+0.1 (t_viewName) 180 419.33 S
+0.1 ([t_toolName]) 180 395.33 S
+0.1 (\051 => t_workingLib/nil) 144 371.33 S
+2 12 Q
+0.12 (22.) 144 322 S
+0.12 (T) 162 322 S
+0.12 (o set the search path in Opus:) 168.61 322 S
+6 10 Q
+0.1 (dmsSkillSetSearchPath\050\051=> t/nil) 144 297.33 S
+2 12 Q
+0.12 (23.) 144 272 S
+0.12 (T) 162 272 S
+0.12 (o get information about the last dms call:) 168.61 272 S
+6 10 Q
+0.1 (dmsSkillGetLastCellViewInfo\050) 144 247.33 S
+0.1 (\051 => \050t_location t_libNsme t_cellName t_viewName t_versionName) 144 223.33 S
+0.1 (t_coUser t_path t_libPaht\051) 144 211.33 S
+2 12 Q
+0.12 (The t_location value can have one of the following values, which are self) 126 186 S
+0.12 (explanatory:) 126 172 S
+4 F
+0.12 (idmsCvNotFound) 144 146 S
+0.12 (idmsCvInW) 144 120 S
+0.12 (orkdir) 207.06 120 S
+0.12 (idmsCvInUnixdir) 144 94 S
+FMENDPAGE
+%%EndPage: "50" 11
+%%Page: "51" 11
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(Using the Basic Skill Procedural Interface) 356.7 749.33 T
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(Intel Confidential) 72 36.03 T
+(3-51) 520 36.03 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+4 12 Q
+0 X
+0.12 (idmsCvInRwlib) 144 712 S
+0.12 (idmsCvInRolib) 144 686 S
+0.12 (idmsCvInW) 144 660 S
+0.12 (orklib) 207.06 660 S
+FMENDPAGE
+%%EndPage: "51" 12
+%%Page: "52" 12
+612 792 0 FMBEGINPAGE
+72 746.06 540 756 R
+7 X
+0 K
+V
+0 10 Q
+0 X
+(iDMS integration guide) 72 749.33 T
+72 738 540 738 2 L
+7 X
+V
+0.5 H
+2 Z
+0 X
+N
+72 32.76 540 42.7 R
+7 X
+V
+0 X
+(3-52) 72 36.03 T
+(Intel Confidential) 465.56 36.03 T
+540 54 72 54 2 L
+7 X
+V
+0 X
+N
+72 90 540 720 R
+7 X
+V
+2 12 Q
+0 X
+0.12 (24.) 144 712 S
+0.12 (T) 162 712 S
+0.12 (o set a toolname: This command will cause the search path to be modi\336ed) 168.61 712 S
+0.12 (such that, the dms.pth entry corresponding to the tool is pre\336xed to the) 162 698 S
+0.12 (existing search path. Applications should use this ONL) 162 684 S
+0.12 (Y if they cannot) 431.78 684 S
+0.12 (resolve the search path - with Opus\325 search path. This operation can) 162 670 S
+0.12 (potentially degrade the overall performance of all Opus operations, by) 162 656 S
+0.12 (increasing the process size.) 162 642 S
+6 10 Q
+0.1 (dmsSkillSetCurrentTool\050) 144 617.33 S
+0.1 (t_toolName) 180 593.33 S
+0.1 (\051 => t/nil) 144 569.33 S
+2 12 Q
+0.12 (25.) 144 520 S
+0.12 (T) 162 520 S
+0.12 (o get information from the last iDMS call:) 168.61 520 S
+6 10 Q
+0.1 (dmsSkillGetLastCellViewInfo\050) 144 495.33 S
+0.1 (\051 =>) 144 471.33 S
+0.1 (\050t_location t_libName t_cell t_view t_ver t_coUser t_path) 180.72 471.33 S
+0.1 (t_libPath\051/nil) 187.2 459.33 S
+1 14 Q
+(3.4  Attribute Procedural Interface) 72 406.67 T
+2 12 Q
+0.12 (Described in the chapter on the attribute procedural interface.) 126 378 S
+1 14 Q
+(3.5  Multiple-views functionality) 72 348.67 T
+2 12 Q
+0.12 (No procedural interface yet) 126 320 S
+FMENDPAGE
+%%EndPage: "52" 13
+%%Trailer
+%%BoundingBox: 0 0 612 792
+%%Pages: 12 1
+%%DocumentFonts: Helvetica-Oblique
+%%+ Helvetica-Bold
+%%+ Times-Roman
+%%+ Times-Italic
+%%+ Times-Bold
+%%+ ZapfDingbats
+%%+ Courier

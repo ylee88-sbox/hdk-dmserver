@@ -1,0 +1,163 @@
+ 4Using the Attribute Procedural Interface in iDMS 
+An attribute is a DM provided mechanism for storing state information. Each attribute is associated with an object, and together the values of all attributes and of all objects in the database form the state of the database. An example of an attribute on an object is the timestamp attribute, which gives the time that the associated object was last checked into the database. The attribute procedural interface (PI), is an iDMS provided procedural interface providing applications with the ability to set, get and delete attributes. In this chapter, the attribute PI is described in detail from the point of view of applications written in C, Mainsail, and Skill. The application programmer is cautioned that the SKILL and C interfaces are case-sensitive, while the Mainsail interface is not. This restriction is not imposed by the feature/limitation of the programming language. Also, any other limitations on the maximum length of strings, maximum integer value, etc. are imposed by the language/operating system and hardware, the attribute PI does not impose or provide and further restriction/limitation.
+The actual code to implement the attribute PI functionality is written in C. The same is available in Mainsail by the use of Mainsail to C Foreign Language Interface. In SKILL the same functionality is provided by means of an idmSlave process that is spawned off with Opus and performs the processing using an inter-process communication channel. The interested reader is referred to the iDMS Administrator's guide for more details about this process. 
+For the attribute PI to work smoothly, it is recommended that in the run-environment, the environment variable CDS_INSTALL_DIR be set to point to the Cadence hierarchy. This environment variable is used by the Cadence interface to define the techfiles and when creating shadow libraries for tracking UNIX metadata. More on UNIX metadata is explained in the last section of this chapter.
+4.1  Integrating a C Tool
+In order for a tool to use the attribute PI, it must include the files "fwidms.h" and "attr.h", in the appropriate source file. The available attribute PI calls and a brief explanation of each are as follows:
+1.	To set an attribute:
+int
+dmsCSetAttribute(libName,cellName,viewName,versionName,
+attrName,attrType,attrValue)
+char *libName, *cellName, *viewName;
+char *versionName, *attrName, *attrType, *attrValue;
+This call will cause an attribute to be set on a specified object in the library. An object can be a library, cell, view or cellview. This procedure can be used to create new attributes, as well as modify existing ones.
+libName: The library can be specified in two ways - either directly in case the application does know the library, or else the application can set it to NULL, in this case the iDMS, will look through the dms.pth file, and write the attribute into the first matching object on the read/write(RW) path. If the application desires to put an attribute only on the library, then the library name must be specified and the cell and view name can be NULL.
+cellName: The cellName must be specified unless the application is setting the attribute on a library or a view. If the application desires to set the attribute on a cell, then the cell needs to be specified.
+viewName: The viewName must be specified unless the application is setting the attribute on a cell or a library. If the application desires to set the attribute on a view, then the libName is optional as in the above case.
+versionName: The versionName is optional - if it is set to NULL the latest version is used by iDMS. 
+attrName: The attribute name is compulsory always. It can be any alphanumeric string. If the application desires to set an hierarchical attribute, then the name is overloaded with the parentAttribute/attributeName. E.g: if cvs desires to set the sub-attribute DRC, of an hierarchical attribute called CVS, then the name would be "CVS/DRC". However if a tool wanted to simply set an attribute called foo, then the name would just be "foo".
+attrType: The attribute type can be any of the following types: string, boolean, time, integer, float, list. It is a compulsory field.
+attrValue:   value of the attribute is to be fed in as a string. Depending on the type parameter, iDMS will appropriately decipher the string. If the value of this field is NULL, then iDMS will place an appropriate NULL value on the attribute created.
+Some typical calls would look like: 
+if ((err = dmsCSetAttribute(NULL, myCell, myView, NULL, "dls/devCount", "int","100")) != idmsSuccess) { ...}
+if ((err = dmsCSetAttribute(myLib, myCell, myView, myVer, "foo", "boolean", "t")) != idmsSuccess) {...}
+The NULL values set by idms are -1, and 1.0 for integer and float types. False for boolean and "iDMSNull" for a string type.
+
+2.	To set a list of attributes
+int 
+dmsCSetAttributeList(libNameList,cellNameList,viewNameList,
+versionNameList,attrNameList,attrTypeList,attrValueList)
+char *libNameList,*cellNameList,*viewNameList;
+ char *versionNameList,*attrNameList,*attrTypeList; 
+char *attrValueList;
+This procedure is intended for use by application that set a large number of attributes at a time. This procedure can be used in several flavors, and the reader is encouraged to read this carefully. This procedure can be used to set several attributes on several objects, several attributes on one object, or one attribute on several objects. 
+libNameList: As described in the above section, this field is optional and can be NULL, in which case the library is searched from the dms.pth. If this is non-NULL, then the number of elements in the list must be exactly 1 or exactly n. If the number of elements is 1, then this library will be used in combination with each of the other arguments to set attributes, if the number of elements is n, then a every set call will use a different library name.
+cellNameList, viewNameList, versionNameList, attrNameList, attrTypeList, attrValueList: These, too, can be either NULL or a list of 1 or n elements. If cellName is NULL, then the attribute(s) are set on the library or view. If viewName is NULL, then they are being set on library or cell. The NULL versionName implies that only the latest versions will be considered. The attribute name or type cannot be NULL. If attribute value is NULL, every attribute set will have the pre-defined null value set by iDMS. If any of the arguments is a list of 1 element, then that element will be taken as a vector with each of the n others. E.g: dmsCSetAttributeList(NULL, a:b, alf, NULL, attr1:attr2, string:integer, hello:12) is a call that is identical to two calls to dmsCSetAttribute namely dmsCSetAttribute(NULL, a, alf, NULL, attr1, str, hello) and dmsCSetAttribute(NULL, b, alf, NULL, attr2, int, 12). In this example n is 2.
+E.g: Some legal calls are:
+dmsCSetAttributeList(NULL, myCell, myView,NULL,"attr1:attr2:attr3/foo", "string",NULL);
+dmsCSetAttributeList(myLib,"cell1:cell2:cell3","alf","attr1","int","10");
+3.	To get an attribute:
+int 
+dmsCGetAttribute(libName,cellName,viewName,versionName,
+attrName,attrType,attrValue)
+char *libName,*cellName,*viewName,*versionName;
+char *attrName,**attrType,**attrValue; 
+This procedure's arguments are identical to those in dmsCSetAttribute in the libName, cellName, viewname, versionName and attrName fields. 
+attrType, attrValue: These parameters should be declared and used as pointers.E.g: char *aType, *aVal; .... dmsCGetAttribute(lib, cell, view, ver, attr, &aType, &aVal).. If the application desires to retain these values, they must be copied. The integrity of these values is guaranteed only until the next call to get an attribute value.
+4.	To get all attributes on an object:
+int 
+dmsCGetAllAttributes(libName,cellName,viewName,versionName,
+attrNameList,attrTypeList,attrValueList)
+char *libName,*cellName,*viewName,*versionName;
+char **attrNameList,**attrTypeList, **attrValueList;
+The arguments that this procedure takes are similar to the above. In this case however, all the attribute types, and value are returned in a colon delimited list. These two lists will have the same number of elements in them.
+E.g: A code section in a typical application might look like:
+char *myVal, *val, *type;
+if (dmsCGetAttribute(NULL, myCell, myView, NULL, myAttr, &type, &val) == IDMS_SUCCESS) { myVal = (char *) malloc(strlen(val)+1); strcpy(myVal,val);}
+5.	To delete an attribute:
+int 
+dmsCDeleteAttribute(libName,cellName,viewName,versionName,
+attrName)
+char *libName,*cellName,*viewName,*versionName,*attrName; 
+This procedure will cause deletion of the attribute. The arguments are as described in the set and get procedures.
+4.2  Integrating a Mainsail Tool
+In order to use the Mainsail attribute PI, the application must source the fwidms.hdr file, as well as link in the idms.olb and idms.ilb into their boot file. These procedures actually simply package the arguments so that C can understand the strings, disable garbage collection, and then make a call through the Mainsail -> C Foreign Language Interface. Therefore, in this section, we do not provide an exhaustive description, the description for the equivalent C functions are applicable here as well. Since passing a NULL string is not intuitive in Mainsail, the attribute PI will accept a "#" as a symbol signifying the NULL string. 
+1.	To set an attribute:
+LONG INTEGER 
+PROCEDURE dmsMslSetAttribute(
+USES STRING libName;
+USES STRING cellName;
+USES STRING viewName;
+USES STRING versionName;
+USES STRING attrName;
+USES STRING attrType;
+USES STRING attrValue;
+ );
+The description for these arguments is identical to those for the equivalent C procedure.
+2.	To set a list of attributes: 
+LONG INTEGER 
+PROCEDURE dmsMslSetAttributeList(
+ USES STRING libNameList;
+ USES STRING cellNameList;
+ USES STRING viewNameList;
+ USES STRING versionNameList;
+ USES STRING attrNameList;
+ USES STRING attrTypeList;
+ USES STRING attrValueList;
+ );
+The description for these arguments is identical to those for the equivalent C procedure.
+3.	To get an attribute:
+LONG INTEGER
+PROCEDURE dmsMslGetAttribute(
+USES STRING libName;
+USES STRING cellName;
+USES STRING viewName;
+USES STRING versionName;
+USES STRING attrName;
+PRODUCES STRING attrType;
+PRODUCES STRING attrValue;
+ );
+The description for these arguments is identical to those for the equivalent C procedure.
+4.	To get all attributes on an object:
+LONG INTEGER
+PROCEDURE dmsMslGetAllAttributes(
+USES STRING libName;
+USES STRING cellName;
+	USES STRING viewName;
+	USES STRING versionName;
+	PRODUCES STRING attrNameList;
+	PRODUCES STRING attrTypeList;
+	PRODUCES STRING attrValueList;
+	);
+The description for these arguments is identical to those for the equivalent C procedure.
+5.	To delete an attribute:
+LONG INTEGER
+PROCEDURE dmsMslDeleteAttribute(
+ USES STRING libName;
+ USES STRING cellName;
+ USES STRING viewName;
+ USES STRING versionName;
+ USES STRING attrName;
+ );
+The description for these arguments is identical to those for the equivalent C procedure.
+
+4.3  Integrating a SKILL Tool
+In the SKILL environment, the description of the arguments is as followed by the Opus documentation. This document assumes that the reader is familiar with SKILL. In addition, it is also assumed that the tool will be running on Opus. If the tool is not running on Opus, this interface will NOT work and the application should use one of the above two procedural interfaces.
+Another very important assumption is that the tool which uses this interface is run in Opus ONLY AFTER the SKILL context fwidms.il has been loaded. If this is not the case, the application will not see the definition of all the procedure described here. In order to check if the idmSlave process is alive and running the application can make a call idmsSkillSlaveIsAlive. If this returns a t, then its ok to proceed. Otherwise, the slave is either undefined or does not exist, and the application should inform the user of that. We do not advise the application to attempt a re-start of the slave process, as instantiation of multiple slaves can have several performance implications.
+In the procedures that follow, all the arguments are as described for the C interface, except that instead of NULL list, a nil should be used. Also, to pass a NULL string for either the cellName or the viewName arguments, the user should use an empty string ("") . For details on the SKILL interface, the reader should read the chapter on the iDMS SKILL interface.
+1.	To set an attribute:
+dmsSkillSetAttribute(
+t_libName/nil 
+t_cellName 
+t_viewName 
+t_versionName/nil
+t_attrName 
+t_attrType 
+t_attrValue
+[t_toolName]
+) => t/nil
+2.	To get an attribute:
+dmsSkillGetAttribute(
+t_libName/nil 
+t_cellName 
+t_viewName 
+t_versionName/nil
+t_attrName 
+[t_toolName]
+) => (t_attrType t_attrValue)/nil
+
+3.	To delete an attribute:
+dmsSkillDeleteAttribute(
+t_libName/nil 
+t_cellName 
+t_viewName 
+t_versionName/nil
+t_attrName 
+[t_toolName]
+) => t/nil
+4.4  Unix meta-data
+There are three different places an attribute can reside based on the design data file. When the file is checked into the cadence lib the attributes are stored as properties, and the attribute PI does this.
+When the file is checked out there are 2 possibilities:
+1.	The file is checked to a unix dir by iDMS. In this case a sub-dir is created in this directory called .iDMS and a shadow lib lives here. This library holds the unix metadata.
+2.	The fiel is checked out to a cadence defined area. This by default is the co@user area. Projects may define a custom mapping function which checks files out to some other area. Whichever the case iDMS puts a new property on the previous checked in version called the iDMSNewVersionProp. This property will hold all attributes for the newly checked out version. When the version is checked in iDMS correctly copies the attributes from iDMSNewVersionProp.
+	To differentiate between the above two cases - the user must set the environment variable IDMS_MAPPINGKEYWORD to the string which will tell iDMS whether a given filepath is in the Cadence area. By default this is set to "co@"since that is the default path to a Cadence file.

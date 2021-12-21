@@ -1,0 +1,141 @@
+################################################################################
+#
+# dmserver.postSetup
+#
+# Sourced by setup after all tools have been "setup"
+# .postSetup files allow tool-specific setup and/or environment assertions
+# that are based on the environment defined by other tools.
+#
+################################################################################
+
+#set dmserver_ver = `$SETUP_REV/bin/getTv dmserver`
+#if ( "$dmserver_ver" =~ *sbox* ) then #{
+#  # when running in sbox mode, set this value to YOUR desired installation version...  perhaps a copy of what is in your sbox...
+#  echo ""
+#  echo "-D- dmserver.setup: executing in sbox mode, will point to installation named $DMSERVER_VER ..."
+#  echo ""
+#endif #}
+#unset dmserver_ver
+
+
+# select the default design data version control system - none
+setenv DM_SYSTEM NOVEND
+
+##########################
+# select which iDMSglobalTable is to be used ( Cadence 5 CDBA or Cadence 6 OA )
+# get Cadence DB type:  CDBA or OPENACCESS
+/usr/bin/which getDBType >& /dev/null
+if ( $? == 0 ) then #{
+  set dbtype = `getDBType`
+else #}{
+  set dbtype = ""
+endif #}
+if ( $dbtype == "OPENACCESS" ) then #{
+    set globfilename = "iDMSglobalTable.oa"
+else #}{
+    set globfilename = "iDMSglobalTable"
+endif #}
+unset dbtype
+##########################
+
+
+##########################
+# Are we using DesignSync as the design data version control system
+if ((" $SETUP_TOOLS " =~ *\ synchronicity\ * ) && $?SYNCHRONICITY_VER && ! $?DMSERVER_NOVENDOR) then #{
+  if ( "$SYNCHRONICITY_VER" != "NoToolVer" ) then #{
+    setenv DM_SYSTEM "SYNC"
+  endif #}
+endif #}
+##########################
+
+
+################################################################################
+#
+# Define invocation aids, useful/essential aliases for this tool:
+#
+# This has to be done after the DM_SYSTEM is known.  So this is done in dmserver.postSetup
+################################################################################
+switch ($DM_SYSTEM) #{
+  case NOVEND:
+    setenv DMSERVER_EXE_NAME dmserver_novendor
+    setenv IDMB "$DMSERVER_BIN_DIR"
+
+    alias idmb  "$DMSERVER_BIN_DIR/idmb_novendor -nullgt"
+    alias itk   "$DMSERVER_BIN_DIR/itk_novendor -i"
+  breaksw
+
+  case SYNC:
+    set error = 0
+    set STAT = "/usr/bin/stat"
+
+    ################################
+    # Was dssc/stclc installed properly?
+    # what is the execute bit of the owner set to on the dssc executable (should be 's')
+    set sync_s_bit=`$STAT --format "%A" $SYNC_DIR/bin.Linux/dssc | cut -b 4`
+    if ("$sync_s_bit" != "s") then #{
+      @ error=$error + 1
+      echo "-E- dmserver.postSetup: $SYNC_DIR/bin/dssc is NOT installed set effective uid on execute."
+    endif #}
+
+    ################################
+    # Was the dmserver installed properly?
+
+    # get the name of the owner of the dssc executable (db admin for PROJECT)
+    set sync_user  = `$STAT --format "%U" $SYNC_DIR/bin.Linux/dssc`
+    # get the name of the security group for dssc tool ( likely soc )
+    set sync_group = `$STAT --format "%G" $SYNC_DIR/bin.Linux/dssc`
+
+
+    foreach exe (dmserver idmb itk idmSlave) #{
+      set s_bit=`$STAT --format "%A" $DMSERVER_BIN_DIR/$exe | cut -b 4`
+      set dms_user  = `$STAT --format "%U" $DMSERVER_BIN_DIR/$exe`
+      set dms_group = `$STAT --format "%G" $DMSERVER_BIN_DIR/$exe`
+
+      if ("$s_bit" != "s") then
+        @ error=$error + 1
+        echo "-E- dmserver.postSetup: $DMSERVER_BIN_DIR/$exe is NOT installed set effective uid on execute."
+      endif #}
+
+      if ("$sync_user" != "$dms_user") then
+        @ error=$error + 1
+        echo "-E- dmserver.postSetup: $DMSERVER_BIN_DIR/$exe is owned by ($dms_user) but should be owned by ($sync_user)"
+      endif #}
+
+      if ("$sync_group" != "$dms_group") then
+        @ error=$error + 1
+        echo "-E- dmserver.postSetup: $DMSERVER_BIN_DIR/$exe belongs to group ($dms_group) but should belong to ($sync_group)"
+      endif #}
+    end #}
+
+    if ($error > 0) then
+       exit 1
+    endif
+    ################################
+
+    ################################
+    # define launch aliases and config files
+    # See note in head of sync_wrapper.pl for rational on threading through it to launch each executable...
+    setenv DMSERVER_EXE_NAME dmserver_sync_wrapper
+    setenv IDMB "$DMSERVER_BIN_DIR"
+
+    alias idmb  "$DMSERVER_BIN_DIR/idmb_sync_wrapper -nullgt"
+    alias itk  "$DMSERVER_BIN_DIR/itk_sync_wrapper -i"
+
+    setenv IDMS_GLOBALFILE $DMSERVER_BIN_DIR/../setup/$globfilename
+
+    if (-e $DMSERVER_BIN_DIR/../setup/iDMSTriggers.tcl) then
+       setenv IDMS_USERTRIGGERFILE_TCL $DMSERVER_BIN_DIR/../setup/iDMSTriggers.tcl
+    else
+       unsetenv IDMS_USERTRIGGERFILE_TCL
+    endif
+    ################################
+
+  breaksw
+
+  default:
+    echo ""
+    echo "-E- dmserver.postSetup: invalid value for DM_SYSTEM"
+    echo ""
+    exit 1
+  breaksw
+endsw #}

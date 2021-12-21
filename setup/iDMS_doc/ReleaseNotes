@@ -1,0 +1,227 @@
+Documentation:
+--------------
+
+integration: Developer guide for iDMS PI integration.
+dmspath: Description of dms.pth file syntax.
+attr: For attribute PI integration.
+globalFile: For global file functionality.
+slave: For iDMS skill interface.
+views: For multiple views functionality.
+
+
+Release Note:
+-------------
+2.11.a2
+-------
+* dmsCPrintIdmsLog/dmsMslPrintIdmsLog procedure to print logs to iDMS log file.
+* No header changes from 2.11.a1.
+* Fix $include not to affect dms.pth line count.
+* Workaround for Dapr fatal on iAWS.
+
+2.11.a1
+--------
+* dmsCPIInitDMS and dmsMslPIInitDMS procedures have been added a third argument
+  for iDMS to know if tools are running in graphic mode or not. Use macros
+  defined in fwierr.h and fwierr.hdr to be the input option.  Please read
+  documentation:integration for detail.
+* User triggers
+* Generated attribute: Please read documentation:globalFile for detail.
+* Tool configuration policy in dms.pth file: Documentation:dmspath for detail.
+* iDMS last cellview information procedure: Documentation:dmspath for detail.
+* New documentation
+* Working directory token in dms.pth file: Documentation:dmspath for detail.
+* Better warning/error messages
+* The table named iDMSViewTypeToNameTable in the iDMSglobalTable was renamed to
+  iDMSIntelDataFormatToNameTable.
+* Two new environment variables
+	IDMS_USERTRIGGERFILE -> to point to user trigger file
+	IDMS_DISABLEUSERTRIGGER -> to disable above functionality
+Details are in the globalFile document.
+* A new environment variable 
+	IDMS_MAPPINGKEYWORD -> to hold the keyword string value
+	based on which iDMS will decide whether a file path is 
+	a unix-dir (for unix metadata) or a cadence opus checkout 
+	via the mapping function. If not defined the 
+	default is "co@"
+
+* Header changes:
+ 1) fwierr.hdr, fwierr.h: The macro idmsCvHasNoCheckoutToBeCancelled was
+    renamed to be idmsCvWasNotCheckout.
+ 2) dmsMslExitDMS used to have a argument for return noError. Now, it takes
+	no argument, and return the error core by procedure.
+
+* Good-bye procedures:
+	All the procedures in iDMS 2.0 are no longer supported in iDMS 2.11
+	release.  You have to do proper substitution to replace 2.0 procedures
+	with 2.11 procedures. Following is the substitution mapping:
+		2.0 procedures		2.11 procedures
+		dmsMslReadCellView  ->	dmsMslReadOnlyCellView/CellViewType
+		dmsMslWriteCellView ->	dmsMslCheckinCellView
+		dmsMslLockCellView  ->  dmsMslCheckoutCellView
+		dmsMslUnLockCellView -> dmsMslCancelCheckoutCellView
+	New 2.11 procedures are using procedure to return errors (not noError
+	any more). So they have	one less argument than 2.0 procedures. Please
+	refer to the integration documentation for details.
+
+* Skill interface changes:
+ 1) Procedure name change.
+ 	dmsSkillSetTool() ----------> dmsSkillSetCurrentTool()
+ 
+ 2) Optional toolname argument on some functions.
+
+	Here's the list of functions that have the optional toolname
+	argument:
+
+	dmsSkillCreateCellView
+	dmsSkillCreateUnixFile
+	dmsSkillReadonlyCellViewType
+	dmsSkillReadonlyCellView
+	dmsSkillCheckoutCellView
+	dmsSkillLoadCellView
+	dmsSkillEditCellView
+	dmsSkillReadOrEditByPolicy
+	dmsSkillSaveCellView
+	dmsSkillCheckinCellView
+	dmsSkillUpdateCellView
+	dmsSkillInstallCellView
+	dmsSkillPurgeCellView
+	dmsSkillCancelCheckoutCellView
+	dmsSkillInfoCellView
+	dmsSkillPrintPath
+	dmsSkillGetWorkingDir
+	dmsSkillGetWorkingLib
+ 
+ 3) Return values for dmsSkillInfoCellView()
+    2.1 ->  (x_info t_lib t_cell t_view t_ver t_coUser t_path)
+    2.11 -> (t_info t_libName t_cell t_view t_ver t_coUser t_path t_location 
+ 	    t_libPath)
+ 
+ 4) Using UNIX environment variables IDMS, IDMS_USERTRIGGERFILE, and 
+ 	IDMS_DISABLEUSERTRIGGERS.
+ 
+ 5) New functions.
+ 	dmsSkillGetLastCellViewInfo()
+ 	dmsSkillPrintPath()
+ 	dmsSkillPurgeCellView()
+ 	dmsSkillReadonlyCellView()
+ 	dmsSkillReportMessage()
+	
+Appendix A: Known Bugs
+----------------------
+Following is the list of known iDMS bugs:
+
+1) Description of the bug:
+	dmsPIExitDMS tries to save closed cdba cellviews to the disk 
+	instead of simply exiting. 
+
+   Impact:
+	As dmsPIExitDMS erroneously saves the closed cdba cellviews 
+	to the disk, it will cause the next cdba write to fail.
+
+   Fix:
+	Cadence needs to fix dmsPIExitDMS procedure so that 
+	closed cdba cellviews will not be saved to the disk.
+
+   Work-around: 
+	Until we receive a fix from Cadence, we recommend the
+	following work-around.
+
+	Tools need to call dmsExitDMS to avoid the dummy save.
+        In the dmsExitDMS, iDMS skips the daTerminatePI procedure which
+        tries to save closed cdba cellviews.
+
+  Affected tools:
+	Only those tools which access PDFW CDBA interface.
+
+2) Description of the bug:
+  	Link lock on a version is always released after 
+	dmsInfoCellView call. 
+
+   Impact:
+	No protection against deleting the cellviews that 
+	were read by active processes at that time.
+
+   Fix:
+	dmsInfoCellView will be modified so that it will not
+	leave the side-affect of "releasing the link lock"
+	for the calling procedure.
+
+   Work-around:
+	There is no work-around in the code.
+
+   Affected tools:
+	Any tool that uses dmsInfoCellView call.
+
+3) Description of the bug:
+	Hierarchical attributes not inherited correctly.  Hierarchical
+	attributes that are listed in the global file are not passed on
+	to future revisions.
+
+   Impact:
+	Minor.
+
+   Fix:
+	Next release.
+
+   Work-around:
+	None in this release.
+
+   Affected tools:
+	None.
+
+4) Description of the bug:
+	dmsCellViewInfo returns nil fullPathName for versions with zero length.
+
+   Impact:
+	Can not locate empty file properly.
+
+   Fix:
+	Next release.
+
+   Work-around:
+	None.
+
+   Affected tools:
+	All.
+
+Appendix B: Release History
+---------------------------
+2.1.a6
+------
+* for opus 4.21.a6
+* fixes for configurations.
+
+2.1.a5
+------
+* for opus 4.21.a5
+
+2.1.a4
+------
+* for opus 4.21.a4
+
+2.1.a3
+------
+* New standard, new feature.
+
+2.0.a2
+------
+* Fix on dmsCPIExitDMS and dmsMslPIExitDMS to give control back to caller.
+
+* Fix on DMS.PATH problem that the last library on rwpaths become a directory.
+
+* Fix on reloading DMS.PATH problem.
+
+* Eliminate messages about non-existing libraries.
+
+* DMS.PATH entry %toolname is equivalent to %toolname.*
+
+
+2.0.a1
+------
+* Initial alpha release version 2.0.a1 originates from 1.1.a6
+
+* Provide a procedure for getting iDMS version number.
+
+* Enhancement on reporting undefined variables. (for calling tools only)
+
+* Attribute supports.

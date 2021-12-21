@@ -1,0 +1,39 @@
+#!/usr/intel/bin/tcsh
+
+
+mkdir -p $WORK_AREA_ROOT_DIR/rundir
+cd $WORK_AREA_ROOT_DIR/rundir
+
+setenv MACHINE_TYPE `/usr/intel/bin/sysname -afs`
+
+set TCL_VER=`$SETUP_REV/bin/getTv tcl`
+
+setenv TCL_LIBRARY ${CAD_ROOT}/tcl/${TCL_VER}/lib/tcl8.4
+setenv TK_LIBRARY ${CAD_ROOT}/tcl/${TCL_VER}/lib/tcl8.4
+
+setenv TRANSIENT_PSE_DB 1
+unsetenv OS_PSE_AS_START
+unsetenv OS_PSE_AS_SIZE
+unsetenv OS_PSE_PAGE_SIZE
+
+#set the nullgt env variable so that pdtcl tests can run without itkwish
+setenv NULLGT 1
+
+setenv TCLLIBPATH "$DMSERVER_BIN_DIR"
+
+set CWSHELL_FROM_ENV=${CAD_ROOT}/nfl/`$SETUP_REV/bin/getTv nfl`/bin/cwshell
+
+if ((-x "$CWSHELL_FROM_ENV") && (! $?DMSERVER_USE_LOCAL_CWSHEL)) then
+   set CWSHELL=$CWSHELL_FROM_ENV
+else
+   set CWSHELL=$DMSERVER_BIN_DIR/cwshell
+endif
+
+if (! -x "$CWSHELL") then 
+   echo "-E- dmsapi - cannot find cwshell either in environment ($CWSHELL_FROM_ENV) or in DMSERVER_BIN_DIR"
+   exit 1
+endif
+ 
+#echo $CWSHELL 
+${CWSHELL} $DMSERVER_BIN_DIR/dmsapi.tcl
+

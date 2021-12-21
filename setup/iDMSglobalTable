@@ -1,0 +1,362 @@
+############################################################################################
+# sample iDMS Global Table File
+#
+# all table definitions EXCEPT for the iDMSIntelRegistryTable are examples and hopefully
+# do not impact any known tool or view.
+#
+# See the document $DMSERVER_BIN_DIR/../iDMS_doc/globalFile.{mif,ps,txt} for a detailed
+# description of how to use and customize this file
+############################################################################################
+
+############################################################################################
+#
+# The  iDMSIntelRegistryTable  table is new and will be used only by the DesignSync linked
+# varieties of the iDMS utilities.  It is ONLY used to emulate the process Cadence uses to
+# locate the data-storage-file associated with a viewName.
+#
+# We emulate this process to make the iDMS utilities completly Cadence code free.
+# This makes our code more portable, but will require that information about new/additional
+# viewNames be encoded in two places:  The Cadence $CDS_SITE/data.reg file and this
+# iDMSglobalTable file.
+#
+# Cadence data is stored down the path:
+#  <library-path>/<cellName>/<viewName>/<data-storage-file_name>
+# The table below maps the viewName commonly used to address the data to an actual
+# data-storage-file-name
+#
+# The following associations ASSUME the use of the data.reg file customization
+# provided by DT's templateUE project env definition tool.  In that file we
+# declare the DataFormats and storage-file-names for Intel's
+# lnf, icf, alf* and various schematics/symbol views
+
+Table iDMSIntelRegistryTable(
+#####################################################
+# ViewName        pattern 
+#####################################################
+  layout          layout.cdb
+  width           alf.dat
+  icf             icf.dat
+  alf             alf.dat
+  alflay          alf.dat
+  alflaytd        alf.dat
+  alfspec         alf.dat
+  bonuslist       alf.dat
+  pgbump          alf.dat
+  loc             alf.dat
+  alftrc          alf.dat
+  alfplnbu        alf.dat
+  alfpln          alf.dat
+  alftrcbu        alf.dat
+  ctk             alf.dat
+  stm             alf.dat
+  sum             alf.dat
+  migsn           alf.dat
+  tdpf            alf.dat
+  crsn            alf.dat
+  stsn            alf.dat
+  alfplntd        alf.dat
+  cts_wires       alf.dat
+  def             alf.dat
+  defpr           alf.dat
+  eco_alflay      alf.dat
+  journal         alf.dat
+  pcons           alf.dat
+  pdef            alf.dat
+  pdefnet         alf.dat
+  placement       alf.dat
+  predef_params   alf.dat
+  widewires_tcl   alf.dat
+  widthclass      alf.dat
+  cell_loc        alf.dat
+  params          alf.dat
+  trunk_nets      alf.dat
+  ednet           alf.dat
+  mpsn            alf.dat
+  buftree_nets    alf.dat    
+  alfplntdmy      alf.dat
+  opp_cnac        alf.dat
+  cts_rpt         alf.dat
+  dplace          alf.dat
+  wl_lay          alf.dat
+  stdpf           alf.dat
+  drcd            alf.dat
+  lnf             lnf.dat
+  rfafrz          alf.dat 
+  star_sum        alf.dat
+  layout_errors   alf.dat
+  die             alf.dat
+  xyv             alf.dat
+  fxyv            alf.dat
+  lsimtxt         alf.dat 
+  pgbump          alf.dat 
+  stdpfz          gz.v  
+  stntclz         gz.v
+  crntclz         gz.v
+  crdpfz          gz.v
+  fstntclz        gz.v
+  mappingz        gz.v
+  mdpfz           gz.v
+  mntclz          gz.v
+  xnez            gz.v
+  xtabz           gz.v
+  idxz            gz.v
+  ezqb            gz.v
+  tpview          tp.dat
+  sch             sch.dat
+  gux             gux.dat
+  aux             aux.dat
+  hux             hux.dat
+  uux             uux.dat
+  rcd             rcd.dat
+  iif             iif.dat
+  isp             isp.dat
+  vams            vams.dat
+  ssimtxt         ssimtxt.dat	
+  description     description.dat
+  symbol          symbol.cdb
+  interior        symbol.cdb
+  alt             symbol.cdb
+  alt1            symbol.cdb
+  alt2            symbol.cdb
+  alt3            symbol.cdb
+  alt4            symbol.cdb
+  prntcl          alf.dat
+  llist           alf.dat
+  printcl         alf.dat
+  symbol1         symbol.cdb
+  symbol2         symbol.cdb
+  symbol3         symbol.cdb
+  symbol4         symbol.cdb
+  symbol5         symbol.cdb
+  symbol6         symbol.cdb
+  symbol7         symbol.cdb
+  symbol8         symbol.cdb
+  symbol9         symbol.cdb
+  symbol10        symbol.cdb
+  symbol11        symbol.cdb
+  symbol12        symbol.cdb
+  symbol13        symbol.cdb
+  symbol14        symbol.cdb
+  symbol15        symbol.cdb
+  ntlSTOP         symbol.cdb
+  snet            symbol.cdb
+  netcvs          symbol.cdb
+  netcell         symbol.cdb
+  cse             symbol.cdb
+  schematic       sch.cdb
+  engine          sch.cdb
+  fault           sch.cdb
+  ternary         sch.cdb
+  schnet          schnet.dat
+  qbbu            alf.dat
+  adexl           data.sdb
+)
+
+############################################################################################
+#
+# The iDMSIntelExtTable  table is also new.  It is ONLY used when searching for data in UNIX
+# directories (workdir or UNIX directories mentioned in the rwpaths list).  It is used to map
+# a viewName to a list of possible file-extensionNames to use for searching disk.  In the
+# provided example, if the normal on-disk definition does not exist, the code will look for
+# the compressed form of the file.
+# NOTE: iDMS will NOT automatically compress or de-compress the data depending
+#       on the on-disk extensionName.  The use of THIS mapping table will only facilitate
+#       browsing compressed data and/or supporting access to data of format X stored under
+#       a variety of names.
+# The mapping applied by this particular table takes place AFTER any mapping directed by the
+# iDMSIntelDataFormatToNameTable table (viewType to a list of potential viewNames) and BEFORE
+# any mapping directed by the iDMSViewNameToExtTable table
+# (file-search-extensionName to stored-on-disk-extensionName)
+#
+# In pseudo code, the relationship of the various tables would be:
+#
+# When looking for cellName
+# ------------------------------
+# if provided viewName
+#   set viewNameList = viewName
+# else # working with viewType
+#   set viewNameList = iDMSIntelDataFormatToNameTable(viewTypeName) || viewTypeName
+#
+# foreach viewName viewNameList
+#   foreach searchLocation rwpaths(toolName viewName) {
+#     if isFlatUnixDir(searchLocation) {
+#       foreach searchExtensionName (iDMSIntelExtTable(viewName) || viewName){
+#         when iDMSViewNameToExtTable(searchExtensionName) {
+#           searchExtensionName = iDMSViewNameToExtTable(searchExtensionName)
+#         }
+#         if fileExists(cellName.searchExtensionName) return(pathToFile(cellName.searchExtensionName))
+#       }
+#     } elseif (isIntelLibrary) {
+#       <search Intel lib>
+#     } else {
+#       <search Cadence lib>
+#     }
+#   }
+# }
+
+Table iDMSIntelExtTable(
+#####################################################
+# toolName        viewName        extNameList
+#####################################################
+  Xgenesys         lnf             lnf:genlnf:genlnf.gz:genlnf.Z
+  Xgalaxy          lnf             lnf:gallnf:gallnf.gz:gallnf.Z
+  Xisstools        alf             alf:alflay
+)
+
+
+############################################################################################
+#
+# The iDMSUserTriggerTable_Tcl  table provides a mechanism to register the need to execute a Tcl
+# encoded proceedure when a particular data management event ocurs.  There are seven recognized
+# iDMS events:
+#
+# create          ::= creation of a UNIX file (in the working directory) OR
+# 										creation of DFII data-library cell-view object
+# checkout        ::= check out for edit from a repository a data-file to a
+# 										UNIX file (in the working directory)
+# save            ::= save of data-file from process memory to a UNIX file
+# 										(in the working directory)
+# install         ::= a transaction wrapped combination of:
+# 											create initial library/cell/view/anchor-version,
+# 											check-out library/cell/view/anchor-version for edit (to the bit bucket),
+# 											check-in the contents of the the indicated UNIX file (from the working directory)
+# checkin         ::= check-in the contents of the the indicated UNIX file (in the working directory)
+# update          ::= a transaction wrapped combination of:
+# 											check-out for edit matching library/cell/view/version object (to the bit bucket),
+# 											check-in the contents of the the indicated UNIX file (from the working directory)
+# cancelCheckout  ::= remove indicated UNIX file (from the working directory) and then remove reservation to
+# 										create next revision of matching library/cell/view/version object
+#
+# For each event, one can declare a Pre or Post event trigger function name.  If the
+# event is not specified in the table or the Pre or Post trigger function name is '-'
+# then no function will be called for that phase of that particular event.
+#
+# In this table, one defines trigger proceedures that are encoded in Tcl which will
+# be called and executed by the embedded Tcl interpreter that results from the DesignSync link.
+#
+# NOTE: the procedures called out by event registrations here must be defined in the file pointed
+#       at by the environment variable  IDMS_USERTRIGGERFILE_TCL
+#
+Table iDMSUserTriggerTable_Tcl(
+############################################
+# event            pre               post
+###############################################
+  create            -                 -
+  checkout          -                 -
+  save              -                 -
+  install           -                 -
+  checkin           -                 -
+  update            -                 -
+  cancelCheckout    -                 -
+)
+
+############################################################################################
+#
+# The iDMSIntelDataFormatToNameTable enables the tool developer to encode data file accesses
+# using the file data format name (viewType) rather than the viewName.  The table below
+# provides a tool specific mapping from viewType to a list of possible viewNames.
+# NOTE: if the tool is coded to specifically call for a specific viewName, then this table
+#       is ignored...  Regrettibly, most tools were and are coded with viewNames...
+#
+Table iDMSIntelDataFormatToNameTable(
+#####################################################
+# toolName        viewType        viewNameList
+#####################################################
+ Xplus            evr             evr:evrlss
+ Xplus            bvr             bvr:bvrlss:bvrest
+ Xplus            ntcl            ntcl:tntcl
+ Xplus            sch             sch:schdapr:schlss
+
+ Xafp             alf             alflay:alfpln:alf
+
+ Xbplot           alf             alflay:alfpln:alf
+
+ Xdapr            sch             sch:schlss
+
+ Xdls             alf             alflay:alfpln:alf
+
+ Xdla             alf             alflay:alfpln:alf
+
+ Xdpdgen          alf             alflay:alfpln:alf
+
+
+ Xdpe             alf             alflay:alfpln:alf
+
+ Xdpp             alf             alflay:alfpln:alf
+
+ Xdippa           alf             alflay:alfpln:alf
+
+ Xidmb            hdl             hdl:hdllib
+ Xidmb            ifc             ifc:ifclib
+ Xidmb            mac             mac:maclib:macpla
+ Xidmb            def             def:defcode
+
+ Xisstools        alflay          alflay:alfpln
+   
+ Xhdl             hdl             hdl:hdllib
+ Xhdl             ifc             ifc:ifclib
+ Xhdl             mac             mac:maclib:macpla
+ Xhdl             def             def:defcode
+ Xhdl             hdr             hdr:hdrlib
+
+ Xlogmin          mac             mac:maclib:macpla
+
+ Xdevcnt          sch_netlist     sch
+ Xsalt            sch_netlist     sch
+ fev              sch             glssch:sch
+
+ genesys          alflay          alflay:alfpln:alf
+ platocbd         alflay          alflay:alfpln:alf
+ galaxy           alflay          alflay:alfpln:alf
+)
+
+############################################################################################
+#
+# The iDMSViewNameToExtTable is ONLY used when CREATING or searching for data in
+# UNIX directories (workdir or UNIX directories mentioned in the rwpaths list).
+# It allows the methodology developer to control the extension name that will be
+# used to create or locate a data file stored within a flat UNIX directory.
+# For example: the hdlsyn tool can generate SNET format netlist information.
+#              the viewName hdlsyn uses for netlist files is  .sch
+#              The problem is that there are two modes that hdlsyn can be run in
+#                one to generate logic simulation quality netlists
+#                another to generate layout quality/compatible netlists.
+#              By controlling the iDMSGlobalTable used when hdlsyn is executed
+#              one can use the table below to cause all sch files created by it to
+#              have a mode unique extension name:
+#
+#                               viewName   Ext
+# when in logic  mode define    sch        hsch
+# when in layout mode define    sch        lsch
+#
+Table iDMSViewNameToExtTable (
+#####################################################
+# viewName               data file ext looked for on disk
+####################################################
+  genlnf                  glnf
+  gallnf                  Glnf
+)
+
+############################################################################################
+#
+# The AttributeControl tables that were supported in the Athena DMS based releases
+# are no longer supported.  The Attribute PI is still available for use by iDMS
+# linked applications and through the dmsSKILL* PI
+###############
+
+
+############################################################################################
+#
+# The iDMSUserTriggerTable  table which registered SKILL encoded proceedures to be
+# executed when certain DM events happened could be still be supported (proof of concept
+# Tcl and SKILL coded exists with which to establish a socket based message passing service
+# upon which a system could be built.  It would take considerable effort to make the system
+# robust and it is not apparant that anyone really needs that capability any longer.)
+#
+# It makes more sense for the trigger system to follow the actual DM system which if that
+# system is DesignSync implies that Tcl routines should be used.
+#
+# For those operations that require examination of DFII specific data structures, look into
+# using DFII v4.4's new (ddRegTrigger) function to declare DFII application level event
+# triggers
+###############

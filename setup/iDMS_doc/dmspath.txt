@@ -1,0 +1,410 @@
+ 1Introduction to DMS.PTH
+
+iDMS (Intel Data Management System) is a layer built on top of Cadence framework 
+DMS to provide additional functionality needed by Intel. The iDMS is configurable 
+by a setup file called DMS.PATH which defines the scope of data, the sequence of 
+data searching, the data working area and the location of data creation.
+
+In this chapter, the detailed syntax of DMS.PATH file will be described.
+
+The basic knowledge of library, cell, view, cellview and version is recommended to 
+understand all the material in this documentation.
+
+1.1  System Overview
+
+1.	All applications integrated with iDMS will have their own DMS memory. For 
+example: Tools will have their own library search path without interfering 
+each other.
+
+2.	All applications and main opus coordinate libraries and cellviews status 
+through the metadata attached to each libraries. For example: The checkout 
+status of a cellview will be seen by all applications.
+
+3.	Configuration file is shared by all applications. i.e. All applications read the 
+same DMS.PATH file, but use only their own entries.
+
+1.2  Functionality
+
+1.	Configurability: iDMS manages data based on user defined file: DMS.PATH. 
+Application's I/O behavior then is configurable, and can be easily defined to 
+tailor users' needs.
+
+2.	Dynamic loading: When iDMS is initialized, the DMS.PATH file will be 
+loaded and thus set up the I/O behaviors of the running application. Users can 
+update and reload the dms.path file while the application is running. Users can 
+also view the current configuration from applications.
+
+3.	User defined configurations are:
+
+a.	Tool based DMS library search paths (libpath): Users specify a list of 
+UNIX directories in which libraries are found and searched for a certain 
+cellview.
+
+b.	Tool/view based working library (worklib): Users specify a certain library 
+on the library search path for creating new cellviews.
+
+c.	Tool/view based working directory (workdir): Users specify a UNIX 
+directory for temporary nonDMS read/write storage. The working 
+directory is also the first place to look for a file before any UNIX directory 
+or OPUS library on the rwpaths.
+
+d.	Tool/view based read/write policy (rwpaths): Users specify a chain of 
+nonDMS readonly directories and DMS libraries in which ever order they 
+would like. Cellviews will be searched by this order.
+
+4.	I/O policies are attached to libraries:
+
+a.	RO(libraryName.configName:...): Permit readonly access. All cellviews 
+in these libraries will be readonly. Applications can read cellviews without 
+issuing locks and update (checkin without a lock) the cellview directly 
+while a DMS write.
+
+b.	RW(libraryName.configName:...): Permit checkout/checkin/update 
+access. All cellviews in these libraries can be readonly or read with lock 
+(checkout). A cellview can be checkin only if it's locked.
+
+c.	configName: A release control feature is provided by OPUS. Whenever a 
+library is opened, the associated release will be used to determine which 
+version to be read or locked. (see OPUS Configuration Concept)
+
+d.	defaults: If no libraries are specified, all libraries on the library search path 
+will be used. If no config name is specified, all read or locked versions will 
+be the most current versions.
+
+5.	Makefile like:
+
+a.	The format and syntax of the configuration file is targeted to be very 
+similar to the makefile syntax to make it easy to use.
+
+b.	User can define variables or adopt variables from environment. When a 
+variable is used, user defined variables table will be searched first. If not 
+found, environment variables will be used. Variables defined nowhere will 
+cause parsing errors.
+
+6.	Sourcing and including:
+
+a.	Configuration files can be hierarchically linked and shared by sourcing. 
+(Hierarchy like project/group/user)
+
+b.	User errors resulting in recursion (sourcing the same file) will be detected. 
+The definition (variables, worklib and workdir) that comes last will 
+override all previous definitions.
+
+c.	Appending of previous definitions (libpath and rwpaths) to newly defined 
+ones is allowed by using "^$" or "<append>".
+
+1.3  DMS.PATH
+
+iDMS uses the environment variable DMSPATH to locate the DMS.PATH file. Users 
+must define the variable to point to a valid file for iDMS to work properly. If the 
+variable is not defined, or defined to a invalid file, iDMS uses its default policies.
+
+Following are the default policies:
+
+libpath %*.* .
+
+worklib %*.* idmsWorklib
+
+workdir %*.* .
+
+rwpaths %*.* .
+
+tconfig %*.* LATEST
+
+1.4  Syntax
+
+These conventions are used in illustrating the syntax:
+
+<> indicates a token need to be replaced by a value.
+
+[] indicates optional elements.
+
+| indicates alternate constructs. Anyone of the options separated by vertical bars is ok.
+
+{} indicates repetition of a parameter.
+
+"" indicates a string value to differ from a token.
+
+Following is the description of DMS.PATH syntax for legal statements:
+
+
+
+l	comments: any line started with a # sign will be treated as a comment line.
+
+Syntax:
+
+	#<string>
+
+Example:
+
+	# This line is a comment, not a statement.
+
+l	define statement: for defining variables that can be reused in the file.
+
+Syntax:
+
+	<variableName> = <string>
+
+Example:
+
+	HOME=/home/fw/fw
+
+	DIR1=$(HOME)/library
+
+	DIR2=$DIR1/stdcell
+
+-	The value of a defined variable can be retrieved by $(variableName), or 
+$variableName. If a variable is not defined in the dms.path context, iDMS will 
+take the value from the environment variable defined. Variables defined in 
+neither places will cause parsing errors.
+
+l	include statement: for including another DMS.PATH file's statements into the 
+current file. All variables and policies defined in the included file will be available 
+from the current file.
+
+Syntax:
+
+	$include <fullPathName>
+
+Example:
+
+	$include /home/fw/fw/group.path
+
+	$include $(HOME)/project.path
+
+-	Include can be used to organize dms.path files hierarchically. 256 levels of 
+including is allowed.
+
+
+
+l	tconfig statement: for defining tool based configuration which will be used as the 
+default configuration for the libraries accessed by the tool. 
+
+Syntax:
+
+	tconfig %<toolName>[.*] <configName>
+
+	where:
+
+	<toolName> := "*" | <string> of a tool name; Example: "*", "dls", "plus", "idmb"
+
+	<configName> := <string> of a configuration name; Example: "LATEST"
+
+Example:
+
+	 tconfig %*.* LATEST
+
+	 tconfig %plus configPlus
+
+# Except PLUS, all applications' default configurations are set to be LATEST.
+
+-	The token LATEST is reserved for iDMS to indicate no configuration is used, 
+and most current versions of cellviews will thus be referenced for accessing.
+
+-	The configuration defined by attaching to library names will overwrite the 
+tconfig policy. For example:
+
+	tconfig %plus.* configPlus
+
+	worklib %plus.evr userLib.configEvr
+
+# When the worklib of plus view evr is opened, configuration configEvr will be used 
+instead of using configPlus as the default.
+
+	rwpaths %plus.bvr RW(groupLib.LATEST)
+
+# When library groupLib is opened for searching bvr files, configuration LATEST 
+will be used instead of using configPlus as the default.
+
+
+
+l	libpath statement: for defining tool based library search paths which will be used 
+for searching all the libraries referenced by the tool.
+
+Syntax:
+
+	libpath %<toolName>[.*] <pathElement>:{<pathElement>}
+
+	where:
+
+	<toolName> := "*" | <string> of a tool name; Example: "*", "dls", "plus", "idmb"
+
+	<pathElement> := <unixDir> | "^$" | "<append>";
+
+	<unixDir> := <string> of a UNIX directory; Example: ".", "/home/fw","~fw"
+
+-	^$ or <append> will be replaced by the previously defined libpath of the same 
+tool name entry.
+
+Example:
+
+	 libpath %*.* $(HOME)/lib/path
+
+	 libpath %plus /project/lib/path:/group/lib/path
+
+# Except PLUS, all applications' library search paths are set to be $(HOME)/lib/path.
+
+	 libpath %plus ^$:$(HOME)/lib/path
+
+# Search path for plus becomes /project/lib/path:/group/lib/path:$(HOME)/lib/path.
+
+
+
+l	worklib statement: define tool/view based working library in where new cellviews 
+are created.
+
+Syntax:
+
+	worklib %<toolName>.<viewNameList> <libNameElement>
+
+	where:
+
+	<viewNameList> := <viewName>{:<viewName>};
+
+	<viewName> := <string> of a view name entry;
+
+	<libNameElement> := <libName>[.<conifgName>];
+
+	<libName> := <string> of a library name on the libpath;
+
+	<configName> := <string> of a configuration name in the library;
+
+Example:
+
+	worklib %chpr.* newChprCellLib.config2
+
+	worklib %chpr.icf:alf:blst localCellLib
+
+# All new chpr files will be created in library "newChprCellLib", except cellviews 
+with icf, alf or blst views are created in library "localCellLib".
+
+l	workdir statement: for defining tool/view based working directory where 
+cellviews are checkin from and checkout to. If no directory is specified, default 
+working directory is the current directory.
+
+Syntax:
+
+	workdir %<toolName>.<viewNameList> <pathElement>
+
+Example:
+
+	 workdir %*.alf /usr/working/dir/alf
+
+	 workdir %dapr.* /usr/working/dir/dapr
+
+# The working directory for dapr is "/usr/working/dir/dapr". For other tools' alf type 
+is "/usr/working/dir/alf".
+
+
+
+l	rwpaths statement: for defining tool/view based read/write policy which contains 
+readonly unix directories and DMS libraries with policies.
+
+Syntax:
+
+	rwpaths %<toolName>.<viewName> <pathLibElement>{:<pathLibElement>}
+
+	where:
+
+	<pathLibElement> := <pathElement> | <libElement>;
+
+	<libElement> := RW(<libNameList>) | RO(<libNameList>);
+
+	<libNameList> := <libNameElement>{:<libNameElement>};
+
+	<libNameElement> := as defined in worklib policy
+
+	<pathElement> := <unixDir> | "^$" | "<append>"|"<workdir>";
+
+	<unixDir> := <string> of a UNIX directory; Example: ".", "/home/fw","~fw"
+
+Example:
+
+	 rwpaths %chpr.* <workdir>:RO(stdcellLib:groupLib):RW():/usr/stdcell
+
+# Search files in workdir first, then readonly libraries stdcellLib and groupLib, then 
+all the libraries on the libpath, then unix directory /usr/stdcell. All libraries on the 
+libpath will be read/writable except stdcellLib and groupLib.
+
+-	While iDMS is searching a cellview, the workdir and worklib need to be defined 
+on the rwpaths to be searched. The workdir will not differ to any other UNIX 
+directories, and worklib will not differ to any other libraries. Token <workdir> 
+can be used to represent the workdir defined.
+
+-	The UNIX directories and libraries are distinguished by the prefix RW and RO. 
+Anything without the prefix will be treated as UNIX directories. RW means 
+libraries can be checkout/checkin/update. RO means libraries can be read only.
+
+-	RW() and RO() without specifying any library name means library wildcard that 
+all libraries on the libpath will be searched in an unknown order.
+
+-	If no configuration is not specified for a library, the default configuration which 
+refer to all most update-to-date versions will be used.
+
+
+
+1.5  FAQ
+
+1.	What is priority of tool/view entries of the same policy?
+
+-	The priority of tool/view entries of the same policy used by iDMS is: 
+<toolName>.<viewName> -> <toolName>.* -> *.<viewName> -> *.*.
+
+2.	Where can I use variables?
+
+-	Variables can be used almost anywhere in the dms.path expect the policy tokens. 
+You can use variables to specify path, tool name, view name list, library name 
+list and define new variables.
+
+3.	What happen if one statement can not fit in one line?
+
+-	Backslash "\" can be used to end one statement, and continue the statement on 
+the next line.
+
+4.	Can I use UNIX notations "~", "." and ".." to simplify the dms.path?
+
+-	The answer is yes.
+
+
+
+1.6  SAMPLE
+
+# # Source another dms.pth file #
+
+$include /home/fw/fw/group.pth
+
+# # User defined variables #
+
+USER_HOME=/home/fw/fw
+
+USER_PATH=$(USER_HOME)/idms
+
+CONFIG=$ENVCONFIG
+
+USER_LIB=userLib.$(CONFIG)
+
+ALFS=alfpln:alflay
+
+# # Define policies
+
+tconfig %dls configDls
+
+libpath %dls.* .:$(USER_PATH)
+
+worklib %dls.* $(USER_LIB)
+
+workdir %dls.alflay $(USER_HOME)/dls/garden
+
+rwpaths %dls.alflay <workdir>:RW(userLib.LATEST):RW(groupLib:projectLib):\
+
+		RO(0g0stdLib):/stdcell/
+
+tconfig %chpr configChpr
+
+libpath %chpr.* .:$(USER_PATH)
+
+worklib %chpr.* userLib
+
+workdir %chpr.$ALFS $(USER_HOME)/chpr/garden
+
+rwpaths %chpr.$ALFS <workdir>:RW(userLib):RO(groupLib:projectLib):/stdcell/

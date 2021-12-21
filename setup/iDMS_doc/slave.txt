@@ -1,0 +1,207 @@
+ 3Using the Basic Skill Procedural Interface
+The iDMS SKILL interface is a subset of the C and Mainsail interfaces. It is designed for use by Opus-based, non-UIMAN tools. While the architecture of the solution may change in the future - the interface itself will remain stable, thereby providing a stable interface for all the tools built over on top of it. In the first section, we provide a brief overview of the architecture of the solution in iDMS 2.1. In the later sections, the interface itself is presented. It is assumed that the reader is familiar with the C and Mainsail interface enough so that the parameters need not be explained again.
+3.1  Architecture
+Every Opus session has one idmSlave process. This process is responsible for making sure that the SKILL interface described in this chapter behaves in a manner defined by project and user methodology - as described by the user's dms.pth file, and the project's global file. These files have been described elsewhere.
+When the user (by means of the .cdsinit, .cdslocal or explicitly) loads up the fwidms.il context, the context will start the idmSlave process, and set up the ipc channels necessary to communicate with the idmSlave. There are two variables of interest here, namely:
+1.	When the global variable idmsContextIsLoaded is bound, it indicates that the context fwidms.il has been loaded. This maybe useful to the application programmer who wants to check if the context is already loaded before doing something - like maybe loading some context which uses the iDMS SKILL interface.
+2.	When the global variable idmsSlaveIsAlive is set, it implies that the idmSlave process is alive and working. There is a time lag between the time the idmSlave is started and the time it is ready to receive messages. In that time, the PI is disabled, and the flag idmsSlaveInWait is set. The user is advised to start the slave at the initialization time and use it after ensuring that it is alive. Also, the user must ensure that they do not do a "busy" wait on either flags, as this will prevent Opus from receiving the slave process' message of readiness. When the idmsSlaveIsAlive flag is t, the idmsSlaveInWait is nil - indicating that the initialization is complete.
+3.	If the above flags idmsSlaveIsAlive and idmsSlaveInWait are both nil it implies that the idmSlave has not been initialized. If any of the above variables is unbounded then the fwidms.il file has not been loaded.
+The user has to define the following environment variables BEFORE bringing up Opus. IDMS should point to the location where the idmSlave binary is located. DMSPATH is the full path name to the dms.pth file to be used, and IDMS_GLOBALFILE is the full path name to the iDMS global file. Information on the last two variables is provided in the basic integration and multiple views chapter. In addition, the environment variable IDMS_USERTRIGGERFILE should point to the SKILL file containing the user triggers, in case the user is using triggers to customize iDMS behavior.
+	Once the idmSlave is initialized call to set/change the environment variables using opus based skill commands will not work. The user/application will have to have the correct variables set BEFORE starting the slave.
+	The case the user desires to disable all the user triggers, they need to set the environment variable IDMS_DISABLEUSERTRIGGER.
+3.2  Calls to control idmSlave
+We have the following calls available:
+1.	To start the idmSlave process:
+dmsSkillStartSlave() => t/nil
+The call returns a nil if the slave process could not be started. Some possible reasons for this are that the executable could not be found on the path, or that the executable itself has a problem like - license expired, cdsd died, etc.
+2.	To terminate the idmSlave process:
+dmsSkillTerminateSlave() => t/nil
+The call causes the idmSlave to terminate in an orderly manner. Subsequent calls to idmSlave will generate an error message.
+3.	To check if the idmSlave process is alive:
+dmsSkillIsSlaveAlive() => t/nil
+Returns a t/nil depending on whether the idmSlave process is alive or not.
+3.3  Calls to provide basic iDMS functionality
+The calls in this section are described in a very sketchy manner, due to the fact that they have been described in detail in the chapter on integration with iDMS 2.1. The user is advised to read that chapter - in order to understand the return codes and return arguments as applicable. There are some changes in the interface between C and SKILL, due to the nature of the two languages. An important difference is that many of the procedures have an optional toolname argument because several tools can run on Opus at the same time. If that is the case, then the applications must ensure they use this parameter to maintain consistency in their return values.To create a cellview in the work library:
+1.	dmsSkillCreateCellView(
+	t_cellName
+	t_viewName
+	[t_toolName]
+) => t_fullPathName/nil
+
+2.	To create a unix file in the work directory:
+dmsSkillCreateUnixFile(
+	t_cellName
+	t_viewName
+	[t_toolName]
+) => t_fullPathName/nil
+
+3.	To get a cellview for readonly:
+dmsSkillReadonlyCellViewType(
+	t_cellName
+	t_viewType
+	[t_toolName]
+) => (t_fullPathName t_viewName)/nil
+
+4.	To get a cellview for readonly, specifying the viewname;
+dmsSkillReadonlyCellView(
+	t_cellName
+	t_viewName
+	[t_toolName]
+) => t_path/nil
+5.	To checkout a cellview:
+dmsSkillCheckoutCellView(
+	t_libName/nil
+	t_cellName
+	t_viewName
+	t_versionName/nil
+	[t_toolName]
+) => t_fullPathName/nil
+
+6.	To load a cellview from the work directory:
+dmsSkillLoadCellView(
+	t_cellName
+	t_viewName
+	[t_toolName]
+) => t_fullPathName/nil
+
+7.	To edit a cellview:
+dmsSkillEditCellView(
+	t_libName/nil
+	t_cellName
+	t_viewName
+	t_versionName/nil
+	[t_toolName]
+) => t_fullPathName/nil
+8.	To read or edit a cellview based on the policy specified in dms.pth:
+dmsSkillReadOrEditByPolicy(
+	t_cellName
+	[t_toolName]
+) => t_fullPathName/nil
+
+9.	To save a cellview to the workdir:
+dmsSkillSaveCellView(
+	t_cellName
+	t_viewName
+	[t_toolName]
+) => t_fullPathName/nil
+
+10.	To checkin a cellview:
+dmsSkillCheckinCellView(
+	t_libName/nil
+	t_cellName 
+	t_viewName 
+	t_versionName/nil
+	g_advanceFlag 
+	t_logMessage/nil
+	t_path/nil 
+	[t_toolName]
+) => t/nil
+
+11.	To update a cellview in a library:
+ dmsSkillUpdateCellView(
+	t_libName/nil
+	t_cellName
+	t_viewName
+	g_advanceFlag
+	t_log/nil
+	[t_toolName]
+) => t_fullPathName/nil
+
+12.	To install a cellview in the workLib:
+dmsSkillInstallCellView(
+	t_cellName
+	t_viewName
+	t_log/nil
+	[t_toolName]
+) => t_fullPathName/nil
+
+13.	To purge a cellview from slave process' memory:
+dmsSkillPurgeCellView(
+	t_cellName
+	t_viewName
+	[t_toolName]
+) => t/nil
+
+14.	To cancel a checkout: 
+dmsSkillCancelCheckoutCellView(
+	t_libName/nil
+	t_cellName
+	t_viewName
+	t_versionName/nil
+	[t_toolName]
+) => t_fullPathName/nil
+
+15.	To get information about a cellview:
+dmsSkillInfoCellView(
+	t_searchLibOnly
+	t_cellName
+	t_viewName
+	[t_toolName]
+) =>	(t_info t_libName t_cell t_view t_ver t_coUser t_path t_location t_libPath)/nil
+While the call is very similar to that in C, the application can use the following vairables to get the desired behaviour.
+t_searchLibOnly can have the values:
+	idmsSearchWholeRwpaths: If the application wants both the unix dirs and libraries on the RW path searched.
+	idmsSearchLibOnly: If the application wants only libraries on the RW path to be searched.
+t_info can have one of the following values, which are self explanatory:
+	idmsInfoCvNotFoundOnRwpaths
+	 idmsInfoCvNotFoundInAnyLibrary
+	idmsInfoCvIsInWorkdir
+	idmsInfoCvCheckedOutByMe
+	idmsInfoCvIsInReadonlyUnixdir
+	idmsInfoCvIsInReadonlyLibrary
+	idmsInfoCvCheckedOutByAnotherUser
+	idmsInfoCvCanBeCheckedOut
+	idmsInfoUnknownEvent
+16.	To report the last message stored by iDMS.
+dmsSkillReportMessage(
+) => t_message/nil
+
+17.	To reparse the dms.pth file: Although this command is similar to those in the C and the Mainsail interfaces, it has a slightly different effect than the calls in the other languages. Since each individual tool in Opus uses the same idmSlave, reparsing the dms.pth will effectively change how iDMS behaves for all of the tools, rather than changing just one tool's DMS. Thus the user must ensure that the dms.pth file has been written correctly for all applications running on opus which use this interface.
+dmsSkillReparseDMS() = t/nil
+	Using this command ONLY causes any changes to the DMSPATH pointed file to be read in. This command is not useful for changing the environment variable itself. Indeed once the slave has been initialized, the user/application CANNOT modify the value of the environnment variable either by setting the variable in opus, or on the unix shell.
+18.	To print search path info:
+dmsSkillPrintPath(
+	t_viewName
+	[t_toolName]
+) => t_pathInfo/nil
+
+19.	To get the current version number of iDMS software:
+dmsSkillVersionNumber() => t_versionName/nil
+
+20.	To get the workDir for a view:
+dmsSkillGetWorkingDir(
+	t_viewName	
+	[t_toolName]
+) => t_workingDir/nil
+
+21.	To get the workLib for a view:
+dmsSkillGetWorkingLib(
+	t_viewName	
+	[t_toolName]
+) => t_workingLib/nil
+
+22.	To set the search path in Opus:
+dmsSkillSetSearchPath()=> t/nil
+23.	To get information about the last dms call:
+dmsSkillGetLastCellViewInfo(
+) => (t_location t_libNsme t_cellName t_viewName t_versionName t_coUser t_path t_libPaht)
+The t_location value can have one of the following values, which are self explanatory:
+	idmsCvNotFound
+	idmsCvInWorkdir
+	idmsCvInUnixdir
+	idmsCvInRwlib
+	idmsCvInRolib
+	idmsCvInWorklib
+24.	To set a toolname: This command will cause the search path to be modified such that, the dms.pth entry corresponding to the tool is prefixed to the existing search path. Applications should use this ONLY if they cannot resolve the search path - with Opus' search path. This operation can potentially degrade the overall performance of all Opus operations, by increasing the process size.
+dmsSkillSetCurrentTool(
+	t_toolName
+) => t/nil
+
+25.	To get information from the last iDMS call:
+dmsSkillGetLastCellViewInfo(
+) =>	(t_location t_libName t_cell t_view t_ver t_coUser t_path t_libPath)/nil
+
+3.4  Attribute Procedural Interface
+Described in the chapter on the attribute procedural interface.
+3.5  Multiple-views functionality
+No procedural interface yet

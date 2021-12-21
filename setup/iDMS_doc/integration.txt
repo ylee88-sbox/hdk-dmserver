@@ -1,0 +1,1731 @@
+2Using the Basic Procedural Interface
+
+iDMS (Intel Data Management System) is a layer built on top of Cadence framework 
+DMS to provide additional functionality needed by Intel. The iDMS is configurable 
+by a setup file called DMS.PATH which defines the scope of data, the sequence of 
+data searching, the data working area and the location of data creation. The detailed 
+syntax of DMS.PATH file will be described in the user's guide. The understanding of 
+DMS.PATH is the prerequisite to continue with the following material.
+
+In this chapter, guidelines for integrating applications with iDMS will be described. 
+All applications should follow the guidelines wherever applicable to maintain 
+consistency. The guidelines includes requirement, implementation and handling of 
+error conditions of I/O commands. All kinds of file operations should go through 
+iDMS to obtain the full path name of a file by specifying the cellname and viewname.
+
+The actual code to implement the iDMS PI functionality is written in C. The same 
+interface is also available in Mainsail and Skill.
+
+2.1 Definition of keywords
+
+1.	Editable: A cellview is said to be editable when the cellview is checked out 
+and read into applications' memory.
+
+2.	Readonly: A cellview is said to be readonly when the cellview is not checked 
+out and read into applications' memory.
+
+3.	Checkout copy: A checkout copy is the duplicated copy of the checkout 
+version created in the working directory while checking out.
+
+4.	Memory copy: A memory copy is the design data in applications' memory 
+read from the rwpaths or the working directory.
+
+5.	Dirty: A memory copy is said to be dirty when it is editable and has been 
+changed that no longer the same as the checkout copy.
+
+6.	Edit bit: A indicator of the memory copy to indicate the editability.
+
+7.	Dirty bit: A indicator of the memory copy to indicate the dirtiness.
+
+8.	Link lock: A protection mechanism by registering cellview versions read by 
+applications to the cdsd to prevent from being deleted in libraries.
+
+9.	First hit: The mechanism of iDMS to search a cellview will only report the 
+first found cellview instance on the rwpaths. While duplicated cellview 
+instances may exist in some other locations (unix directories or libraries).
+
+10.	Library only search: Cellview searching for checkout, checkin, update, and 
+cancel checkout will skip all unix directories on the rwpaths to speed up the 
+search in libraries. Duplicated cellview instances in unix directories will not 
+be identified.
+
+2.2  Standard I/O Commands
+
+The goal of the integration is to standardize a set of I/O commands across 
+applications. These commands will allow users to access data in the same fashion 
+from all applications. They can be grouped into four categories: create, input, output 
+and miscellaneous commands. Create commands are createCellView and 
+createUnixFile. Input commands are: readonly, checkout, load and edit. Output 
+commands are save, checkin, saveAndCheckin, install and update. Miscellaneous 
+commands are purge, cancel checkout, load and show DMS.PATH. Following is a 
+graph illustrates the functions of each I/O commands:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The details of each commands will be described as follows:
+
+Create commands:
+
+1.	CreateCellView: allows users to create new cellviews in the working library. 
+The newly created cellview will not be checked out by the creator. Users need 
+to use the checkout or edit command to ensure the concurrency.
+
+2.	CreateUnixFile: allows users to create a empty file in the working directory. 
+Users can later create and install the unix file as a cellview in the working 
+library.
+
+Input commands:
+
+3.	Readonly: allows users to get readonly cellviews from rwpaths into 
+applications' memory. Applications will read cellviews directly from libraries 
+or unix directories if cellviews are not checked out by the user. Applications 
+will read cellviews from the user's working directory if cellviews are checked 
+out by the user. Cellviews read by this command are readonly which can't be 
+edited, saved or checked in. Readonly cellview versions will be protected 
+from being deleted in the library.
+
+4.	Checkout: allows users to checkout a cellview from a editable library. A copy 
+of the checkout version will be duplicated in the working directory. This 
+command will not read the data into applications' memory. Users need to use 
+the load or edit command to read the data into memory for editing, and use the 
+save command for saving changes and later checkin.
+
+5.	Load: allows users to read the checkout copy from working directory into 
+applications' memory for editing. Save is the opposite command that writes 
+out the memory content to the checkout copy in working directory.
+
+6.	Edit: allows users to execute the checkout and load in one command. The 
+cellview will be checked out if not checked out. The checkout version in the 
+working directory will be loaded into applications' memory. Users then can 
+use data editing commands to change the design data. A save is needed to 
+flush out all the changes to the checkout copy.
+
+Output commands:
+
+7.	Save: allows users to flush changes of the design data in memory to the 
+checkout copy in working directory for later checkin. Readonly copies in 
+memory can not be saved.
+
+8.	Checkin: allows users to check the edited copy in working directory back into 
+the library and create a new version of the cellview. A save must be performed 
+before a checkin to ensure all changes in memory are flushed. For discarding 
+changes after last save, users need to explicitly purge the memory copy. After 
+checkin, the checkout copy will be deleted from working directory and the 
+memory copy will become readonly. Users need to use the edit command to 
+start another editing section.
+
+9.	SaveAndChcekin: allows users to do the save and checkin in one command. 
+The new version created in library can be guaranteed to be the same as the 
+memory copy. The checkout copy will be deleted from working directory and 
+the memory copy will become readonly.
+
+10.	Install: allows users to install the very first version of a cellview. The install 
+copy will be deleted from working directory and the memory copy will 
+become readonly.
+
+11.	Update: allows users to checkin a new version without having a previous 
+checkout. The data copy will be deleted from working directory and the 
+memory copy will become readonly.
+
+Miscellaneous commands:
+
+12.	Purge: allows users to purge the memory copy of a cellview. The protection 
+from being deleted will then be released. Users will be warned that changes 
+since last save will be lost. The checkout status will not be affected.
+
+13.	CancelCheckout: allows users to cancel previous checkouts. The checkout 
+copy will be deleted from working directory. Users will be warned that all 
+changes since checkout will be lost. Users need to purge the memory copy 
+before the cancel checkout if changes have been made since last save.
+
+14.	Load DMS.PATH: allows users to reload the current DMS.PATH into the 
+memory. Users can change the iDMS setup without exiting the applications.
+
+15.	Show DMS.PATH: allows users to display the current iDMS setup of a 
+application. Users can specify the views they are interested in. Information 
+about libpath, rwpaths, worklib and workdir will be shown.
+
+2.3  iDMS C/Mainsail Interface
+
+iDMS provides C and Mainsail procedural interfaces for integration. Identical 
+function calls are available in both C and Mainsail. In order for a C application to use 
+the iDMS PI, it must include "fwidms.h" in the appropriate source files. Mainsail 
+applications must source "fwidms.hdr" in the appropriate source files.
+
+There are also header files for error codes returned by C and Mainsail procedures. The 
+header file is "fwierr.h" for C and "fwierr.hdr" for Mainsail. Applications need to 
+source the header files in appropriate source files to get error macros defined. Option 
+numbers passed to the procedure interface are also defined in these headers. For 
+example, idmsSuccess (zero) is returned by all procedures to indicate successful 
+completion of execution, idmsNullgtMode is a option number for initialization.
+
+Note: The return code convention of all iDMS 2.1 procedures has been reversed from 
+2.0. Procedures will return zero for successful execution and non-zero as error code.
+
+Following is the description of all iDMS procedures available:
+
+
+
+1.	To initialize iDMS PI
+
+C:
+
+int
+
+dmsCPIInitDMS(toolName,bootName,nullgt)
+
+char *toolName,
+
+char *bootName;
+
+int nullgtMode;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslPIInitDMS(
+
+STRING toolName;
+
+STRING bootName;
+
+LONG INTEGER nullgtMode;
+
+);
+
+This procedure initializes iDMS procedural interface and parses the DMS.PATH file 
+defined by the environment variable "DMSPATH" to install user's iDMS setup. If the 
+variable is not defined or the file is invalid, policies will be set to be default values 
+which are applications' current running directories for "libpath", "rwpaths" and 
+"workdir", and the default name of "worklib" is "defaultLib". This call must be called 
+before any DMS procedures are called. No DMS services will be available before this 
+call is made. Following are the arguments:
+
+toolName: This is the application name for iDMS to find the policy entries in 
+DMS.PATH file. For example, "chpr", "dapr", "dls", "icvs", "plus", "opus".
+
+bootName: This is the full path name to the application's execution file. You can get 
+the bootName from the argv[0] in C and the $programName in Mainsail.
+
+nullgtMode: If the argument is idmsGraphicMode, iDMS will try to use opus to be 
+the skill server to execute user defined triggers for forms and boxes. If the argument 
+is idmsNullgtMode, iDMS will use the skill interpreter to execute user defined 
+triggers that does not support forms and boxes.
+
+The procedure will return errors when the initialization operation can not be 
+completed. Following are the error macros:
+
+. idmsEnvironmentVaribaleDmspathNotSet
+
+. idmsDmspathSyntaxError
+
+
+
+2.	To exit iDMS PI
+
+C:
+
+int
+
+dmsCPIExitDMS()
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslPIExitDMS(
+
+);
+
+This procedure closes all opened libraries and cellviews. Link locks on cellviews will 
+also be released.This call must be the last DMS procedure call.
+
+Usually, this will be the last statement of your codes. No DMS services will be 
+available after this call is made.
+
+The procedure always returns idmsSuccess (zero).
+
+
+
+3.	To create a cellview
+
+C:
+
+int
+
+dmsCCreateCellView(cellName,viewName,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslCreateCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure creates a cellview in the worklib. The uniqueness of the cellview will 
+be guaranteed in the worklib but not on the whole rwpaths. The newly created 
+cellview will not be checked out by the creator. The full path name returned is the 
+path to the worklib with the library name.
+
+When users issue the "createCellView" command, applications make this call to 
+create the cellview in the worklib when the cellview is not in the memory. A info call 
+is recommended before this call to ensure the cellview does not exist previously. A 
+checkout call is recommended after this call to ensure no one else checks out the 
+cellview. Following are the arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+fullPathName: This is returned by the procedure. It is the full path name to the 
+worklib with the library name.
+
+The procedure will return errors when the create operation can not be completed. For 
+example, the cellview already exists or no write permission to create cellviews in the 
+worklib. Following are the error macros:
+
+. idmsCvCanNotBeCreatedInWorklib
+
+. idmsCvAlreadyExistsInWorklib
+
+. idmsPreTriggerFailed
+
+
+
+4.	To create a unix file
+
+C:
+
+int
+
+dmsCCreateUnixFile(cellName,viewName,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslCreateUnixFile(
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure creates a empty file in the workdir. The full path name returned is the 
+path to the newly created file.
+
+When users issue the "createUnixFile" command, applications make this call to 
+create the file in the workdir when the file is not in the memory. Following are the 
+arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+fullPathName: This is returned by the procedure. It is the full path name to the 
+worklib with the library name.
+
+The procedure will return errors when the create operation can not be completed. For 
+example, the unix file already exists in the workdir or no permission to write. 
+Following are the error macros:
+
+. idmsFileCanNotBeCreatedInWorkdir
+
+. idmsFileAlreadyExistsInWorkdir
+
+. idmsPreTriggerFailed
+
+
+
+5.	To readonly a cellview by viewtype
+
+C:
+
+int
+
+dmsCReadonlyCellViewType(cellName,viewType,viewName,fullPathName
+)
+
+char *cellName;
+
+char *viewType;
+
+char **viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslReadonlyCellViewType(
+
+STRING cellName;
+
+STRING viewType;
+
+PRODUCES STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure and the next procedure for readonly are the only two procedures will 
+search a cellview through the whole rwpaths including libraries and unix directories. 
+The difference between the readOnlyCellViewType an the readOnlyCellView is that 
+readOnlyCellViewType will use the switch list defined in the global file to perform 
+exhausted search for each view name on the list until the first hit of the cellview. 
+(Duplicate cellview instances will not be reported.)The full path name returned is the 
+path to the most current version of the cellview. A link lock on the cellview version 
+will be registered on the cdsd to prevent the read version from being deleted in the 
+library. dmsPurgeCellView will be the procedure to release the link lock.
+
+When users issue the "readonly" command, applications make this call to get the full 
+path name to the cellview. After this call, applications initialize memory and read 
+design data from the path. The edit bit and the dirty bit of the design data should be 
+set to be OFF. Following are the arguments:
+
+cellName: This is the cell name of the cellview.
+
+viewType: This is the view type name of the cellview. The view type name will be 
+translated into a list of view names based on the view map definition file.
+
+viewName: This is returned by the procedure. It is the actually view name of the view 
+type being read by the procedure.
+
+fullPathName: This is returned by the procedure. It is the full path name to the 
+cellview version for applications to read data from.
+
+The procedure will return errors when the readonly operation can not be completed. 
+For example, the cellview can not be found on the rwpaths. Following are the error 
+macros:
+
+. idmsCvNotFoundOnRwpaths
+
+. idmsCvNotInstalledToRead
+
+. idmsMultipleViewMapError
+
+
+
+6.	To readonly a cellview by view
+
+C:
+
+int
+
+dmsCReadonlyCellView(cellName,viewName,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslReadonlyCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure and the previous procedure for readonly are the only two procedures 
+that will search a cellview through the whole rwpaths including libraries and unix 
+directories. This procedure will only search the view name entry in the DMS.PATH. 
+A link lock on the cellview version will be registered on the cdsd to prevent the read 
+version from being deleted in the library. dmsPurgeCellView will be the procedure to 
+release the link lock.
+
+When users issue the "readonly" command, applications make this call to get the full 
+path name to the cellview. After this call, applications initialize memory and read 
+design data from the path. The edit bit and the dirty bit of the design data should be 
+set to be OFF. Following are the arguments:
+
+cellName: This is the cell name of the cellview.
+
+viewName: This is the view name of the cellview.
+
+fullPathName: This is returned by the procedure. It is the full path name to the 
+cellview version for applications to read data from.
+
+The procedure will return errors when the readonly operation can not be completed. 
+For example, cellviews not found on the rwpaths. Following are the error macros:
+
+. idmsCvNotFoundOnRwpaths
+
+. idmsCvNotInstalledToRead
+
+
+
+7.	To checkout a cellview
+
+C:
+
+int
+
+dmsCCheckoutCellView(cellName,viewName,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslCheckoutCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure searches through libraries on the rwpaths to checkout the most current 
+version of the cellview. A checkout copy of the version will be created in the workdir. 
+Checkout versions will become not deletable in libraries. If the cellview is not 
+checkout by the current user and the user somehow has a copy of the cellview in the 
+workdir, this procedure will return warning and abort. Recheckout, a user try to 
+checkout what was checked out by him, is allowed and will regenerate the checkout 
+copy if missing. But recheckout will never overwrite checkout copies already exist in 
+workdir. The full path name returned is the path to the checkout copy.
+
+When users issue the "checkout" command, applications make the call to checkout 
+the cellview in the library, but design data will not be loaded into memory until the 
+load. The checkout/checkin are operations interacting between libraries and 
+workdirs. The edit bit and dirty bit are void here. Following are the arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+fullPathName: This is returned by the procedure. It is the full path name to the 
+checkout copy in working directory.
+
+The procedure will return errors when the checkout operation can not be completed. 
+For example, the cellview can not be found on the rwpaths, the user does not have 
+permission to checkout or the cellview is currently checked out by another user. 
+Following are the error macros:
+
+. idmsCvNotFoundInAnyLibrary
+
+. idmsCvWasCheckedOutByAnotherUser
+
+. idmsCvCanNotBeCheckedOut
+
+. idmsCanNotCheckoutCvInRoLibrary
+
+. idmsIllegalCvCopyInWorkdir
+
+. idmsPreTriggerFailed
+
+
+
+8.	To load a cellview
+
+C:
+
+int
+
+dmsCLoadCellView(cellName,viewName,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslLoadCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure returns the full path name to the readable cellview file in the workdir. 
+The cellview file can be a unix file created by createUnixFile command or a checkout 
+copy from previous checkout.
+
+When users issue the "load" command, applications make this call to get the path to 
+the unix file or the checkout copy of the cellview. After this call, applications 
+initialize memory and read design data from the path. The edit bit of design data 
+should be set to be ON, and the dirty bit should be set to be OFF. Following are the 
+arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+fullPathName: This is returned by the procedure. It is the full path name to the unix 
+file or checkout copy in working directory for applications to load data from.
+
+The procedure will return errors when the load operation can not be completed. For 
+example, the cellview not in the workdir or no permission to read the cellview. 
+Following are the error macros:
+
+. idmsFileInWorkdirIsNotReadable
+
+. idmsFileNotExistInWorkdirToLoad
+
+
+
+9.	To edit a cellview
+
+C:
+
+int
+
+dmsCEditCellView(cellName,viewName,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslEditCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure is combinational procedure of checkout and load. It tries to load the 
+cellview from the workdir first. If the load fails, then it does a checkout and a load. 
+The cellview will be checked out if not yet checked out. The returned path is the full 
+path name to the checkout copy.
+
+When users issue the "edit" command, applications make the call to checkout the 
+cellview and get the path to the checkout copy in the working directory. After this 
+call, applications initialize memory and read design data from the path. The edit bit 
+of design data should be set to be ON, and the dirty bit should be set to be OFF. 
+Following are the arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+fullPathName: This is returned by the procedure. It is the full path name to the 
+checkout copy in working directory for applications to load data from.
+
+The procedure will return errors when the checkout operation can not be completed. 
+For example, the cellview can not be found on the rwpaths, the user does not have 
+permission to checkout or the cellview is currently checked out by another user. 
+Following are the error macros:
+
+. idmsCvNotFoundInAnyLibrary
+
+. idmsCvWasCheckedOutByAnotherUser
+
+. idmsCvCanNotBeCheckedOut
+
+. idmsCanNotCheckoutCvInRoLibrary
+
+. idmsFileInWorkdirIsNotReadable
+
+. idmsFileNotExistInWorkdirToLoad
+
+. idmsPreTriggerFailed
+
+
+
+10.	To readonly or edit a cellview based on policy in DMS.PATH
+
+C:
+
+int
+
+dmsCReadOrEditByPolicy(cellName,viewName,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslReadOrEditByPolicy(
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure behaves as dmsCEditCellView when the cellview is found in a RW 
+library and behaves as dmsCReadonlyCellView when the cellview is found in a RO 
+library or UNIX directory on the rwpaths.
+
+Applications will use this procedure to provide user controllable I/O behaviors by 
+using DMS.PTH. This is useful for a experimenting environment. Users can set 
+libraries to be RO to readonly cellviews for test runs, and reset libraries to be RW to 
+checkout cellviews for real runs. Following are the arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+fullPathName: See dmsCEditCellView and dmsCReadonlyCellView for explanation.
+
+See dmsCEditCellView and dmsCReadonlyCellView for error conditions.
+
+
+
+11.	To save a cellview
+
+C:
+
+int
+
+dmsCSaveCellView(cellName,viewName,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslSaveCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure returns the full path name to the writable cellview file in the workdir. 
+The cellview file can be a unix file created by createUnixFile command or a checkout 
+copy from previous checkout.
+
+When users issue the "save" command, applications should check the cellview is 
+currently in memory, editable and dirty before making this call. AFter this call, 
+applications will use the path returned by this procedure to write out current content 
+of the design data in memory. The edit bit stays ON after the write, but the dirty bit 
+need to be cleared to be OFF. Following are the arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+fullPathName: This is returned by the procedure. It is the full path name to the unix 
+file or checkout copy in working directory for applications to write data to.
+
+The procedure will return errors when the save operation can not be completed. For 
+example, the cellview is not checked out for edit or checked out by other users. 
+Following are the error macros:
+
+. idmsFileInWorkdirIsNotWriteable
+
+. idmsFileNotExistInWorkdirToSave
+
+. idmsPreTriggerFailed
+
+12.	To checkin a cellview
+
+C:
+
+int
+
+dmsCCheckinCellView(cellName,viewName,children,advance,log,fullP
+athName)
+
+char *cellName;
+
+char *viewName;
+
+char *children;
+
+int advance;
+
+char *log;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslCheckinCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+STRING children;
+
+LONG INTEGER advance;
+
+STRING log;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure searchs libraries on the rwpaths for the first hit cellview and try to 
+checkin the checkout copy (not memory copy) in working directory to the library to 
+be a new version. The primary index of the version will be increased by one if the 
+argument "advance" is not zero. The argument "log" will become a attribute of the 
+version and can be retrived by the idmb or library browser. The argument "children" 
+gives the design hierarchy information to iDMS.  This argument is ignored until the 
+relationship functionality is available. After the checkin, the checkout copy will be 
+deleted from the working directory. The link lock will be on the new version instead 
+of the old version.
+
+When users issue the "checkin" command, applications should warn users to have a 
+"save" if there is a dirty memory copy which has been modified since last save. If 
+users want to discard changes since last save, users should explicitly purge the 
+memory copy before checkin. After making this call, applications should turn off the 
+edit-bit to make the memory copy readonly and prevent from further changes. Users 
+can use the "edit" command to start another editing section. Following are the 
+arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+children: This is the children list of the cellview. Applications need to supply the list 
+for setting up parent-child relationship correctly. This list is a string contains cell 
+names seperated by space.
+
+advance: This is for the new checkin version to advance the primary index of the 
+version number. If it is TRUE (non-zero), the primary index will be increased by one 
+and the secondary index will be cleared to be zero. If it is FALSE (zero), only the 
+secondary index will be increased by one.
+
+log: This is the log message to be recorded as an attribute of the new version.
+
+fullPathName: This is returned by the procedure. It is the full path name to the 
+checkout copy that moved back in the library.
+
+Applications can implement the "saveAndCheckin" command by using the 
+dmsMslSaveCellView and dmsMslCheckinCellView procedures.
+
+The procedure wil return errors when the checkin operation can not be completed. For 
+example, the cellview is not checked out for edit or checked out by other users. 
+Following are the error macros:
+
+. idmsCvNotFoundInAnyLibrary
+
+. idmsCvCanNotBeCheckedIn
+
+. idmsCvIsNotInstalledToCheckin
+
+. idmsCanNotCheckinNotWriteableFile
+
+. idmsNoFileInWorkdirToBeCheckedIn
+
+. idmsCanNotCheckinCvInRoLibrary
+
+. idmsCvWasNotCheckout
+
+. idmsPreTriggerFailed
+
+
+
+13.	To update a cellview
+
+C:
+
+int
+
+dmsCUpdateCellView(cellName,viewName,children,advance,log,fullPa
+thName)
+
+char *cellName;
+
+char *viewName;
+
+char *children;
+
+int advance;
+
+char *log;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslUpdateCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+STRING children;
+
+LONG INTEGER advance;
+
+STRING log;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure checkin the data copy in working directory (not memory copy) of the 
+cellview back to the first hit library without having a previous checkout. A dummy 
+checkout is done internally followed by the checkin. The primary index of the version 
+will be increased by one if the argument "advance" is not zero. The argument "log" 
+will become a attribute of the version and can be retrived by the idmb or library 
+browser. The argument "children" gives the design hierarchy information to iDMS.  
+This argument is ignored until the relationship functionality is available. After the 
+update, the data copy will be deleted from the working directory. The link lock will 
+be on the new version instead of the old version.
+
+When users issue the "update" command, applications should warn users to have a 
+"save" if there is a dirty memory copy which has been modified since last save. If 
+users want to discard changes since last save, users should explicitly purge the 
+memory copy before update. After making this call, applications should turn off the 
+edit-bit to make the memory copy readonly and prevent from further changes. Users 
+can use the "edit" command to start another editing section. Following are the 
+arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+children: This is the children list of the cellview. Applications need to supply the list 
+for setting up parent-child relationship correctly. This list is a string contains cell 
+names separated by space.
+
+advance: This is for the new checkin version to advance the primary index of the 
+version number. If it is TRUE (non-zero), the primary index will be increased by one 
+and the secondary index will be cleared to be zero. If it is FALSE (zero), only the 
+secondary index will be increased by one.
+
+log: This is the log message to be recorded as an attribute of the new version.
+
+fullPathName: This is returned by the procedure. It is the full path name to the 
+checkout copy that moved back in the library.
+
+The procedure wil return errors when the update operation can not be completed. For 
+example, the cellview is checked out by other users. Follwoing are the error macros:
+
+. idmsCvNotFoundInAnyLibrary
+
+. idmsCvWasCheckedOutByAnotherUser
+
+. idmsCvCanNotBeCheckedOut
+
+. idmsCanNotCheckoutCvInRoLibrary
+
+. idmsCvCanNotBeCheckedIn
+
+. idmsCvIsNotInstalledToCheckin
+
+. idmsCanNotCheckinNotWriteableFile
+
+. idmsNoFileInWorkdirToBeCheckedIn
+
+. idmsCanNotUpdateCvInRoLibrary 
+
+. idmsPreTriggerFailed
+
+
+
+14.	To install a cellview
+
+C:
+
+int
+
+dmsCInstallCellView(cellName,viewName,children,log,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char *children;
+
+char *log;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslInstallCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+STRING children;
+
+STRING log;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure installs the very first version to the cellview in worklib by using the 
+data copy (not memory copy) in workdir. If the cellview is new to the worklib, the 
+cellview will be created automatically. The argument "log" will become a attribute of 
+the version and can be retrieved by the idmb or library browser. The argument 
+"children" gives the design hierarchy information to iDMS. This argument is ignored 
+until the relationship functionality is available, . After the install, the data copy will 
+be deleted from the working directory. The link lock will be on the new 0.1 version.
+
+When users issue the "install" command, applications should warn users to have a 
+"save" if there is a dirty memory copy which has been modified since last save. If 
+users want to discard changes since last save, users should explicitly purge the 
+memory copy before install. After making this call, applications should turn off the 
+edit-bit to make the memory copy readonly and prevent from further changes. Users 
+can use the "edit" command to start another editing section. Following are the 
+arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+children: This is the children list of the cellview. Applications need to supply the list 
+for setting up parent-child relationship correctly. This list is a string contains cell 
+names separated by space.
+
+log: This is the log message to be recorded as an attribute of the 0.1 version.
+
+fullPathName: This is returned by the procedure. It is the full path name to the data 
+copy used to install.
+
+The procedure will return errors when the install operation can not be completed. For 
+example, the cellview is checked out or has been installed. Following are the error 
+macros:
+
+. idmsCanNotOpenWorklibForWrite
+
+. idmsCvCanNotBeInstalled
+
+. idmsCanNotCheckinNotWriteableFile
+
+. idmsNoFileInWorkdirToBeCheckedIn
+
+. idmsPreTriggerFailed
+
+
+
+15.	To purge a cellview from memory
+
+C:
+
+int
+
+dmsCPurgeCellView(cellName,viewName,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslPurgeCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure releases the link lock of the cellview to be ready for the purging of the 
+memory copy. The checkout status of the cellview will not be changed.
+
+When users issue the "purge" command, applications make this call to release the link 
+lock. Applications should warn users to have a save if the memory copy is editable 
+and dirty. After the call, applications can free the design data from memory and void 
+the edit bit and dirty bit. Following are the arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+fullPathName: This is returned by the procedure. It is the full path name to the version 
+copy where the memory copy is read from.
+
+The procedure will always return idmsSuccess (zero).
+
+
+
+16.	To cancel checkout a cellview
+
+C:
+
+int
+
+dmsCCancelCheckoutCellView(cellName,viewName,fullPathName)
+
+char *cellName;
+
+char *viewName;
+
+char **fullPathName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslCancelCheckoutCellView(
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES STRING fullPathName;
+
+);
+
+This procedure cancels the checkout of the cellview in the first hit library. The 
+checkout copy will be deleted from the working directory. All changes done to the 
+cellview after checkout will be lost. This procedure returns the full path name to the 
+deleted checkout copy.
+
+When users issue the "cancel checkout" command, applications should warn users 
+that this operation will result in losing all the changes done to the checkout copy. If 
+the cellview has a dirty copy in memory, the cancel checkout will not be allowed. 
+Users should explicitly purge the memory copy before the cancel checkout. AFter the 
+call, the edit bit and dirty bit should be set to be OFF. Following are the arguments:
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+fullPathName: This is returned by the procedure. It is the full path name to the deleted 
+checkout copy in working directory.
+
+The procedure will return errors when the cancel checkout operation can not be 
+completed. For example, cellviews not checked out. Following are the error macros:
+
+. idmsCvNotFoundInAnyLibrary
+
+. idmsCvCheckoutCanNotBeCancelled
+
+. idmsCvWasNotCheckout
+
+. idmsPreTriggerFailed
+
+
+
+17.	To get information of a cellview
+
+C:
+
+int
+
+dmsCInfoCellView(searchLibOnly,cellName,viewName,information)
+
+int searchLibOnly;
+
+char *cellName;
+
+char *viewName;
+
+DMSINFO **information;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslInfoCellView(
+
+LONG INTEGER searchLibOnly;
+
+STRING cellName;
+
+STRING viewName;
+
+PRODUCES POINTER (DMSINFO) information;
+
+);
+
+This procedure searches the cellview on the rwpaths and returns the status code of the 
+cellview. The search will start from the workdir and go through the whole rwpaths or 
+libraries on the rwpaths based on the option of the searchLibOnly. If the cellview is 
+found, the full path name to the cellview will be returned. If the cellview is found in 
+a library, extra information regarding the library name, version number and checkout 
+user will be provided. Following are the arguments:
+
+searchLibOnly: This is for defining the search mode. The options are 
+idmsSearchWholeRwpaths and idmsSearchLibOnly.
+
+cellName, viewName: This is the cell name and view name of the cellview.
+
+information: This is returned by the procedure as a DMSINFO data structure. The 
+data structure is defined in fwierr.h for C and fwidms.hdr for Mainsail. It contains 
+information about the library name, cellName, viewName, version number, checkout 
+user, and full path name to the most current version of the cellview.
+
+The information reported by this call is also available to other iDMS procedures. So 
+this call is not a prerequisite call for calling other iDMS procedures and used only 
+when it is necessary. Following are the returned codes:
+
+. idmsInfoCvNotFoundOnRwpaths: cellview is not found anywhere. This is returned 
+only when the search mode is idmsSearchWholeRwpaths.
+
+. idmsInfoCvNotFoundInAnyLibrary: cellview is not found in libraries on the rwpaths 
+but maybe in an unix directory. This is returned only when the search mode is 
+idmsSearchLibOnly.
+
+. idmsInfoCvIsInWorkdir: cellview is in workdir, and thus can be edited.
+
+. idmsInfoCvCheckedOutByMe: cellview is checked out by the current user, and thus 
+can be edited.
+
+. idmsInfoCvIsInReadonlyUnixdir: cellview is in readonly unix directory, and thus 
+can not be edited.
+
+. idmsInfoCvIsInReadonlyLibrary: cellview is in readonly library, and thus can not be 
+edited.
+
+. idmsInfoCvCheckedOutByAnotherUser: cellview is checked out by another user, 
+and thus can not be edited.
+
+. idmsInfoCvCanBeCheckedOut: cellview is not checked out by anyone, and thus can 
+be checked out and edited.
+
+The data structure of the information (C example):
+
+typedef struct dmsInfo {
+
+ int location;
+
+ char libPath[256];
+
+ char libName[256];
+
+ char cellName[256];
+
+ char viewName[256];
+
+ char verName[256];
+
+ char coUser[256];
+
+ char fullPathName[256];
+
+} DMSINFO;
+
+The location codes are listed in the next procedure dmsGetLastCellViewInfo.
+
+
+
+18.	To get information about the last cellview processed
+
+C:
+
+int
+
+dmsCGetLastCellViewInfo(information)
+
+DMSINFO **information;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslGetLastCellViewInfo(
+
+PRODUCES POINTER (DMSINFO) information;
+
+);
+
+This procedure returns the information about the cellview most recently processed by 
+iDMS. The information is guaranteed between two iDMS procedure calls. Any iDMS 
+procedure calls will change the information stored. Following is the argument:
+
+information: This is returned by the procedure as a DMSINFO data structure. The 
+data structure is defined in fwierr.h for C and fwidms.hdr for Mainsail. It contains 
+information about the location, library name, cell name, view name, version number, 
+checkout user, and full path name to the cellview. The data structure is the same as 
+the information dmsCInfoCellView/dmsMslInfoCellView used.
+
+The returned code will be the location code of the cellview. Following are the location 
+codes:
+
+. idmsCvNotFound: cellview was not found.
+
+. idmsCvInWorkdir: cellview was found in the working directory.
+
+. idmsCvInUnixdir: cellview was found in a unix directory other than the workdir.
+
+. idmsCvInRwlib: cellview was found in a read/writable library.
+
+. idmsCvInRolib: cellview was found in a read only library.
+
+. idmsCvInWorklib: cellview was found in the working library.
+
+
+
+19.	To report iDMS message
+
+C:
+
+char *
+
+dmsCReportMessage()
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslReportMessage(
+
+PRODUCES STRING dmsMessage;
+
+);
+
+This procedure returns a string which contains the last iDMS message buffered. The 
+message will be either completion or error information depends on the last iDMS call.
+
+Applications can print out the message directly or copy the message into a string 
+variable.
+
+
+
+20.	To print information into iDMS log file
+
+C:
+
+int
+
+dmsCPrintIdmsLog(log)
+
+char *log;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslPrintIdmsLog(
+
+STRING log;
+
+);
+
+This procedure prints the log information into iDMS's log file. The log file is created 
+when iDMS got initialized, and is mainly for debugging purpose.
+
+This procedure will always return idmsSuccess.
+
+
+
+21.	To reload DMS.PATH file
+
+C:
+
+int
+
+dmsCParsePath()
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslParsePath(
+
+);
+
+This procedure reparses the DMS.PATH file and install the new iDMS setup.
+
+When users issue the "reload DMS.PATH" command, applications make this call to 
+reload the DMS.PATH file defined by environment variable DMSPATH.
+
+The procedure will return errors when the reload of DMS.PATH operation can not be 
+completed. For example, environment variable DMSPATH not set or set to an invalid 
+file or syntax errors in the DMS.PATH file. Following are the error macros:
+
+. idmsEnvironmentVaribaleDmspathNotSet
+
+. idmsDmspathSyntaxError
+
+
+
+22.	To show DMS.PATH setup
+
+C:
+
+char *
+
+dmsCPrintPath(viewName)
+
+char *viewName;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslPrintPath(
+
+STRING viewName;
+
+PRODUCES STRING dmsMessage;
+
+);
+
+This procedure returns a string which contains the information about the iDMS setup 
+of a certain view name. The view name can be "*" to get all views' setup information.
+
+When users issue the "show DMS.PATH" command, applications make the call to get 
+information about iDMS setup. Applications can print out the information directly or 
+copy the information into a string variable. Following is the argument:
+
+viewName: This is the view name.
+
+
+
+23.	To know the current iDMS version
+
+C:
+
+char *
+
+dmsCVersionNumber()
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslVersionNumber(
+
+PRODUCES STRING dmsVersion;
+
+);
+
+This procedure returns a string with the iDMS version number.
+
+Applications make the call to verify proper iDMS libraries have been used.
+
+The procedure will return a string with the version number. Applications can print out 
+the version directly or copy the version into a string variable.
+
+
+
+24.	To know the working directory of a view
+
+C:
+
+int
+
+dmsCGetWorkingDir(viewName,workingDir)
+
+char *viewName;
+
+char **workingDir;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslGetWorkingDir(
+
+STRING viewName;
+
+PRODUCES STRING workingDir;
+
+);
+
+This procedure returns the working directory of a given view name. Following are the 
+arguments:
+
+viewName: This is the view name.
+
+workingDir: This is returned by the procedure. It is the full path to the working 
+directory of the view.
+
+The procedure will always return idmsSuccess (zero).
+
+
+
+25.	To know the working library of a view
+
+C:
+
+int
+
+dmsCGetWorkingLib(viewName,workingLib)
+
+char *viewName;
+
+char **workingLib;
+
+Mainsail:
+
+LONG INTEGER
+
+PROCEDURE dmsMslGetWorkingLib(
+
+STRING viewName;
+
+PRODUCES STRING workingLib;
+
+);
+
+This procedure returns the working library of a given view name. Following are the 
+arguments:
+
+viewName: This is the view name.
+
+workingLib: This is returned by the procedure. It is the working library name of the 
+view.
+
+The procedure will always return idmsSuccess (zero).
+
+
+
+2.4  Extended Procedure Interface
+
+A set of procedures with a extra argument "libName" are also provided for specifying 
+a library on the rwpaths to work on. All these procedures have the first argument for 
+specifying the library name. iDMS will skip all the libraries on the rwpaths which 
+does not match the specified library name. These procedures are only available in C. 
+Following is the list of the procedures:
+
+. dmsCReadonlyCellViewByLib(libName,cName,vName,verName,FPN)
+
+. dmsCReadonlyCellViewTypeByLib(libName,cName,vtName,verName,vName,FPN)
+
+. dmsCCheckoutCellViewByLib(libName,cName,vName,verName,FPN)
+
+. dmsCEditCellViewByLib(libName,cName,vName,verName,FPN)
+
+. dmsCReadOrEditByPolicyByLib(libName,cName,vName,verName,FPN)
+
+. dmsCInstallCellViewByLib(libName,cName,vName,children,log,FPN)
+
+. dmsCCheckinCellViewByLib(libName,cName,vName,verName,children,advance,log,FPN)
+
+. dmsCUpdateCellViewByLib(libName,cName,vName,verName,children,advance,log,FPN)
+
+. dmsCCancelCheckoutCellViewByLib(libName,cName,vName,verName,FPN)
+
+char *libName;
+
+2.5  Example of Coding
+
+A example C program named fwitk.c.txt is in the documentation area for illustrating 
+the coding convention for iDMS integration. This program implements the input, 
+output and miscellaneous commands with edit bit and dirty bit. Integrators are 
+encouraged to run and study this program. This program will give integrators a clear 
+idea of how each commands work and how to implement the commands in your own 
+applications.
+
+Please refer to the following instruction for making the itk executable.
+
+2.6  How to Make the Executable
+
+To make the executable, you need to link the iDMS library idms.a, Cadence library 
+cdsVo.a and cdsDB.a with your executable. The executable can be either a Mainsail 
+boot or a C binary. Also, C libraries -lc, -lm and -ll are required. Following is a 
+example for making executable idmb:
+
+	cc fwitk.o $(IDMS)/idms.a $(CADENCE)/lib/cdsVo.a \
+
+	$(CADENCE)/lib/cdsDB.a $(CADENCE)/lib/cdsRWS.a -lc -lm -ll -o itk
+
+After making the executable, you need to run a Cadence application cdsld on your 
+executable to get the license to run. Following is the example:
+
+	$(CADENCE)/bin/cdsld itk
+
+2.7  Environment Variables
+
+Following are environment variables required to run your application properly:
+
+Environment variables required by Cadence:
+
+setenv CDS_INSTALL_DIR /usr/cad/alpha/cadence/4.21.a6
+
+setenv CDS_LICENSE_DIR $(CDS_INSTALL_DIR)/etc/license
+
+Environment variables required by iDMS:
+
+setenv IDMS /usr/cad/alpha/idms/2.11.a0
+
+setenv DMSPATH /home/eda/cchiu/dms.pth
+
+Optional environment variables for iDMS:
+
+setenv IDMS_GLOBALFILE /usr/cad/alpha/idms/2.11.a0/iDMSglobalTable
+
+setenv IDMS_MAPPINGKEYWORD check_out
+
+setenv IDMS_USERTRIGGERFILE /home/fw/fw/user.trigger
+
+or
+
+setenv IDMS_DISABLEUSERTRIGGER
+
+2.8  Summary
+
+Table 1: Quick Reference for iDMS 2.1 procedures
+
+Command
+
+workdir
+
+worklib
+
+rwpaths
+unix dir
+
+rwpaths
+library
+
+Comment
+
+createCellView
+
+X
+
+create version 0.0, no checkout
+
+createUnixFile
+
+X
+
+create a empty file in workdir
+
+readonly
+
+X
+
+X
+
+search through the whole rwpaths
+
+checkout
+
+X
+
+skip all unix dirs on rwpaths
+
+load
+
+X
+
+will check read permission
+
+edit
+
+X
+
+X
+
+does checkout and load
+
+save
+
+X
+
+will check write permission
+
+checkin
+
+O
+
+X
+
+skip all unix dirs on rwpaths
+
+update
+
+O
+
+X
+
+skip all unix dirs on rwpaths
+
+install
+
+O
+
+X
+
+work on 0.0 with no checkout
+
+purge
+
+X
+
+skip all unix dirs on rwpaths
+
+cancelCheckout
+
+O
+
+X
+
+skip all unix dirs on rwpaths
+
+information
+
+X
+
+X
+
+X
+
+optional search mode
+
+Note 1: workdir and worklib are not different from any unixdir/library in the rwpaths. 
+They may or may not be there. It is recommended that they to be there. iDMS does 
+not assume either as a safety net/default last entry.
+
+Note 2: X indicates the operation scope of a command. O indicates the file/checkout 
+copy will be deleted after the operation.

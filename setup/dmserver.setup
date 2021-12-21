@@ -1,0 +1,57 @@
+#=============================================================================
+#
+# dmserver.setup file.
+#
+#=============================================================================
+setenv DMSERVER_VER `$SETUP_REV/bin/getTv dmserver`
+
+if ( "$DMSERVER_VER" =~ *sbox* ) then #{
+  # when running in sbox mode, set this value to YOUR desired installation version...  perhaps a copy of what is in your sbox...
+  setenv DMSERVER_VER 17.1.1_V6R2016x.HF5_dbadmin_chdk74
+  echo ""
+  echo "-D- dmserver.setup: executing in sbox mode, will point to installation named $DMSERVER_VER ..."
+  echo ""
+endif #}
+
+if ("$DMSERVER_VER" != "NoToolVer") then #{
+
+   if ($?DMSERVER_NOVENDOR) then
+     set dmserver_rootdir = "$CAD_ROOT/dmserver/$DMSERVER_VER"
+   else    
+     # HDK compliant release location for dmserver
+     # Requires install AS DB ADMIN of $PROJECT via rsync -av $CAD_ROOT/dmserver/version/ $MOUNTS/$PROJECT/dmserver/version/
+     set dmserver_rootdir = "$MOUNTS/dms/$PROJECT/dmserver/$DMSERVER_VER"
+   endif
+
+   if (-d $dmserver_rootdir) then
+     setenv DMSERVER_BIN_DIR $dmserver_rootdir/bin
+     setenv DMSERVER_LIB_DIR $dmserver_rootdir/lib
+   else 
+      echo " "
+      echo "********************************************************************"
+      echo "-E- dmserver.setup: directory $dmserver_rootdir does not exist!"
+      echo "                    DB ADMIN needs to install dmserver as suid DB ADMIN executable."
+      echo "********************************************************************"
+      echo " "
+      exit 1
+   endif       
+
+else #}{
+   echo " "
+   echo "********************************************************************"
+   echo "-E- dmserver.setup: getTv cannot find a version for dmserver"
+   echo "                    Please verify your tool version files."
+   echo "********************************************************************"
+   echo ""
+   exit 1
+endif #}
+
+# Set umask as 002 so that files created by dmserver are group writable
+setenv DMSERVER_UMASK  002
+
+# force checked out files to be writeable
+# this is a hack, the Design Sync server API does not respect -lock, but will treat the file as locked if it is writeable
+setenv DMSERVER_FORCE_CHECKOUT_CHMOD 1
+
+# do not try to preserver view file ownsership when copying to/from DB_ROOT or work area
+setenv DMSERVER_NO_PRESERVE_OWNERSHIP 1

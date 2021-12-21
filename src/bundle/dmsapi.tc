@@ -1,0 +1,34 @@
+set cvm [::boo::CellViewMgr -this  [::boo::CellViewMgr_getCellViewMgr]]
+
+set cmd ""
+puts "DMSAPI_READY "
+while {[gets stdin cmd]} {
+    if {$cmd == "quit"} {
+        puts "OK BYE"
+        exit 0
+    }
+
+    switch [lindex $cmd 0] {
+        CVI {
+            if [catch {set result [eval "[lrange $cmd 1 end]"]} err] {
+                puts "FAIL [lindex $cmd 0]: $err"
+            } else {
+                puts "OK $result"
+            }
+        }
+        default {
+            if [catch {set result [eval "$cvm $cmd"]} err] {
+                puts "FAIL [lindex $cmd 0]: $err"
+            } else {
+                puts "OK $result"
+            }
+            switch [lindex $cmd 0] {
+                createCellView -
+                createCellViewInfo -
+                getCellViewInfo {
+                    ::boo::BaaCellViewInfo -this $result
+                }
+            }
+        }
+    }
+}

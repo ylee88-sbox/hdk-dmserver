@@ -1,0 +1,850 @@
+/*$Header: /cadfs8/fw_tmp/fwRCSarea/iDMS/2.11/RCS/fwitk.c,v 1.4 93/02/01 10:11:32 cchiu Exp Locker: cchiu $*/
+/*$Log:	fwitk.c,v $
+#Revision 1.4  93/02/01  10:11:32  cchiu
+#Add \n to write file and read file so that the file on disc will be complete.
+#Otherwise the reverse diff of opus will fail.
+#
+#Revision 1.3  93/01/22  16:07:39  cchiu
+#Get workdir and get worklib.
+#
+#Revision 1.2  93/01/08  17:09:14  cchiu
+#lastCellViewInfo implementation.
+#
+#Revision 1.1  93/01/04  09:27:20  cchiu
+#Initial revision
+#
+#Revision 1.17  92/12/23  13:20:14  cchiu
+#Simplify createCellView and createUnixFile.
+#
+#Revision 1.16  92/12/09  13:18:31  cchiu
+#report error number after commands.
+#
+#Revision 1.15  92/12/08  18:39:26  cchiu
+#Test generator function in checkout.
+#Arguments to readonlycellviewtype differ view and viewtype.
+#
+#Revision 1.14  92/11/20  16:22:40  cchiu
+#TRUE -> 1 FALSE -> 0 for iaws.
+#
+#Revision 1.13  92/11/11  17:05:28  cchiu
+#Change of Info paramenter that take fullPathName into structure.
+#
+#Revision 1.12  92/11/10  15:12:51  cchiu
+#Changes according to info returns info structure.
+#
+#Revision 1.11  92/11/09  17:42:08  cchiu
+#Minor change.
+#
+#Revision 1.10  92/11/09  17:25:08  cchiu
+#Use argv[0] for executable name.
+#
+#Revision 1.9  92/11/09  15:19:54  cchiu
+#Added returned viewName to readonlyCellView.
+#
+#Revision 1.8  92/11/04  11:03:07  cchiu
+#CreateUnixFile, InfoCellView, UpdateCellView, InstallCellView added.
+#
+#Revision 1.7  92/10/20  16:59:25  cchiu
+#Breaks on error conditions.
+#
+#Revision 1.6  92/10/08  10:38:28  cchiu
+#Use dmsCReadonlyCellViewType instead of dmsCReadonlyCellView.
+#
+#Revision 1.5  92/10/05  15:39:25  cchiu
+#More comments.
+#
+#Revision 1.4  92/10/01  17:22:18  cchiu
+#More comments and runs better.
+#
+#Revision 1.3  92/09/24  11:22:36  cchiu
+#Return code changed and some dms.path functions.
+#
+#Revision 1.2  92/09/22  18:04:31  cchiu
+#Initial version. For demostration of iDMS integration.
+#*/
+
+#include <stdio.h>
+#include "fwidms.h"
+#include "fwierr.h"
+#include "itkDA.h"
+#include "dm.h"
+
+#define ON  1
+#define OFF 0
+
+typedef struct design {
+  char cellName[256];
+  char viewName[256];
+  int  editBit;
+  int  dirtyBit;
+  char designDataPtr[1024];
+  struct design *next;
+} DESIGN;
+  
+/*****************************************************************************
+  Get user's inputs.
+  In real environment, tools might get these information from internal data
+  structure, by user's ciw window input, mouse clicking or form filling.
+******************************************************************************/
+void
+getUserInput(option,cellName,viewName)
+char *option;
+{
+  if (option[0]=='1') {
+    printf("cell name: ");
+    scanf("%s",cellName);
+  }
+  if (option[1]=='1') {
+    printf("view name: ");
+    scanf("%s",viewName);
+  }
+  printf("\n");
+}
+
+
+/*****************************************************************************
+  Open a file and read the data into the memory.
+******************************************************************************/
+void
+readFile(designDataPtr,fullPathName)
+char *designDataPtr;
+char *fullPathName;
+{
+  FILE *fp;
+
+  if (fp=fopen(fullPathName,"r")) {
+    fscanf(fp,"%s",designDataPtr);
+    fclose(fp);
+  } else
+    printf("Can not read file: %s\n",fullPathName);
+}
+  
+
+/*****************************************************************************
+  Open a file and write the data into the file.
+******************************************************************************/
+void
+writeFile(designDataPtr,fullPathName)
+char *designDataPtr;
+char *fullPathName;
+{
+  FILE *fp;
+
+  if (fp=fopen(fullPathName,"w")) {
+    fprintf(fp,"%s\n",designDataPtr);
+    fclose(fp);
+  } else
+     printf("Can not write file: %s\n",fullPathName);
+}
+
+/*****************************************************************************
+  Initialize the data structure for storing data in memory
+******************************************************************************/
+DESIGN
+*initDataStructure(firstDesign,cellName,viewName)
+DESIGN **firstDesign;
+char *cellName;
+char *viewName;
+{
+  DESIGN *ptr;
+  ptr=(DESIGN *) malloc(sizeof(DESIGN));
+  strcpy(ptr->cellName,cellName);
+  strcpy(ptr->viewName,viewName);
+  strcpy(ptr->designDataPtr,"");
+  ptr->editBit=0;
+  ptr->dirtyBit=0;
+  ptr->next=*firstDesign;
+  *firstDesign=ptr;
+  return(*firstDesign);
+}
+
+/*****************************************************************************
+  Free memory used by design data
+******************************************************************************/
+void
+freeDesignData(firstDesign,currentDesign)
+DESIGN **firstDesign;
+DESIGN **currentDesign;
+{
+  DESIGN *ptr;
+  ptr=*firstDesign;
+  if (ptr==*currentDesign) {
+    *firstDesign=(*currentDesign)->next;
+    free(*currentDesign);
+    *currentDesign=*firstDesign;
+    return;
+  }
+  while (ptr) {
+    if (ptr->next==*currentDesign) {
+      ptr->next=ptr->next->next;
+      free(*currentDesign);
+      *currentDesign=ptr;
+      return;
+    }
+    ptr=ptr->next;
+  }
+}
+  
+/*****************************************************************************
+  Print out warning message and return TRUE if the user decides to continue
+******************************************************************************/
+int
+confirmWarning(message)
+char *message;
+{
+  char confirm[256];
+
+  printf("WARNING: %s\n",message);
+  printf("Do you want to continue (y/n)?");
+  scanf("%s",confirm);
+  if (confirm[0]=='y') return(1); else return(0);
+}
+
+DESIGN
+*findDesignInMemory(firstDesign,cellName,viewName)
+DESIGN **firstDesign;
+char *cellName;
+char *viewName;
+{
+  DESIGN *ptr;
+  ptr=*firstDesign;
+  while (ptr) {
+    if (!strcmp(ptr->cellName,cellName)&&!strcmp(ptr->viewName,viewName))
+      return(ptr);
+    ptr=ptr->next;
+  }
+  return(NULL);
+}
+
+/*****************************************************************************
+  This program is working as a simple word processor which has all iDMS I/O
+  commands. The edit bit and dirty bit concepts are also implemented in this
+  program. Integrators are encouraged to run and study this program for
+  learning iDMS methodology and integration.
+******************************************************************************/
+main(argc,argv)
+int argc;
+char *argv[];
+{
+  struct design *firstDesign=NULL,*currentDesign=NULL;
+  char command[256],cellName[256],viewName[256],*vName,*fullPathName;
+  char shell[256];
+  DMSINFO *info;
+  dmLibId libID;
+  dmCellViewId cvID;
+  dmGenStatePtr gsPtr;
+  dmRec *cellViewRec;
+
+  char *designDataPtr=NULL;
+  int  editBit=OFF,dirtyBit=OFF,error;
+
+  /* initialize iDMS procedural interface before any dms calls */
+  if (error=dmsCPIInitDMS("itk",argv[0],TRUE)) {
+    printf("ERROR: %s\n",dmsCReportMessage());
+  } else {
+    printf("OK: %s\n",dmsCReportMessage());
+  }
+
+  while (1) {
+
+    /* display current data status */
+    if (firstDesign) {
+      currentDesign=firstDesign;
+      while (currentDesign) {
+	printf("\n");
+	printf("cellname: %s\n",currentDesign->cellName);
+	printf("viewname: %s\n",currentDesign->viewName);
+	printf("    data: [%s]\n",currentDesign->designDataPtr);
+	printf(" editBit: %d\n",currentDesign->editBit);
+	printf("dirtyBit: %d\n",currentDesign->dirtyBit);
+	currentDesign=currentDesign->next;
+      }
+    } else
+      printf("\nno data in memory\n");
+    printf("\n");
+
+    /* prompt for command */
+    printf("  Create: [C]reateCellView/createUnix[F]ile\n");
+    printf("   Input: [R]eadonly/check[O]ut/[L]oad/[E]dit\n");
+    printf("  Output: [S]ave/check[I]n/save[A]ndcheckin/ins[T]all/[U]pdate\n");
+    printf("DMS.PATH: reloa[D]/sho[W]/wor[K]dir/workli[B]\n");
+    printf("    Misc: [P]urge/ca[N]celcheckout/[#]Info/[$]InfoLibOnly/[Q]uit\n");
+    printf("    Data: chan[G]e (tool commands for data editing)\n");
+    printf("Command: ");
+    scanf("%s",command);
+    printf("\n");
+
+    /* quit */
+    if (command[0]=='q') break;
+
+    switch(command[0]){
+/*****************************************************************************
+  create: Tools make the create call to create a new cellview. After this call,
+  tools initialize a editable data structure for users to create design data in
+  memory. Users need to apply a save command to save the creation.
+******************************************************************************/
+    case 'c': /* create cellview */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+
+      /* make create call and get the path to the created cellview */
+      if (error=dmsCCreateCellView(cellName,viewName,&fullPathName)) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop create */
+      } else {
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("create %s\n",fullPathName);
+      }
+
+      break;
+/*****************************************************************************
+  create: Tools make the create call to create a new cellview. After this call,
+  tools initialize a editable data structure for users to create design data in
+  memory. Users need to apply a save command to save the creation.
+******************************************************************************/
+    case 'f': /* create unix file*/
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+
+      /* make create call and get the path to the created cellview */
+      if (error=dmsCCreateUnixFile(cellName,viewName,&fullPathName)) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop create */
+      } else {
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("create %s\n",fullPathName);
+      }
+
+      break;
+/*****************************************************************************
+  readonly: Tools make the readonly call to get the path to the requested
+  cellview. After this call, tools initialize a data structure to read the
+  design data into memory. Tools turn off editBit to make it readonly. Users
+  can not edit or save readonly cellviews.
+******************************************************************************/
+    case 'r': /* readonly */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* not allow readonly of a cellview in memory again */      
+      if (currentDesign) {
+	printf("ERROR: data in memory already\n");
+	break;
+      }
+
+      /* make readonly call and get the path to the requested cellview */
+      if (error=dmsCReadonlyCellViewType(cellName,viewName,&vName,&fullPathName)) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop readonly */
+      } else {
+
+	/* initialize data structure for storing data in memory */
+	currentDesign=initDataStructure(&firstDesign,cellName,viewName);
+
+	/* read data into memory */
+	readFile(currentDesign->designDataPtr,fullPathName);
+
+	/* readonly: not editable and clean */
+	currentDesign->editBit=OFF;
+	currentDesign->dirtyBit=OFF;
+
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("read from %s\n",fullPathName);
+      }
+
+      break;
+    case '#': /* info */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+
+      printf("Search rwpaths info#[%d]\n",dmsCInfoCellView(0,cellName,viewName,&info));
+      printf("OK: %s\n",dmsCReportMessage());
+
+      break;
+    case '$': /* info skip unix */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+
+      printf("Search rwpaths skip library info#[%d]\n",dmsCInfoCellView(1,cellName,viewName,&info));
+      printf("OK: %s\n",dmsCReportMessage());
+
+      break;
+/*****************************************************************************
+  checkout: Tools make the checkout call to checkout the requested cellview in
+  library and get a path to the checkout copy. Users need to load the cellview
+  into memory for editing.
+******************************************************************************/
+    case 'o': /* checkout */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+
+      /* make checkout call and get the path to the checkout copy */
+      if (error=dmsCCheckoutCellView(cellName,viewName,&fullPathName)) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop checkout */
+      } else {
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("checkout to %s\n",fullPathName);
+      }
+
+      break;
+/*****************************************************************************
+  load: Tools make the load call to get the path to the checkout copy which was
+  previously checked out. After this call, tools initialize a data structure to
+  read the design data into memory. Tools turn on editBit to make it editable.
+  Users need to apply a save command to save the changes. 
+******************************************************************************/
+    case 'l': /* load */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* not allow load of a cellview in memory again */      
+      if (currentDesign) {
+	printf("ERROR: data in memory already\n");
+	break;
+      }
+
+      /* make load call and get the path to the checkout copy */
+      if (error=dmsCLoadCellView(cellName,viewName,&fullPathName)) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop load */
+      } else {
+
+	/* initialize data structure for storing data in memory */
+	currentDesign=initDataStructure(&firstDesign,cellName,viewName);
+
+	/* read data into memory */
+	readFile(currentDesign->designDataPtr,fullPathName);
+
+	/* readonly: not editable and clean */
+	currentDesign->editBit=ON;
+	currentDesign->dirtyBit=OFF;
+
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("load from to %s\n",fullPathName);
+      }
+
+      break;
+/*****************************************************************************
+  edit: Tools make the edit call to checkout the cellview and get a path to the
+  checkout copy. After this call, tools initialize a data structure to
+  read the design data into memory. Tools turn on editBit to make it editable.
+  Users need to apply a save command to save the changes. 
+******************************************************************************/
+    case 'e': /* edit */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* not allow edit of a cellview in memory again */      
+      if (currentDesign) {
+	if (currentDesign->editBit) {
+	  printf("ERROR: editable data in memory already\n");
+	  break;
+	}
+      }
+
+      /* make edit call to checkout and get the path to the checkout copy */
+      if (error=dmsCEditCellView(cellName,viewName,&fullPathName)) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop edit */
+      } else {
+
+	/* free readonly copy in memory if it is there */
+	if (currentDesign)
+	  freeDesignData(&firstDesign,&currentDesign);
+
+	/* initialize data structure for storing data in memory */
+	currentDesign=initDataStructure(&firstDesign,cellName,viewName);
+
+	/* read data into memory */
+	readFile(currentDesign->designDataPtr,fullPathName);
+
+	/* readonly: not editable and clean */
+	currentDesign->editBit=ON;
+	currentDesign->dirtyBit=OFF;
+
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("edit from %s\n",fullPathName);
+      }
+
+      break;
+/*****************************************************************************
+  save: Tools make the save call to get the path to write out memory copy.
+  Changes in memory will be flushed out to the checkout copy. After the save,
+  tools clear the dirtyBit to indicate the checkout copy is up-to-date.
+******************************************************************************/
+    case 's': /* save */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* need data available in memory to save */
+      if (currentDesign) {
+
+	/* only editable can be saved */
+	if (currentDesign->editBit) {
+
+	  /* only dirty need to be saved */
+	  if (currentDesign->dirtyBit) {
+
+	    /* make save call and get a path to write out data */
+	    if (error=dmsCSaveCellView(cellName,viewName,&fullPathName)) {
+	      printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	      break; /* stop save */
+	    } else {
+
+	      /* write data to file */
+	      writeFile(currentDesign->designDataPtr,fullPathName);
+
+	      /* after write data become clean */
+	      currentDesign->dirtyBit=OFF;
+
+	      printf("OK: %s\n",dmsCReportMessage());
+	      printf("save to %s\n",fullPathName);
+	    }
+
+	  } else
+	    printf("OK: no need to save\n");
+
+	} else
+	  printf("ERROR: can not save read only data\n");
+
+      } else
+	printf("ERROR: no data in memory to save\n");
+
+      break;
+/*****************************************************************************
+  checkin: Tools make the checkin call to move the checkout copy into library
+  and become a new version. The checkin does not write the most up-to-date
+  memory copy to the checkout copy. So, memory copy need to be purged or saved
+  explicitly by users to checkin. The memory copy will become readonly.
+******************************************************************************/
+    case 'i': /* checkin */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* not allow checkin of a dirty cellview */
+      if (currentDesign) {
+	if (currentDesign->dirtyBit) {
+	  printf("ERROR: purge or save the dirty memory copy then checkin\n");
+	  break;
+	}
+      }
+
+      /* make checkin call and get a path to the checkin copy */
+      if (error=dmsCCheckinCellView(cellName,viewName,"",0,"",&fullPathName)) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop checkin */
+      } else {
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("checkin from %s\n",fullPathName);
+
+	/* after checkin, memory copy become readonly */
+	if (currentDesign) {
+	  currentDesign->editBit=OFF;
+	}
+      }
+
+      break;
+/*****************************************************************************
+  install: Tools make the install call to install the 0.1 version to a newly 
+  created cellview. The install does not write the most up-to-date
+  memory copy to the workdir copy. So, memory copy need to be purged or saved
+  explicitly by users to install. The memory copy will become readonly.
+******************************************************************************/
+    case 't': /* install */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* not allow checkin of a dirty cellview */
+      if (currentDesign) {
+	if (currentDesign->dirtyBit) {
+	  printf("ERROR: purge or save the dirty memory copy then checkin\n");
+	  break;
+	}
+      }
+
+      /* make checkin call and get a path to the checkin copy */
+      if (error=dmsCInstallCellView(cellName,viewName,"child","log",&fullPathName)) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop install */
+      } else {
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("install from %s\n",fullPathName);
+
+	/* after install, memory copy become readonly */
+	if (currentDesign) {
+	  currentDesign->editBit=OFF;
+	}
+      }
+
+      break;
+/*****************************************************************************
+  update: Tools make the update call to move the directoyr copy into library
+  and become a new version without a previous checkout.
+******************************************************************************/
+    case 'u': /* update */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* not allow checkin of a dirty cellview */
+      if (currentDesign) {
+	if (currentDesign->dirtyBit) {
+	  printf("ERROR: purge or save the dirty memory copy then update\n");
+	  break;
+	}
+      }
+
+      /* make update call and get a path to the update copy */
+      if (error=dmsCUpdateCellView(cellName,viewName,"",0,"",&fullPathName)) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop update */
+      } else {
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("update from %s\n",fullPathName);
+
+	/* after update, memory copy become readonly */
+	if (currentDesign) {
+	  currentDesign->editBit=OFF;
+	}
+      }
+
+      break;
+/*****************************************************************************
+  save&checkin: Tools make the save&checkin call to save the memory copy and
+  move the checkout copy into library and become a new version. This will
+  grauantee the new version is the same as the memory copy which become
+  readonly.
+******************************************************************************/
+    case 'a': /* save and checkin */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* need data available in memory to save */
+      if (currentDesign) {
+
+	/* only editable can be saved */
+	if (currentDesign->editBit) {
+
+	  /* only dirty need to be saved */
+	  if (currentDesign->dirtyBit) {
+
+	    /* make save call and get a path to write out data */
+	    if (error=dmsCSaveCellView(cellName,viewName,&fullPathName)) {
+	      printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	      break; /* stop checkin */
+	    } else {
+
+	      /* write data to file */
+	      writeFile(currentDesign->designDataPtr,fullPathName);
+
+	      /* after write file become clean */
+	      currentDesign->dirtyBit=OFF;
+
+	      printf("OK: %s\n",dmsCReportMessage());
+	      printf("save to %s\n",fullPathName);
+	    }
+	  } else
+	    printf("OK: no need to save\n");
+
+	  /* make checkin call and get a path to the checkin copy */
+	  if (error=dmsCCheckinCellView(cellName,viewName,"",0,"",&fullPathName)) {
+	    printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	  } else {
+
+	    /* after checkin, memory copy become readonly */
+	    currentDesign->editBit=OFF;
+
+	    printf("OK: %s\n",dmsCReportMessage());
+	    printf("checkin from %s\n",fullPathName);
+	  }
+
+	} else
+	  printf("ERROR: can not save read only data\n");
+
+      } else
+	printf("ERROR: no data in memory to save\n");
+
+      break;
+/*****************************************************************************
+  purge: Tools make the purge call to release the link lock registed on cdsd.
+  This allows other users to delete the version from the library.
+******************************************************************************/
+    case 'p': /* purge */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* need data available in memory to be purged */
+      if (currentDesign) {
+
+	/* warn user a dirty copy is in memory */      
+	if (currentDesign->dirtyBit) {
+	  if (!confirmWarning("will lose changes since last save")) break;
+	}
+
+	/* make purge call and release link lock */
+	if (error=dmsCPurgeCellView(cellName,viewName,&fullPathName)) {
+	  printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	  break; /* stop purge */
+	}
+
+	/* purge memory copy */
+	/* ok to purge data when the purge call failed (cellview not exist) */
+	freeDesignData(&firstDesign,&currentDesign);
+
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("purge %s in memory\n",fullPathName);
+
+      } else
+	printf("ERROR: no data in memory to purge\n");
+
+      break;
+/*****************************************************************************
+  cancel checkout: Tools make the call to cancel previous checkout. Memory copy
+  need to to purged to avoid a modified copy left in memory.
+******************************************************************************/
+    case 'n': /* cancel checkout */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* not allow cancel checkout of a dirty cellview */      
+      if (currentDesign) {
+	if (currentDesign->dirtyBit) {
+	  printf("ERROR: purge or save the dirty memory copy then cancel checkout\n");
+	  break;
+	}
+      }
+
+      /* warn user the consequence */      
+      if (!confirmWarning("will lose all changes since checkout")) break;
+
+      /* make cancel checkout call and get the path to the deleted copy */
+      if (error=dmsCCancelCheckoutCellView(cellName,viewName,&fullPathName)) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop cancel checkout */
+      } else {
+
+	/* purge memory copy */
+	freeDesignData(&firstDesign,&currentDesign);
+
+	printf("OK: %s\n",dmsCReportMessage());
+	printf("cancel checkout %s\n",fullPathName);
+      }
+
+      break;
+/*****************************************************************************
+  reload dms.pth: Tools make the call to reload the dms.pth file. 
+******************************************************************************/
+    case 'd': /* reload dms.pth */
+
+      if (error=dmsCParsePath()) {
+	printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+	break; /* stop reload */
+      } else {
+	printf("OK: %s\n",dmsCReportMessage());
+      }
+
+      break;
+/*****************************************************************************
+  print dms.pth: Tools make the call to display the idms setup in memory.
+******************************************************************************/
+    case 'w': /* print dms.pth */
+
+      /* get user's input */
+      getUserInput("01",cellName,viewName);
+
+      printf("OK: %s\n",dmsCPrintPath(viewName));
+
+      break;
+/*****************************************************************************
+  get workdir: Tools make the call to get the workdir of a view
+******************************************************************************/
+    case 'k': /* get workdir */
+
+      /* get user's input */
+      getUserInput("01",cellName,viewName);
+
+      dmsCGetWorkingDir(viewName,&fullPathName);
+      printf("OK: %s\n",fullPathName);
+
+      break;
+/*****************************************************************************
+  get worklib: Tools make the call to get the worklib of a view
+******************************************************************************/
+    case 'b': /* get worklib */
+
+      /* get user's input */
+      getUserInput("01",cellName,viewName);
+
+      dmsCGetWorkingLib(viewName,&fullPathName);
+      printf("OK: %s\n",fullPathName);
+
+      break;
+/*****************************************************************************
+  This portion is for itk only. This simulates tools' data editing commands.
+******************************************************************************/
+    case 'g': /* change data */
+
+      /* get user's input */
+      getUserInput("11",cellName,viewName);
+      currentDesign=findDesignInMemory(&firstDesign,cellName,viewName);
+
+      /* need data available in memory to change */
+      if (currentDesign) {
+
+	/* only editable can be changed */
+	if (currentDesign->editBit) {
+
+	  printf("change data from: [%s] to: ",currentDesign->designDataPtr);
+	  scanf("%s",currentDesign->designDataPtr);
+
+	  /* data become dirty after change */
+	  currentDesign->dirtyBit=ON;
+
+	} else
+	  printf("ERROR: data is read only\n");
+
+      } else
+	printf("ERROR: no data in memory to change\n");
+
+      break;
+    }
+
+    dmsCGetLastCellViewInfo(&info);
+    printf("Information: [%d][%s][%s][%s][%s][%s][%s]\n",info->location,info->libPath,info->libName,info->cellName,info->viewName,info->verName,info->coUser);
+    printf("FullPathName: %s\n",info->fullPathName);
+
+  }
+
+  /* terminate iDMS procedural interface after all dms calls */
+  if (error=dmsCPIExitDMS()) {
+    printf("ERROR# %d: %s\n",error,dmsCReportMessage());
+  } else {
+    printf("OK: %s\n",dmsCReportMessage());
+  }
+
+} /* main */

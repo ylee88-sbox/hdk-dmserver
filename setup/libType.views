@@ -1,0 +1,28 @@
+# This file contains the list of all the library types the project is using
+# and the list of views stored in each one of them.
+hdl :def:hdl:hdr:ifc:int:mac:sig:soc:sos:src:typ:promap:pro:fubs:fv:field:enum:sdblist:flat:noflat:entx:from:dat:rom:prev:wst:vhdl:hier:xdir:params:doc:log:ini:dir:wstb:order:pred:body:sohdr:sproc:sdbhdr:proc:jnc:cnetrc:util:son:soinst:lst:defaults:bat:awk:
+sch :schematic:symbol:alt:alt1:alt2:alt3:alt4:netcvs:snet:interior:streemsch:ntlSTOP:symbol1:symbol2:symbol3:symbol4:symbol0:symbol5:symbol6:symbol7:symbol8:symbol9:symbol10:symbol11:symbol12:symbol13:symbol14:symbol15:tpview:ssimtxt:adexl:
+lay :alflay:alfpln:alfplntd:alfplntdmy:alftrc:alftrcbu:crsn:crntclz:crdpf:crdpfz:dpd:sizeb:bns:cbf:ednet:psig:layout:ctk:mntclz:fmntclz:fmdpfz:fxtabz:mdpfz:xtabz:xyv:exp:mntcl:width:defpr:lef:stm:tlf:mac:readme:opt:loglay:xinst:mpsn:stl:streemlay:streem:testz:test:mdpf:xtab:simcap:dspf:stw:nfl:ppf:pdef:xnez:mappingz:polygone:act:preroute:nw:buftree_nets:dplace_params:params:grkor_tcl:cong_map:gplace:dplace:cts_rpt:eco_alflay:hvt_alflay:widewires_tcl:journal:placement:tucson:predef_params:loc:wl_lay:cts_wires:opp_cnac:widthclass:oth_alflay:stntclz:fstntclz:stdpf:stdpfz:stsn:pdefnet:lnf:trunk_nets:ezqbl:drcd:power_stat:qb:drcdpsm:migsn:prntcl:llist:printcl:stm:migsn:rfafrz:pdb:idxz:alfplnbu:bonuslist:width:layout_errors:star_sum:alflaytd:sum:pgbump:die:pcons:xyv:lsimtxt:pgbump:cell_loc:faaxz:qb_rlp:del_bus_rlp:loc_rlp:del_fub_rlp:alfspec_rlp:alftrcbu_rlp:alfplnbu_rlp:ezqb_rlp:report_rlp:ez4u:qbbu:lnfbu:lnftd:fxyv:mlw:dcntclz:pcntclz:
+net :sds:perfdr:bmod:ngcmd:edif2:edif:hux:sch:schnet:sil:spc:stim:gux:iif:isp:rcd:ipf:ntcl:glb:rvh:prb:order:prm:v:sdf:rlspf:lognet:frctl:sumnet:dc:isc:split:csh:pl:pro:wl:sn:lvtlist:schadv:db:tplist:tguux:spec_evr:out:schtd:evrtd:slib:lrb:fb:ver:glssch:cod:evr:en:aux:ezqb:vn:ddc:
+gls :dat:datz:dirlist:schfile:list:glslog:glsuux:glsaux:sdly:spc:usercmd:user:glsreadme:cstmaux:cstmuux:pounder:convtable:glso:glsh:img:rpt:dmp:
+fct :mcf:pspec:rcdly:cmd:txt:ovr:wvr:info:ovrsch:filter:definition:drvd:cond:nets:vrpt_negate:
+slo :alfspec:loc:del_fub:del_bus:qb:perm_list:
+rlp :report:ezqb:alfspec:alftrcbu:
+doc :xls:vsd:doc:ppt:prs:
+sim :symbol:vams: 
+fev :ftv_data_sch2rtl:config_sch2rtl:dpp_waivers_sch2rtl:equivalence_sch2rtl:errors_sch2rtl:files_sch2rtl:flow_sch2rtl:flow_status_sch2rtl:hdl_sch2rtl:i_logs_sch2rtl:log_sch2rtl:prm_sch2rtl:prun_sch2rtl:pv_waivers_sch2rtl:result_sch2rtl:uux_sch2rtl:vdb_sch2rtl:verification_sch2rtl:waivers_sch2rtl:ftv_data_sch2schcon:config_sch2schcon:dpp_waivers_sch2schcon:equivalence_sch2schcon:errors_sch2schcon:files_sch2schcon:flow_sch2schcon:flow_status_sch2schcon:hdl_sch2schcon:i_logs_sch2schcon:log_sch2schcon:prm_sch2schcon:prun_sch2schcon:pv_waivers_sch2schcon:result_sch2schcon:uux_sch2schcon:vdb_sch2schcon:verification_sch2schcon:waivers_sch2schcon:ftv_data_sch2rtlcon:config_sch2rtlcon:dpp_waivers_sch2rtlcon:equivalence_sch2rtlcon:errors_sch2rtlcon:files_sch2rtlcon:flow_sch2rtlcon:flow_status_sch2rtlcon:hdl_sch2rtlcon:i_logs_sch2rtlcon:log_sch2rtlcon:prm_sch2rtlcon:prun_sch2rtlcon:pv_waivers_sch2rtlcon:result_sch2rtlcon:uux_sch2rtlcon:vdb_sch2rtlcon:verification_sch2rtlcon:waivers_sch2rtlcon:connectivity_sch2sch:
+ctl :rloc:cfg:skew_modify:ctl:bvr_override:init:cmf:pat:bcscmd:acscmd:bvr:black_box:rcd:pwr:excl:mcf_override:ampsrule:ampscfg:advadrv:ampscustom:advprb:ba2siclone:clkcfg:model:cmd:attr:bufnet:prefnet:pmap:evrsyn:evrfc:scr:races:jmp:csbb:prb:def:impin:othconnect:eval_pw:tgcfg:node_margins:fcfg:mcf_cfg:mcf:mcf_anchor:no_iso:clk_rc:uux:pl:err:mapper:tp_bb:max_dat_cdev:min_dat_cdev:max_clk_cdev:min_clk_cdev:alt_cfg:bbcfg:ncmdz:ncfgz:cs_bb:flow_sch2rtl:flow_syn2sim:map_sch2rtl:map_syn2sim:dont_verify_sch2rtl:dont_verify_syn2sim:clkovrcfg:rolldncfg:sqlite:dctcl:sv_env:icc_pins:sv_search_path:tginit:clk_ovr:map:llist:exnets:flpr_cfg:log:rigmap:user_scanexcl:user_scanincl:dft_scanexcl:dft_scanincl:tgz:scrtcl:grp:rlsmap:fmtcl:clktcl:seqtcl:dcttcl:icctcl:ctatcl:
+tim :evr:bvr:bus:pluscmd:vsd:doc:ppt:
+std :def:hdl:hdr:ifc:int:mac:sig:soc:sos:src:typ:promap:stm:pro:fubs:schematic:symbol:alt:alt1:alt2:netcvs:snet:alflay:alfpln:dpd:icf:sizeb:bns:cbf:ednet:psig:layout:sds:perfdr:bmod:ngcmd:edif2:hux:sch:sil:spc:stim:gux:iif:isp:map:uux:rcd:ipf:ntcl:glb:rvh:evr:bvr:bus:pluscmd:fv:field:enum:sdblist:flat:noflat:entx:from:dat:rom:prev:wst:en:cell_loc:sn:
+flp :icf:blst:icfz:
+iifisp :isp:iif:gux:ispcmcro:
+ispcmcro :isp:iif:gux:ispcmcro:
+ntbrcf :rcd:ntb:rcf:ipf:
+process :tech:upf:
+group :group:
+aux :aux:uux:glb:
+deli_aux :deli_aux:
+hdlsynfrz :frz:clsfrz:
+comfiles :cmd:
+usercomfiles :cmd:
+tdc :lnfpln:lnf:netmap:
